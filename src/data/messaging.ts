@@ -1,0 +1,188 @@
+import type { Inquiry, QuickReplyTemplate } from '../types/messaging'
+
+export const INQUIRY_STATUS_CONFIG = {
+  nueva: { label: 'Nueva', color: '#5e17eb', bg: 'bg-primary/10', text: 'text-primary' },
+  seguimiento: { label: 'En Seguimiento', color: '#f59e0b', bg: 'bg-amber-50', text: 'text-amber-700' },
+  presupuesto_enviado: {
+    label: 'Presupuesto Enviado',
+    color: '#10b981',
+    bg: 'bg-emerald-50',
+    text: 'text-emerald-700',
+  },
+} as const
+
+export const QUICK_REPLY_TEMPLATES: QuickReplyTemplate[] = [
+  {
+    id: 'qr-1',
+    label: 'Grupo electrógeno',
+    text: '¡Hola! Sí, contamos con grupo electrógeno de respaldo incluido en todos nuestros eventos. ¿Te gustaría agendar una visita para conocer el salón?',
+  },
+  {
+    id: 'qr-2',
+    label: 'Estacionamiento',
+    text: 'Tenemos estacionamiento propio para 40 vehículos y accesibilidad con rampas. ¿Cuántos invitados estimás para tu evento?',
+  },
+  {
+    id: 'qr-3',
+    label: 'Catering',
+    text: 'Ofrecemos catering propio y también permitimos catering externo con un cargo de servicio del 15%. ¿Qué tipo de menú te interesa?',
+  },
+  {
+    id: 'qr-4',
+    label: 'Disponibilidad',
+    text: 'Gracias por tu consulta. Estoy revisando la disponibilidad para tu fecha y te envío un presupuesto formal en breve.',
+  },
+  {
+    id: 'qr-5',
+    label: 'Política de seña',
+    text: 'Para confirmar la fecha se requiere una seña del 30% del total. El saldo se abona hasta 7 días antes del evento.',
+  },
+]
+
+export const MOCK_INQUIRIES: Inquiry[] = [
+  {
+    id: 'inq-001',
+    clientName: 'Florencia Acosta',
+    email: 'florencia.acosta@email.com',
+    phone: '+54 11 5566-7788',
+    eventType: 'Boda',
+    eventDate: '2026-10-15',
+    guests: 120,
+    status: 'nueva',
+    source: 'marketplace',
+    lastMessage: '¿Tienen grupo electrógeno? Necesito confirmar para 120 invitados.',
+    lastActivity: 'Hace 12 min',
+    unread: true,
+    estimatedBudget: 920000,
+    messages: [
+      {
+        id: 'm-1',
+        sender: 'client',
+        text: 'Hola! Estoy buscando salón para mi boda el 15 de octubre. Somos 120 invitados.',
+        timestamp: '2026-08-04T10:30:00',
+      },
+      {
+        id: 'm-2',
+        sender: 'client',
+        text: '¿Tienen grupo electrógeno? Necesito confirmar para 120 invitados.',
+        timestamp: '2026-08-04T14:15:00',
+      },
+    ],
+  },
+  {
+    id: 'inq-002',
+    clientName: 'Diego Romero',
+    email: 'diego.romero@corp.com',
+    phone: '+54 11 3344-9901',
+    eventType: 'Corporativo',
+    eventDate: '2026-09-20',
+    guests: 80,
+    status: 'seguimiento',
+    source: 'email',
+    lastMessage: 'Perfecto, espero el presupuesto entonces.',
+    lastActivity: 'Hace 2 horas',
+    unread: false,
+    estimatedBudget: 480000,
+    messages: [
+      {
+        id: 'm-3',
+        sender: 'client',
+        text: 'Necesitamos un salón para evento corporativo, 80 personas, con proyector y coffee break.',
+        timestamp: '2026-08-03T09:00:00',
+      },
+      {
+        id: 'm-4',
+        sender: 'salon',
+        text: '¡Hola Diego! Tenemos disponibilidad para septiembre. Te preparo un presupuesto formal.',
+        timestamp: '2026-08-03T11:30:00',
+      },
+      {
+        id: 'm-5',
+        sender: 'client',
+        text: 'Perfecto, espero el presupuesto entonces.',
+        timestamp: '2026-08-04T12:00:00',
+      },
+    ],
+  },
+  {
+    id: 'inq-003',
+    clientName: 'Sofía Benítez',
+    email: 'sofia.b@email.com',
+    phone: '+54 351 4422-1100',
+    eventType: 'XV Años',
+    eventDate: '2026-11-08',
+    guests: 100,
+    status: 'presupuesto_enviado',
+    source: 'whatsapp',
+    lastMessage: 'Recibí el presupuesto, lo voy a revisar con mi familia.',
+    lastActivity: 'Ayer',
+    unread: false,
+    estimatedBudget: 720000,
+    messages: [
+      {
+        id: 'm-6',
+        sender: 'client',
+        text: 'Hola, quiero cotizar XV años para 100 invitados en noviembre.',
+        timestamp: '2026-08-01T16:00:00',
+      },
+      {
+        id: 'm-7',
+        sender: 'salon',
+        text: 'Te envié el presupuesto formal por email. Cualquier duda me avisás.',
+        timestamp: '2026-08-02T10:00:00',
+      },
+      {
+        id: 'm-8',
+        sender: 'client',
+        text: 'Recibí el presupuesto, lo voy a revisar con mi familia.',
+        timestamp: '2026-08-03T18:30:00',
+      },
+    ],
+  },
+  {
+    id: 'inq-004',
+    clientName: 'Pablo Méndez',
+    email: 'pablo.mendez@email.com',
+    phone: '+54 11 8877-6655',
+    eventType: 'Cumpleaños Infantil',
+    eventDate: '2026-08-30',
+    guests: 45,
+    status: 'nueva',
+    source: 'marketplace',
+    lastMessage: '¿Hay estacionamiento? ¿Cuánto sale el paquete infantil?',
+    lastActivity: 'Hace 45 min',
+    unread: true,
+    estimatedBudget: 320000,
+    messages: [
+      {
+        id: 'm-9',
+        sender: 'client',
+        text: '¿Hay estacionamiento? ¿Cuánto sale el paquete infantil?',
+        timestamp: '2026-08-04T13:50:00',
+      },
+    ],
+  },
+  {
+    id: 'inq-005',
+    clientName: 'Empresa Logística Sur',
+    email: 'eventos@logsur.com',
+    phone: '+54 11 2233-4400',
+    eventType: 'Corporativo',
+    eventDate: '2026-12-05',
+    guests: 150,
+    status: 'seguimiento',
+    source: 'web',
+    lastMessage: 'Necesitamos confirmar si el salón tiene Wi-Fi de alta velocidad.',
+    lastActivity: 'Hace 3 horas',
+    unread: true,
+    estimatedBudget: 650000,
+    messages: [
+      {
+        id: 'm-10',
+        sender: 'client',
+        text: 'Necesitamos confirmar si el salón tiene Wi-Fi de alta velocidad.',
+        timestamp: '2026-08-04T11:00:00',
+      },
+    ],
+  },
+]
