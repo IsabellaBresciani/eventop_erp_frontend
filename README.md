@@ -42,8 +42,13 @@ npm run dev
 
 | Token | Valor |
 |-------|-------|
-| Primario | `#5e17eb` |
-| Fondo | `#f4f7fe` |
-| Borde | `#e0e7ff` |
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `primary` | `#6A24E3` | CTA, links, foco |
+| `primary-800` | `#4C1D95` | Gradientes / contraste |
+| `gold` | `#F5C518` | Acentos / estados en proceso |
+| `secondary` | `#EDE9FE` | Fondos lavanda |
+| Sidebar | `#F5F3FF` → `#EDE9FE` | Navegación |
+| Fondo | `#FFFFFF` | Área de trabajo |
 | Radio tarjetas | `24px` |
 | Tipografía | Inter |
