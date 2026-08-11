@@ -1,28 +1,71 @@
-import { LogOut, Settings } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, LogOut, Settings, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getSalonInitials } from '../../data/admin-salons'
+import type { ManagedSalon } from '../../types/auth'
 
 interface ProfileAccountMenuProps {
   salonName: string
+  userName?: string
+  userEmail?: string
+  activeSalonId?: string
+  salons?: ManagedSalon[]
   settingsPath: string
   showLabel?: boolean
   align?: 'left' | 'right'
   placement?: 'up' | 'down'
   onNavigate?: () => void
+  onSwitchSalon?: (salonId: string) => void
   onLogout: () => void
+}
+
+function SalonAvatar({
+  salon,
+  size = 'sm',
+}: {
+  salon: Pick<ManagedSalon, 'name' | 'accent'>
+  size?: 'sm' | 'lg'
+}) {
+  const sizeClass = size === 'lg' ? 'h-16 w-16 text-lg' : 'h-9 w-9 text-xs'
+  const accent = salon.accent ?? '#6A24E3'
+
+  return (
+    <span
+      className={`flex shrink-0 items-center justify-center rounded-full font-semibold text-white ${sizeClass}`}
+      style={{ backgroundColor: accent }}
+    >
+      {getSalonInitials(salon.name)}
+    </span>
+  )
 }
 
 export function ProfileAccountMenu({
   salonName,
+  userName,
+  userEmail,
+  activeSalonId,
+  salons = [],
   settingsPath,
   showLabel = false,
   align = 'left',
   placement = 'up',
   onNavigate,
+  onSwitchSalon,
   onLogout,
 }: ProfileAccountMenuProps) {
   const [open, setOpen] = useState(false)
+  const [showAllSalons, setShowAllSalons] = useState(true)
   const rootRef = useRef<HTMLDivElement>(null)
+
+  const canSwitchSalons = salons.length > 1 && Boolean(onSwitchSalon)
+  const activeSalon =
+    salons.find((item) => item.id === activeSalonId) ??
+    salons.find((item) => item.name === salonName) ??
+    salons[0]
+  const displayName = userName ?? 'Administrador'
+  const firstName = displayName.split(/\s+/)[0] ?? displayName
+  const triggerInitials = getSalonInitials(activeSalon?.name ?? salonName)
+  const triggerAccent = activeSalon?.accent ?? '#6A24E3'
 
   useEffect(() => {
     if (!open) return
@@ -45,7 +88,15 @@ export function ProfileAccountMenu({
     }
   }, [open])
 
-  const initials = salonName.slice(0, 2).toUpperCase()
+  const handleSwitchSalon = (salonId: string) => {
+    if (salonId === activeSalonId) {
+      setOpen(false)
+      return
+    }
+    onSwitchSalon?.(salonId)
+    setOpen(false)
+    onNavigate?.()
+  }
 
   return (
     <div ref={rootRef} className={`relative ${showLabel ? 'w-full' : ''}`}>
@@ -60,8 +111,11 @@ export function ProfileAccountMenu({
         aria-expanded={open}
         aria-label="Menú de cuenta"
       >
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[10px] font-bold text-primary">
-          {initials}
+        <span
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
+          style={{ backgroundColor: triggerAccent }}
+        >
+          {triggerInitials}
         </span>
         {showLabel && <span className="truncate">{salonName}</span>}
       </button>
@@ -69,39 +123,145 @@ export function ProfileAccountMenu({
       {open && (
         <div
           role="menu"
-          className={`absolute z-50 min-w-[11.5rem] overflow-hidden rounded-xl border border-slate-200 bg-white py-1.5 shadow-[0_12px_40px_rgba(15,23,42,0.12)] ${
+          className={`absolute z-50 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_48px_rgba(15,23,42,0.14)] ${
             align === 'right' ? 'right-0' : 'left-0'
-          } ${
-            placement === 'down' ? 'top-full mt-2' : 'bottom-full mb-2'
-          } ${showLabel ? 'w-full' : ''}`}
+          } ${placement === 'down' ? 'top-full mt-2' : 'bottom-full mb-2'} ${
+            showLabel ? 'lg:w-[min(20rem,calc(100vw-1.5rem))]' : ''
+          }`}
         >
-          <p className="truncate px-3 pb-1.5 pt-1 text-[11px] font-medium uppercase tracking-wider text-slate-400">
-            Cuenta
-          </p>
-          <Link
-            role="menuitem"
-            to={settingsPath}
-            onClick={() => {
-              setOpen(false)
-              onNavigate?.()
-            }}
-            className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-primary/[0.06] hover:text-primary"
-          >
-            <Settings className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-            Configuración
-          </Link>
-          <button
-            role="menuitem"
-            type="button"
-            onClick={() => {
-              setOpen(false)
-              onLogout()
-            }}
-            className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
-          >
-            <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-            Cerrar sesión
-          </button>
+          {canSwitchSalons ? (
+            <>
+              <div className="relative border-b border-slate-100 px-4 pb-4 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="absolute right-2 top-2 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                  aria-label="Cerrar menú"
+                >
+                  <X className="h-4 w-4" strokeWidth={1.75} />
+                </button>
+
+                {userEmail && (
+                  <p className="truncate pr-8 text-center text-sm text-slate-600">{userEmail}</p>
+                )}
+
+                <div className="mt-4 flex flex-col items-center text-center">
+                  <SalonAvatar
+                    salon={activeSalon ?? { name: salonName, accent: triggerAccent }}
+                    size="lg"
+                  />
+                  <p className="mt-3 text-lg font-normal text-slate-800">
+                    ¡Hola, {firstName}!
+                  </p>
+                  <Link
+                    role="menuitem"
+                    to={settingsPath}
+                    onClick={() => {
+                      setOpen(false)
+                      onNavigate?.()
+                    }}
+                    className="mt-3 inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/[0.06]"
+                  >
+                    Administrar tu salón
+                  </Link>
+                </div>
+              </div>
+
+              <div className="py-1">
+                <button
+                  type="button"
+                  onClick={() => setShowAllSalons((prev) => !prev)}
+                  className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-slate-600 transition-colors hover:bg-slate-50"
+                >
+                  <span>{showAllSalons ? 'Ocultar más salones' : 'Mostrar más salones'}</span>
+                  {showAllSalons ? (
+                    <ChevronUp className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                  ) : (
+                    <ChevronDown className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                  )}
+                </button>
+
+                {showAllSalons && (
+                  <div className="border-t border-slate-100 py-1">
+                    {salons.map((salon) => {
+                      const isActive = salon.id === activeSalonId
+                      return (
+                        <button
+                          key={salon.id}
+                          role="menuitem"
+                          type="button"
+                          onClick={() => handleSwitchSalon(salon.id)}
+                          className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-slate-50 ${
+                            isActive ? 'bg-primary/[0.04]' : ''
+                          }`}
+                        >
+                          <SalonAvatar salon={salon} />
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-semibold text-slate-800">
+                              {salon.name}
+                            </span>
+                            {salon.location && (
+                              <span className="block truncate text-xs text-slate-500">
+                                {salon.location}
+                              </span>
+                            )}
+                          </span>
+                          {isActive && (
+                            <Check className="h-4 w-4 shrink-0 text-primary" strokeWidth={2} />
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <div className="border-t border-slate-100 py-1">
+                <button
+                  role="menuitem"
+                  type="button"
+                  onClick={() => {
+                    setOpen(false)
+                    onLogout()
+                  }}
+                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                >
+                  <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                  Cerrar sesión
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="truncate px-3 pb-1.5 pt-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                Cuenta
+              </p>
+              <Link
+                role="menuitem"
+                to={settingsPath}
+                onClick={() => {
+                  setOpen(false)
+                  onNavigate?.()
+                }}
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-primary/[0.06] hover:text-primary"
+              >
+                <Settings className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                Configuración
+              </Link>
+              <button
+                role="menuitem"
+                type="button"
+                onClick={() => {
+                  setOpen(false)
+                  onLogout()
+                }}
+                className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                Cerrar sesión
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

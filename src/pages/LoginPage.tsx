@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { AlertCircle, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { DEMO_ADMIN_SALONS } from '../data/admin-salons'
 import { authenticateEmployee } from '../data/employees'
 import { setAuthSession } from '../lib/auth-session'
 import { LogoMark } from '../components/ui/Logo'
@@ -9,6 +10,18 @@ import { GoogleButton } from '../components/auth/GoogleButton'
 
 const DEMO_EMAIL = 'admin@eventop.com'
 const DEMO_PASSWORD = 'eventop2024'
+const DEFAULT_ADMIN_SALON = DEMO_ADMIN_SALONS[0]
+
+function buildAdminSession(email: string, name = 'Administrador') {
+  return {
+    email,
+    salon: DEFAULT_ADMIN_SALON.name,
+    salonId: DEFAULT_ADMIN_SALON.id,
+    salons: DEMO_ADMIN_SALONS,
+    role: 'admin' as const,
+    name,
+  }
+}
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -36,7 +49,7 @@ export default function LoginPage() {
     await new Promise((resolve) => setTimeout(resolve, 900))
 
     if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-      setAuthSession({ email, salon: 'Quinta Los Olivos', role: 'admin', name: 'Administrador' })
+      setAuthSession(buildAdminSession(email))
       setIsExiting(true)
       setTimeout(() => navigate('/dashboard', { replace: true }), 400)
       return
@@ -64,7 +77,7 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsLoading(true)
     await new Promise((resolve) => setTimeout(resolve, 700))
-    setAuthSession({ email: 'google@eventop.com', salon: 'Quinta Los Olivos', role: 'admin', name: 'Administrador' })
+    setAuthSession(buildAdminSession('google@eventop.com'))
     setIsExiting(true)
     setTimeout(() => navigate('/dashboard', { replace: true }), 400)
   }

@@ -14,7 +14,8 @@ import {
 } from 'lucide-react'
 import { type ReactNode, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { clearAuthSession, getAuthSession } from '../../lib/auth-session'
+import { clearAuthSession } from '../../lib/auth-session'
+import { useAuthSession } from '../../hooks/useAuthSession'
 import { ProfileAccountMenu } from './ProfileAccountMenu'
 
 interface DashboardLayoutProps {
@@ -86,10 +87,22 @@ export function DashboardLayout({
     navigate('/login', { replace: true })
   }
 
-  const session = getAuthSession()
+  const { session, salons, switchSalon } = useAuthSession()
   const navItems = session?.role === 'employee' ? EMPLOYEE_NAV_ITEMS : ADMIN_NAV_ITEMS
   const homePath = session?.role === 'employee' ? '/dashboard/mis-eventos' : '/dashboard'
   const profilePath = session?.role === 'employee' ? '/dashboard/mi-perfil' : '/dashboard/perfil'
+  const canSwitchSalons = session?.role !== 'employee' && salons.length > 1
+
+  const profileMenuProps = {
+    salonName,
+    userName: session?.name,
+    userEmail: session?.email,
+    activeSalonId: session?.salonId,
+    salons: canSwitchSalons ? salons : undefined,
+    settingsPath: profilePath,
+    onSwitchSalon: canSwitchSalons ? switchSalon : undefined,
+    onLogout: handleLogout,
+  }
 
   const isActive = (to: string, exact: boolean) =>
     exact ? location.pathname === to : location.pathname.startsWith(to)
@@ -169,11 +182,9 @@ export function DashboardLayout({
         )}
 
         <ProfileAccountMenu
-          salonName={salonName}
-          settingsPath={profilePath}
+          {...profileMenuProps}
           showLabel={showLabels}
           onNavigate={() => setMobileSidebarOpen(false)}
-          onLogout={handleLogout}
         />
 
         <button
@@ -249,11 +260,9 @@ export function DashboardLayout({
               <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-white" />
             </button>
             <ProfileAccountMenu
-              salonName={salonName}
-              settingsPath={profilePath}
+              {...profileMenuProps}
               align="right"
               placement="down"
-              onLogout={handleLogout}
             />
           </div>
         </header>
