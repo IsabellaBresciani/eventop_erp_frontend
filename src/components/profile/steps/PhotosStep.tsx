@@ -8,9 +8,17 @@ interface PhotosStepProps {
   profile: SalonProfile
   errors: FieldErrors
   onChange: (patch: Partial<SalonProfile>) => void
+  embedded?: boolean
+  hideLabels?: boolean
 }
 
-export function PhotosStep({ profile, errors, onChange }: PhotosStepProps) {
+export function PhotosStep({
+  profile,
+  errors,
+  onChange,
+  embedded,
+  hideLabels,
+}: PhotosStepProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dragItem = useRef<number | null>(null)
   const dragOver = useRef<number | null>(null)
@@ -61,17 +69,9 @@ export function PhotosStep({ profile, errors, onChange }: PhotosStepProps) {
   }
 
   return (
-    <StepCard
-      title="Galería Pro"
-      description="Arrastrá, ordená y etiquetá las fotos de tu salón."
-    >
-      <div className="space-y-6">
-        <FormField
-          error={errors.photos}
-          isComplete={profile.photos.length > 0 && profile.photos.some((p) => p.isCover)}
-          label="Fotos del salón"
-          required
-        >
+    <StepCard title="Fotos" embedded={embedded}>
+      <div className="space-y-5">
+        <FormField error={errors.photos} hideLabel={hideLabels} label="Fotos">
           <div
             role="button"
             tabIndex={0}
@@ -88,7 +88,6 @@ export function PhotosStep({ profile, errors, onChange }: PhotosStepProps) {
             <p className="mt-3 text-sm font-semibold text-slate-800">
               Arrastrá imágenes o hacé clic para subir
             </p>
-            <p className="mt-1 text-xs text-slate-500">JPG, PNG · Alta resolución recomendada</p>
             <input
               ref={fileInputRef}
               type="file"
@@ -106,8 +105,12 @@ export function PhotosStep({ profile, errors, onChange }: PhotosStepProps) {
               <div
                 key={photo.id}
                 draggable
-                onDragStart={() => { dragItem.current = index }}
-                onDragEnter={() => { dragOver.current = index }}
+                onDragStart={() => {
+                  dragItem.current = index
+                }}
+                onDragEnter={() => {
+                  dragOver.current = index
+                }}
                 onDragEnd={handleDragSort}
                 onDragOver={(e) => e.preventDefault()}
                 className="group relative overflow-hidden rounded-xl border border-surface-border bg-white shadow-card"
@@ -123,8 +126,6 @@ export function PhotosStep({ profile, errors, onChange }: PhotosStepProps) {
                 </div>
 
                 <div className="space-y-2 p-3">
-                  <p className="truncate text-xs text-slate-500">{photo.name}</p>
-
                   <select
                     value={photo.tag}
                     onChange={(e) => updateTag(photo.id, e.target.value as PhotoTag)}

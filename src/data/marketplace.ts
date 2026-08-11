@@ -9,7 +9,17 @@ const AGENDA_KEY = 'eventop_agenda_settings'
 export function loadMarketplaceProfile(): SalonProfile {
   try {
     const stored = localStorage.getItem(PROFILE_KEY)
-    if (stored) return { ...DEFAULT_SALON_PROFILE, ...JSON.parse(stored) }
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<SalonProfile> & { amenities?: unknown }
+      const { amenities: _legacy, ...rest } = parsed
+      return {
+        ...DEFAULT_SALON_PROFILE,
+        ...rest,
+        services: Array.isArray(rest.services)
+          ? rest.services
+          : DEFAULT_SALON_PROFILE.services,
+      }
+    }
   } catch {
     /* defaults */
   }

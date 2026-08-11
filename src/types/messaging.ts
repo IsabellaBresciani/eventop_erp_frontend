@@ -1,13 +1,6 @@
-export type InquiryStatus = 'nueva' | 'seguimiento' | 'presupuesto_enviado'
+export type InquiryStatus = 'nueva' | 'leida' | 'en_seguimiento' | 'respondida' | 'archivada'
 
 export type InquirySource = 'marketplace' | 'whatsapp' | 'email' | 'web'
-
-export interface InquiryMessage {
-  id: string
-  sender: 'client' | 'salon'
-  text: string
-  timestamp: string
-}
 
 export interface Inquiry {
   id: string
@@ -19,15 +12,18 @@ export interface Inquiry {
   guests: number
   status: InquiryStatus
   source: InquirySource
-  lastMessage: string
+  /** Preview text for the inbox list */
+  preview: string
+  /** Full consultation message from the client */
+  message: string
+  receivedAt: string
   lastActivity: string
-  unread: boolean
-  messages: InquiryMessage[]
   estimatedBudget?: number
 }
 
-export interface QuickReplyTemplate {
-  id: string
-  label: string
-  text: string
+export const INQUIRY_SOURCE_LABELS: Record<InquirySource, string> = {
+  marketplace: 'Marketplace',
+  whatsapp: 'WhatsApp',
+  email: 'Email',
+  web: 'Web',
 }

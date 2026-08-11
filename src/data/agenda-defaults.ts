@@ -62,7 +62,7 @@ export const DEFAULT_AGENDA_SETTINGS: AgendaSettings = {
     { id: 'tpl-3', name: 'Corporativo', durationHours: 5 },
   ],
   statusColors: [
-    { key: 'senado', label: 'Señado', color: '#f59e0b' },
+    { key: 'senado', label: 'Señado', color: '#F5C518' },
     { key: 'pagado', label: 'Pagado', color: '#10b981' },
     { key: 'suspendido', label: 'Suspendido', color: '#ef4444' },
   ],

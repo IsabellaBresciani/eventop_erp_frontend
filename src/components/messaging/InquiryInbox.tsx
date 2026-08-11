@@ -1,22 +1,27 @@
 import { Search } from 'lucide-react'
 import { INQUIRY_STATUS_CONFIG } from '../../data/messaging'
-import type { Inquiry, InquiryStatus } from '../../types/messaging'
+import { INQUIRY_SOURCE_LABELS, type Inquiry, type InquiryStatus } from '../../types/messaging'
+
+export type InquiryFilter = InquiryStatus | 'all' | 'activas'
 
 interface InquiryInboxProps {
   inquiries: Inquiry[]
   selectedId: string | null
-  filter: InquiryStatus | 'all'
+  filter: InquiryFilter
   onSelect: (id: string) => void
-  onFilterChange: (filter: InquiryStatus | 'all') => void
+  onFilterChange: (filter: InquiryFilter) => void
   search: string
   onSearchChange: (value: string) => void
 }
 
-const FILTERS: { id: InquiryStatus | 'all'; label: string }[] = [
-  { id: 'all', label: 'Todas' },
+const FILTERS: { id: InquiryFilter; label: string }[] = [
+  { id: 'activas', label: 'Activas' },
   { id: 'nueva', label: 'Nuevas' },
-  { id: 'seguimiento', label: 'En Seguimiento' },
-  { id: 'presupuesto_enviado', label: 'Presupuesto Enviado' },
+  { id: 'leida', label: 'Leídas' },
+  { id: 'en_seguimiento', label: 'En seguimiento' },
+  { id: 'respondida', label: 'Respondidas' },
+  { id: 'archivada', label: 'Archivadas' },
+  { id: 'all', label: 'Todas' },
 ]
 
 export function InquiryInbox({
@@ -28,33 +33,45 @@ export function InquiryInbox({
   search,
   onSearchChange,
 }: InquiryInboxProps) {
+  const newCount = inquiries.filter((i) => i.status === 'nueva').length
+
   const filtered = inquiries.filter((inq) => {
-    const matchesFilter = filter === 'all' || inq.status === filter
+    const matchesFilter =
+      filter === 'all'
+        ? true
+        : filter === 'activas'
+          ? inq.status !== 'archivada'
+          : inq.status === filter
     const matchesSearch =
       !search ||
       inq.clientName.toLowerCase().includes(search.toLowerCase()) ||
-      inq.eventType.toLowerCase().includes(search.toLowerCase())
+      inq.eventType.toLowerCase().includes(search.toLowerCase()) ||
+      inq.preview.toLowerCase().includes(search.toLowerCase())
     return matchesFilter && matchesSearch
   })
 
   return (
     <div className="flex h-full flex-col rounded-card border border-surface-border bg-white shadow-card">
       <div className="border-b border-surface-border p-4">
-        <h2 className="text-sm font-bold text-slate-900">Inbox Inteligente</h2>
-        <p className="text-xs text-slate-500">{inquiries.filter((i) => i.unread).length} sin leer</p>
+        <h2 className="text-sm font-bold text-slate-900">Consultas</h2>
+        <p className="text-xs text-slate-500">
+          {newCount === 0
+            ? 'Sin consultas nuevas'
+            : `${newCount} nueva${newCount === 1 ? '' : 's'}`}
+        </p>
 
         <div className="relative mt-3">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
             type="search"
-            placeholder="Buscar consultas..."
+            placeholder="Buscar por cliente, evento..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             className="input-field py-2 pl-9 text-sm"
           />
         </div>
 
-        <div className="mt-3 flex gap-1 overflow-x-auto">
+        <div className="mt-3 flex gap-1 overflow-x-auto pb-0.5">
           {FILTERS.map((f) => (
             <button
               key={f.id}
@@ -79,6 +96,7 @@ export function InquiryInbox({
           filtered.map((inq) => {
             const status = INQUIRY_STATUS_CONFIG[inq.status]
             const isSelected = selectedId === inq.id
+            const isNew = inq.status === 'nueva'
 
             return (
               <button
@@ -86,25 +104,25 @@ export function InquiryInbox({
                 type="button"
                 onClick={() => onSelect(inq.id)}
                 className={`w-full border-b border-surface-border px-4 py-3.5 text-left transition-colors hover:bg-surface/50 ${
-                  isSelected ? 'bg-primary/5 border-l-2 border-l-primary' : ''
+                  isSelected ? 'border-l-2 border-l-primary bg-primary/5' : ''
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <span
-                        className={`font-semibold ${inq.unread ? 'text-slate-900' : 'text-slate-700'}`}
+                        className={`truncate font-semibold ${isNew ? 'text-slate-900' : 'text-slate-700'}`}
                       >
                         {inq.clientName}
                       </span>
-                      {inq.unread && (
+                      {isNew && (
                         <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />
                       )}
                     </div>
                     <p className="mt-0.5 truncate text-xs text-slate-500">
-                      {inq.eventType} · {inq.guests} invitados
+                      {inq.eventType} · {inq.guests} invitados · {INQUIRY_SOURCE_LABELS[inq.source]}
                     </p>
-                    <p className="mt-1 truncate text-sm text-slate-600">{inq.lastMessage}</p>
+                    <p className="mt-1 truncate text-sm text-slate-600">{inq.preview}</p>
                   </div>
                   <div className="shrink-0 text-right">
                     <span className="text-[10px] text-slate-400">{inq.lastActivity}</span>

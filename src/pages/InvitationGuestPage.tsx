@@ -16,6 +16,7 @@ import {
   generateQrCode,
   loadInvitationForGuest,
 } from '../data/guest-invitation'
+import { addRsvp } from '../data/invitations-storage'
 import { getTemplate } from '../data/invitation-templates'
 import type { GuestCompanion, GuestConfirmation } from '../types/guest-invitation'
 import { QrCodeDisplay } from '../components/invitation/QrCodeDisplay'
@@ -82,6 +83,7 @@ export default function InvitationGuestPage() {
 
     const qrCode = generateQrCode(`${eventId}-${firstName}-${Date.now()}`)
     const result: GuestConfirmation = {
+      id: `g-${Date.now()}`,
       firstName: firstName.trim(),
       lastName: lastName.trim(),
       email: email.trim(),
@@ -91,6 +93,7 @@ export default function InvitationGuestPage() {
     }
 
     setConfirmation(result)
+    addRsvp(eventId, result)
     setStep('success')
     setIsSubmitting(false)
   }

@@ -1,4 +1,4 @@
-import { Bell, CalendarDays, LayoutGrid, LogOut, MessageSquare, Plus, QrCode, Settings, UserCircle } from 'lucide-react'
+import { Bell, CalendarDays, Inbox, LayoutGrid, LogOut, Plus, QrCode, UserCircle } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 interface DashboardHeaderProps {
@@ -7,8 +7,7 @@ interface DashboardHeaderProps {
 
 const NAV_ITEMS = [
   { to: '/dashboard', icon: LayoutGrid, label: 'Inicio', exact: true },
-  { to: '/dashboard/mensajeria', icon: MessageSquare, label: 'Mensajes', exact: false },
-  { to: '/dashboard/agenda', icon: Settings, label: 'Agenda', exact: false },
+  { to: '/dashboard/mensajeria', icon: Inbox, label: 'Consultas', exact: false },
   { to: '/dashboard/checkin', icon: QrCode, label: 'Check-in', exact: false },
   { to: '/dashboard/perfil', icon: UserCircle, label: 'Perfil', exact: false },
 ] as const
@@ -32,7 +31,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
           to="/dashboard"
           className="group flex shrink-0 items-center gap-2.5 rounded-full py-1 pr-2 transition-colors hover:bg-white/50 sm:pr-3"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-500 text-white shadow-soft ring-1 ring-white/50">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-white shadow-soft">
             <CalendarDays className="h-[18px] w-[18px]" strokeWidth={1.75} />
           </div>
           <span className="hidden text-[15px] font-semibold tracking-tight text-slate-900 sm:inline">
@@ -99,7 +98,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
             to="/dashboard/perfil"
             className="hidden items-center gap-2 rounded-full border border-white/50 bg-white/40 py-1 pl-1 pr-3 shadow-sm backdrop-blur-md transition-all hover:bg-white/70 md:flex"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-400 text-[11px] font-bold text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-800 text-[11px] font-bold text-white">
               {salonName.slice(0, 2).toUpperCase()}
             </div>
             <span className="max-w-[6.5rem] truncate text-sm font-medium text-slate-800">

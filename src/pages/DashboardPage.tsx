@@ -146,12 +146,14 @@ export default function DashboardPage() {
           <OperationalCalendar
             events={filterEvents(events, filters)}
             selectedDate={selectedDate}
+            statusFilter={filters.status}
             viewMode={viewMode}
             currentDate={currentDate}
             onViewModeChange={setViewMode}
             onCurrentDateChange={setCurrentDate}
             onSelectDate={handleSelectDate}
             onSelectEvent={handleCalendarSelectEvent}
+            onStatusFilterChange={(status) => handleFiltersChange({ status })}
             onNewEvent={openNewEvent}
           />
 

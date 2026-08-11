@@ -5,6 +5,7 @@ export interface GuestCompanion {
 }
 
 export interface GuestConfirmation {
+  id: string
   firstName: string
   lastName: string
   email: string

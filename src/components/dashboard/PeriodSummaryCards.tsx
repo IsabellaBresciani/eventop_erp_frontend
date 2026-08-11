@@ -31,7 +31,7 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <SummaryCard icon={Percent} label="Ocupación" index={0} comparison={stats.comparisons.occupancy}>
-          <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900">
+          <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {stats.occupancyRate}%
           </p>
           <p className="mt-1 text-[13px] text-slate-500">
@@ -40,7 +40,7 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
         </SummaryCard>
 
         <SummaryCard icon={CalendarCheck} label="Facturación" index={1} comparison={stats.comparisons.billing}>
-          <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-slate-900">
+          <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {formatCurrency(stats.billing)}
           </p>
           <p className="mt-1 text-[13px] text-slate-500">Señas cobradas en el periodo</p>
@@ -113,7 +113,7 @@ function SummaryCard({
         <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
           {label}
         </span>
-        <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
+        <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-secondary text-primary">
           <Icon className="h-4 w-4" />
         </div>
       </div>

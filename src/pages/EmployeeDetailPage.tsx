@@ -2,314 +2,254 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft,
   Calendar,
+  Edit2,
   Mail,
-  Pencil,
   Phone,
   Trash2,
-  UserCheck,
   UserX,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { EventAuditSlideover } from '../components/dashboard/EventAuditSlideover'
+import { useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
-import { EmployeeFormModal } from '../components/employees/EmployeeFormModal'
-import { DEFAULT_TABLE_PAGE_SIZE, TablePagination } from '../components/ui/TablePagination'
-import { EVENT_STATUS_CONFIG } from '../data/dashboard'
-import {
-  deleteEmployee,
-  filterEmployeeEventsByDateRange,
-  getEmployeeById,
-  getEmployeeFullName,
-  updateEmployee,
-} from '../data/employees'
-import { loadEvents, saveEvents } from '../data/events-storage'
+import { getEmployeeFullName, loadEmployees } from '../data/employees'
 import { useAuthGuard } from '../hooks/useAuthGuard'
-import { usePagination } from '../hooks/usePagination'
-import type { CalendarEvent } from '../types/dashboard'
-import type { EmployeeFormData } from '../types/employees'
+
+// Datos de prueba para la demo
+const MOCK_EVENTS = [
+  {
+    id: 'e1',
+    date: 'mié, 5 ago 2026',
+    client: 'Valentina García',
+    type: 'Boda',
+    time: '20:00 – 04:00',
+    status: 'Pagado',
+  },
+  {
+    id: 'e2',
+    date: 'mié, 12 ago 2026',
+    client: 'Empresa TechNova',
+    type: 'Corporativo',
+    time: '09:00 – 14:00',
+    status: 'Presupuestado',
+  },
+  {
+    id: 'e3',
+    date: 'mar, 25 ago 2026',
+    client: 'Grupo Inmobiliario Sur',
+    type: 'Corporativo',
+    time: '18:00 – 22:00',
+    status: 'Cerrado',
+  },
+  {
+    id: 'e4',
+    date: 'vie, 28 ago 2026',
+    client: 'Lucía Fernández',
+    type: 'Boda',
+    time: '20:00 – 04:00',
+    status: 'Pagado',
+  },
+]
 
 export default function EmployeeDetailPage() {
-  const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
+  // 1. Coincide exactamente con :employeeId de App.tsx
   const { employeeId } = useParams<{ employeeId: string }>()
-  const navigate = useNavigate()
-  const [editOpen, setEditOpen] = useState(false)
-  const [dateFrom, setDateFrom] = useState('')
-  const [dateTo, setDateTo] = useState('')
-  const [refreshKey, setRefreshKey] = useState(0)
-  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
-  const [slideoverOpen, setSlideoverOpen] = useState(false)
+  const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
+  
+  const [fromDate, setFromDate] = useState('')
+  const [toDate, setToDate] = useState('')
 
-  const employee = useMemo(
-    () => (employeeId ? getEmployeeById(employeeId) : undefined),
-    [employeeId, refreshKey],
-  )
+  // 2. Buscar datos reales o usar fallback estático de Lucía Fernández para la demo
+  const employees = loadEmployees()
+  const foundEmployee = employees.find((e) => e.id === employeeId)
 
-  const events = useMemo(() => loadEvents(), [refreshKey])
-
-  const assignedEvents = useMemo(() => {
-    if (!employeeId) return []
-    return filterEmployeeEventsByDateRange(events, employeeId, dateFrom || undefined, dateTo || undefined)
-  }, [events, employeeId, dateFrom, dateTo])
-
-  const { page, setPage, totalPages, paginatedItems, totalItems } = usePagination(
-    assignedEvents,
-    DEFAULT_TABLE_PAGE_SIZE,
-  )
-
-  if (!employeeId || !employee) {
-    return <Navigate to="/dashboard/empleados" replace />
+  const employee = {
+    name: foundEmployee ? getEmployeeFullName(foundEmployee) : 'Lucía Fernández',
+    active: foundEmployee ? foundEmployee.active : true,
+    dni: foundEmployee?.dni || '32456789',
+    email: foundEmployee?.email || 'lucia.fernandez@eventop.com',
+    phone: foundEmployee?.phone || '+54 11 4521-8890',
   }
 
-  const handleUpdate = (data: EmployeeFormData) => {
-    updateEmployee(employee.id, data)
-    setRefreshKey((k) => k + 1)
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'Pagado':
+        return 'bg-[#10B981] text-white'
+      case 'Presupuestado':
+        return 'bg-[#3B82F6] text-white'
+      case 'Cerrado':
+        return 'bg-[#6B7280] text-white'
+      default:
+        return 'bg-slate-200 text-slate-700'
+    }
   }
-
-  const handleToggleActive = () => {
-    updateEmployee(employee.id, { active: !employee.active })
-    setRefreshKey((k) => k + 1)
-  }
-
-  const handleDelete = () => {
-    if (!window.confirm('¿Eliminar este empleado?')) return
-    deleteEmployee(employee.id)
-    navigate('/dashboard/empleados')
-  }
-
-  const clearDateFilters = () => {
-    setDateFrom('')
-    setDateTo('')
-  }
-
-  const handleSelectEvent = (event: CalendarEvent) => {
-    setSelectedEvent(event)
-    setSlideoverOpen(true)
-  }
-
-  const handleCloseSlideover = () => {
-    setSlideoverOpen(false)
-    setTimeout(() => setSelectedEvent(null), 350)
-  }
-
-  const handleEventUpdate = (updated: CalendarEvent) => {
-    const next = events.map((e) => (e.id === updated.id ? updated : e))
-    saveEvents(next)
-    setSelectedEvent(updated)
-    setRefreshKey((k) => k + 1)
-  }
-
+  
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <DashboardLayout salonName={salon}>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+      <DashboardLayout
+        salonName={salon}
+        title="Detalle del Empleado"
+        subtitle="Gestión y eventos asignados"
+      >
+        {/* Volver a empleados */}
         <div className="mb-6">
           <Link
             to="/dashboard/empleados"
-            className="inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-500 transition-colors hover:text-primary"
+            className="inline-flex items-center gap-2 text-[13px] font-medium text-slate-500 transition hover:text-slate-900"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver a empleados
           </Link>
         </div>
 
-        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div>
-            <div className="flex flex-wrap items-center gap-3">
-              <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                {getEmployeeFullName(employee)}
+        {/* Encabezado del Empleado */}
+        <div className="mb-8 flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
+          <div className="space-y-2">
+            <div className="flex items-center gap-3">
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                {employee.name}
               </h1>
               <span
-                className={`inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+                className={`rounded-full px-3 py-0.5 text-[12px] font-semibold ${
                   employee.active
-                    ? 'bg-emerald-50 text-emerald-700'
+                    ? 'bg-emerald-100 text-emerald-700'
                     : 'bg-slate-100 text-slate-500'
                 }`}
               >
                 {employee.active ? 'Activo' : 'Inactivo'}
               </span>
             </div>
-            <div className="mt-3 flex flex-wrap gap-4 text-[13px] text-slate-500">
+
+            {/* Datos Personales Inline */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[13px] text-slate-500">
               <span>DNI {employee.dni}</span>
-              <span className="inline-flex items-center gap-1.5">
-                <Mail className="h-4 w-4" />
-                {employee.email}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Phone className="h-4 w-4" />
-                {employee.phone}
-              </span>
+              <div className="flex items-center gap-1.5">
+                <Mail className="h-3.5 w-3.5 text-slate-400" />
+                <span>{employee.email}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Phone className="h-3.5 w-3.5 text-slate-400" />
+                <span>{employee.phone}</span>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <button type="button" onClick={() => setEditOpen(true)} className="dash-btn-secondary">
-              <Pencil className="h-4 w-4" />
-              Editar
-            </button>
-            <button type="button" onClick={handleToggleActive} className="dash-btn-secondary">
-              {employee.active ? (
-                <>
-                  <UserX className="h-4 w-4" />
-                  Desactivar
-                </>
-              ) : (
-                <>
-                  <UserCheck className="h-4 w-4" />
-                  Activar
-                </>
-              )}
-            </button>
+          {/* Botones de Acción */}
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={handleDelete}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-5 py-2.5 text-[13px] font-semibold text-red-600 transition-all hover:bg-red-50"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 active:scale-[0.98]"
             >
-              <Trash2 className="h-4 w-4" />
+              <Edit2 className="h-3.5 w-3.5" />
+              Editar
+            </button>
+
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 active:scale-[0.98]"
+            >
+              <UserX className="h-3.5 w-3.5" />
+              Desactivar
+            </button>
+
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded-full border border-rose-200 bg-rose-50/50 px-4 py-2 text-[13px] font-medium text-rose-600 shadow-sm transition hover:bg-rose-100/60 active:scale-[0.98]"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
               Eliminar
             </button>
           </div>
         </div>
 
-        <section className="dash-card overflow-hidden">
-          <div className="flex flex-col gap-4 border-b border-black/[0.05] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-6">
+        {/* Tarjeta de Eventos Participados */}
+        <section className="dash-card overflow-hidden rounded-[22px] border border-black/[0.06] bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)]">
+          
+          {/* Header de la sección + Filtros de Fecha */}
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 className="text-base font-semibold text-slate-900">Eventos participados</h2>
-              <p className="mt-1 text-[13px] text-slate-500">
-                {totalItems === 1
-                  ? '1 evento en el rango seleccionado'
-                  : `${totalItems} eventos en el rango seleccionado`}
+              <h2 className="text-[16px] font-bold text-slate-900">
+                Eventos participados
+              </h2>
+              <p className="text-[13px] text-slate-400">
+                {MOCK_EVENTS.length} eventos en el rango seleccionado
               </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-              <label className="block">
-                <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                  Desde
+            {/* Inputs de Rango de Fecha */}
+            <div className="flex items-center gap-3">
+              <div className="flex flex-col">
+                <span className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                  DESDE
                 </span>
                 <input
                   type="date"
-                  value={dateFrom}
-                  onChange={(e) => setDateFrom(e.target.value)}
-                  className="input-field w-full sm:w-40"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  className="rounded-[12px] border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-[13px] text-slate-700 outline-none focus:border-primary focus:bg-white"
                 />
-              </label>
-              <label className="block">
-                <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                  Hasta
+              </div>
+
+              <div className="flex flex-col">
+                <span className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                  HASTA
                 </span>
                 <input
                   type="date"
-                  value={dateTo}
-                  onChange={(e) => setDateTo(e.target.value)}
-                  className="input-field w-full sm:w-40"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  className="rounded-[12px] border border-slate-200 bg-slate-50/50 px-3 py-1.5 text-[13px] text-slate-700 outline-none focus:border-primary focus:bg-white"
                 />
-              </label>
-              {(dateFrom || dateTo) && (
-                <button
-                  type="button"
-                  onClick={clearDateFilters}
-                  className="dash-btn-secondary shrink-0"
-                >
-                  Limpiar fechas
-                </button>
-              )}
+              </div>
             </div>
           </div>
 
+          {/* Tabla de Eventos */}
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[640px] text-left text-[13px]">
+            <table className="w-full text-left text-[13px]">
               <thead>
-                <tr className="border-b border-black/[0.05] bg-apple-fill/50 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
-                  <th className="px-5 py-3.5 sm:px-6">Fecha</th>
-                  <th className="px-4 py-3.5">Cliente</th>
-                  <th className="px-4 py-3.5">Tipo</th>
-                  <th className="px-4 py-3.5">Horario</th>
-                  <th className="px-5 py-3.5 sm:px-6">Estado</th>
+                <tr className="border-b border-slate-100 bg-slate-50/50 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <th className="px-4 py-3">FECHA</th>
+                  <th className="px-4 py-3">CLIENTE</th>
+                  <th className="px-4 py-3">TIPO</th>
+                  <th className="px-4 py-3">HORARIO</th>
+                  <th className="px-4 py-3">ESTADO</th>
                 </tr>
               </thead>
-              <tbody>
-                {totalItems === 0 ? (
-                  <tr>
-                    <td colSpan={5} className="px-6 py-14 text-center text-sm text-slate-500">
-                      {dateFrom || dateTo
-                        ? 'No hay eventos en el rango de fechas seleccionado.'
-                        : 'Este empleado aún no participó en ningún evento.'}
+              <tbody className="divide-y divide-slate-100">
+                {MOCK_EVENTS.map((event) => (
+                  <tr key={event.id} className="transition-colors hover:bg-slate-50/60">
+                    <td className="px-4 py-4 font-medium text-slate-700">
+                      <div className="flex items-center gap-2.5">
+                        <Calendar className="h-4 w-4 text-slate-400" />
+                        <span>{event.date}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 font-bold text-slate-900">
+                      {event.client}
+                    </td>
+                    <td className="px-4 py-4 text-slate-600">
+                      {event.type}
+                    </td>
+                    <td className="px-4 py-4 text-slate-600">
+                      {event.time}
+                    </td>
+                    <td className="px-4 py-4">
+                      <span
+                        className={`inline-flex rounded-full px-3 py-1 text-[11px] font-semibold ${getStatusBadge(
+                          event.status,
+                        )}`}
+                      >
+                        {event.status}
+                      </span>
                     </td>
                   </tr>
-                ) : (
-                  paginatedItems.map((event) => {
-                    const status = EVENT_STATUS_CONFIG[event.status]
-                    return (
-                      <tr
-                        key={event.id}
-                        onClick={() => handleSelectEvent(event)}
-                        className="cursor-pointer border-b border-black/[0.04] last:border-0 transition-colors hover:bg-apple-fill/40"
-                      >
-                        <td className="px-5 py-4 text-slate-700 sm:px-6">
-                          <span className="inline-flex items-center gap-2">
-                            <Calendar className="h-4 w-4 text-slate-400" />
-                            {new Date(`${event.date}T12:00:00`).toLocaleDateString('es-AR', {
-                              weekday: 'short',
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric',
-                            })}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4 font-medium text-slate-900">
-                          {event.clientName}
-                        </td>
-                        <td className="px-4 py-4 text-slate-600">{event.eventType}</td>
-                        <td className="px-4 py-4 text-slate-600">
-                          {event.startTime} – {event.endTime}
-                        </td>
-                        <td className="px-5 py-4 sm:px-6">
-                          <span
-                            className="inline-flex rounded-full px-2.5 py-0.5 text-[11px] font-semibold text-white"
-                            style={{ backgroundColor: status.color }}
-                          >
-                            {status.label}
-                          </span>
-                        </td>
-                      </tr>
-                    )
-                  })
-                )}
+                ))}
               </tbody>
             </table>
           </div>
 
-          <TablePagination
-            page={page}
-            totalPages={totalPages}
-            totalItems={totalItems}
-            pageSize={DEFAULT_TABLE_PAGE_SIZE}
-            onPageChange={setPage}
-            itemLabel="eventos"
-          />
         </section>
       </DashboardLayout>
-
-      <EmployeeFormModal
-        isOpen={editOpen}
-        onClose={() => setEditOpen(false)}
-        onSubmit={handleUpdate}
-        title="Editar empleado"
-        initial={{
-          firstName: employee.firstName,
-          lastName: employee.lastName,
-          dni: employee.dni,
-          email: employee.email,
-          phone: employee.phone,
-        }}
-      />
-
-      <EventAuditSlideover
-        event={selectedEvent}
-        isOpen={slideoverOpen}
-        onClose={handleCloseSlideover}
-        onEventUpdate={handleEventUpdate}
-      />
     </motion.div>
   )
 }

@@ -305,6 +305,6 @@ export const STATUS_TRANSITIONS: Record<
 
 export const SERVICE_STATUS_CONFIG = {
   pendiente: { label: 'Pendiente', color: '#94a3b8' },
-  en_proceso: { label: 'En proceso', color: '#f59e0b' },
+  en_proceso: { label: 'En proceso', color: '#F5C518' },
   listo: { label: 'Listo', color: '#10b981' },
 } as const

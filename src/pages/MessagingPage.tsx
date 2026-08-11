@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
 import { InquiryDetail } from '../components/messaging/InquiryDetail'
-import { InquiryInbox } from '../components/messaging/InquiryInbox'
+import { InquiryInbox, type InquiryFilter } from '../components/messaging/InquiryInbox'
 import { MOCK_INQUIRIES } from '../data/messaging'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { Inquiry, InquiryStatus } from '../types/messaging'
@@ -11,8 +11,8 @@ import type { Inquiry, InquiryStatus } from '../types/messaging'
 export default function MessagingPage() {
   const { salon } = useAuthGuard()
   const [inquiries, setInquiries] = useState<Inquiry[]>(MOCK_INQUIRIES)
-  const [selectedId, setSelectedId] = useState<string | null>(MOCK_INQUIRIES[0]?.id ?? null)
-  const [filter, setFilter] = useState<InquiryStatus | 'all'>('all')
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [filter, setFilter] = useState<InquiryFilter>('activas')
   const [search, setSearch] = useState('')
 
   const selected = useMemo(
@@ -23,32 +23,13 @@ export default function MessagingPage() {
   const handleSelect = (id: string) => {
     setSelectedId(id)
     setInquiries((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, unread: false } : i)),
-    )
-  }
-
-  const handleSendMessage = (inquiryId: string, text: string) => {
-    const newMsg = {
-      id: `m-${Date.now()}`,
-      sender: 'salon' as const,
-      text,
-      timestamp: new Date().toISOString(),
-    }
-    setInquiries((prev) =>
       prev.map((i) =>
-        i.id === inquiryId
-          ? {
-              ...i,
-              messages: [...i.messages, newMsg],
-              lastMessage: text,
-              lastActivity: 'Ahora',
-            }
-          : i,
+        i.id === id && i.status === 'nueva' ? { ...i, status: 'leida' as const } : i,
       ),
     )
   }
 
-  const handleStatusChange = (inquiryId: string, status: Inquiry['status']) => {
+  const handleStatusChange = (inquiryId: string, status: InquiryStatus) => {
     setInquiries((prev) =>
       prev.map((i) => (i.id === inquiryId ? { ...i, status } : i)),
     )
@@ -62,8 +43,8 @@ export default function MessagingPage() {
     >
       <DashboardLayout
         salonName={salon}
-        title="Central de Mensajería"
-        subtitle="RF-006 · Consultas, presupuestos y respuestas rápidas"
+        title="Consultas"
+        subtitle="Bandeja de consultas · Respondé por WhatsApp o email y trackeá el estado"
       >
         <div className="grid min-h-[600px] flex-1 gap-4 lg:grid-cols-12">
           <div className={`lg:col-span-4 ${selectedId ? 'hidden lg:block' : ''}`}>
@@ -86,14 +67,10 @@ export default function MessagingPage() {
                 className="mb-2 flex items-center gap-1 text-sm text-primary lg:hidden"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Volver al inbox
+                Volver a consultas
               </button>
             )}
-            <InquiryDetail
-              inquiry={selected}
-              onSendMessage={handleSendMessage}
-              onStatusChange={handleStatusChange}
-            />
+            <InquiryDetail inquiry={selected} onStatusChange={handleStatusChange} />
           </div>
         </div>
       </DashboardLayout>

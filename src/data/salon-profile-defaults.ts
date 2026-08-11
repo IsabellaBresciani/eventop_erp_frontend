@@ -1,4 +1,10 @@
-import type { ProfileStep, SalonProfile } from '../types/salon-profile'
+import type {
+  ProfileStep,
+  SalonProfile,
+  VenueService,
+  VenueServiceCategory,
+  VenueServicePricingModel,
+} from '../types/salon-profile'
 
 export const PROFILE_STEPS: { id: ProfileStep; label: string }[] = [
   { id: 'general', label: 'General' },
@@ -23,6 +29,77 @@ export const PHOTO_TAG_OPTIONS = [
   { id: 'exteriores' as const, label: 'Exteriores' },
   { id: 'salon' as const, label: 'Salón' },
   { id: 'otro' as const, label: 'Otro' },
+]
+
+export const SERVICE_CATEGORY_OPTIONS: { id: VenueServiceCategory; label: string }[] = [
+  { id: 'VENUE_SET_UP', label: 'Montaje del salón' },
+  { id: 'ENTERTAINMENT', label: 'Entretenimiento' },
+  { id: 'FOOD_BEVERAGE', label: 'Comida y bebida' },
+  { id: 'DECORATION', label: 'Decoración' },
+  { id: 'STAFFING', label: 'Personal' },
+  { id: 'MEDIA', label: 'Media' },
+]
+
+export const SERVICE_PRICING_MODEL_OPTIONS: {
+  id: VenueServicePricingModel
+  label: string
+}[] = [
+  { id: 'FIXED', label: 'Precio fijo' },
+  { id: 'PER_PERSON', label: 'Por persona' },
+  { id: 'PER_UNIT', label: 'Por unidad' },
+  { id: 'PER_PACKAGE', label: 'Por paquete' },
+  { id: 'PER_MINUTE_TIME', label: 'Por minuto' },
+]
+
+export const DEFAULT_VENUE_SERVICES: VenueService[] = [
+  {
+    id: 1,
+    name: 'Wi-Fi de alta velocidad',
+    description: 'Conexión estable para invitados y producción.',
+    termsAndConditions: 'Incluido en la reserva del salón. Sin límite de dispositivos.',
+    category: 'VENUE_SET_UP',
+    pricingModel: 'FIXED',
+    basePrice: 0,
+    minQuantity: 1,
+    maxQuantity: 1,
+    status: 'ACTIVE',
+  },
+  {
+    id: 2,
+    name: 'Catering completo',
+    description: 'Menú entrante, principal y postre a elección.',
+    termsAndConditions: 'Confirmación de menú 15 días antes. Mínimo 30 comensales.',
+    category: 'FOOD_BEVERAGE',
+    pricingModel: 'PER_PERSON',
+    basePrice: 18500,
+    minQuantity: 30,
+    maxQuantity: 150,
+    status: 'ACTIVE',
+  },
+  {
+    id: 3,
+    name: 'DJ + sonido',
+    description: 'DJ profesional, consola y sistema de sonido.',
+    termsAndConditions: 'Incluye 6 horas. Horas extra a cotizar.',
+    category: 'ENTERTAINMENT',
+    pricingModel: 'FIXED',
+    basePrice: 120000,
+    minQuantity: 1,
+    maxQuantity: 1,
+    status: 'ACTIVE',
+  },
+  {
+    id: 4,
+    name: 'Decoración floral',
+    description: 'Centros de mesa y arco floral para ceremonia.',
+    termsAndConditions: 'Sujeto a disponibilidad de flores de temporada.',
+    category: 'DECORATION',
+    pricingModel: 'PER_PACKAGE',
+    basePrice: 95000,
+    minQuantity: 1,
+    maxQuantity: 3,
+    status: 'INACTIVE',
+  },
 ]
 
 export const DEFAULT_SALON_PROFILE: SalonProfile = {
@@ -79,12 +156,31 @@ export const DEFAULT_SALON_PROFILE: SalonProfile = {
       isCover: false,
     },
   ],
-  amenities: [
-    { id: 'wifi', label: 'Wi-Fi de alta velocidad', enabled: true, included: true },
-    { id: 'catering', label: 'Catering propio o externo', enabled: true, included: false },
-    { id: 'parking', label: 'Estacionamiento y accesibilidad', enabled: true, included: true },
-    { id: 'sound', label: 'Sonido, Iluminación y Grupo Electrógeno', enabled: true, included: true },
-  ],
+  services: DEFAULT_VENUE_SERVICES,
+}
+
+export function createEmptyVenueService(partial?: Partial<VenueService>): VenueService {
+  return {
+    id: Date.now(),
+    name: '',
+    description: '',
+    termsAndConditions: '',
+    category: 'VENUE_SET_UP',
+    pricingModel: 'FIXED',
+    basePrice: 0,
+    minQuantity: 1,
+    maxQuantity: 1,
+    status: 'ACTIVE',
+    ...partial,
+  }
+}
+
+export function getServiceCategoryLabel(category: VenueServiceCategory): string {
+  return SERVICE_CATEGORY_OPTIONS.find((o) => o.id === category)?.label ?? category
+}
+
+export function getServicePricingModelLabel(model: VenueServicePricingModel): string {
+  return SERVICE_PRICING_MODEL_OPTIONS.find((o) => o.id === model)?.label ?? model
 }
 
 export function calculateProfileProgress(profile: SalonProfile): number {
@@ -99,7 +195,7 @@ export function calculateProfileProgress(profile: SalonProfile): number {
     profile.packages.length > 0,
     profile.photos.length >= 1,
     profile.photos.some((p) => p.isCover),
-    profile.amenities.some((a) => a.enabled),
+    profile.services.some((s) => s.status === 'ACTIVE' && s.name.trim().length > 0),
   ]
   return Math.round((checks.filter(Boolean).length / checks.length) * 100)
 }

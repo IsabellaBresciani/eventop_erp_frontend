@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react'
 import { useCallback, useMemo, useState } from 'react'
-import { SaveBar } from '../components/agenda/SaveBar'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
-import { MarketplacePreview } from '../components/profile/MarketplacePreview'
-import { ProfileStepper } from '../components/profile/ProfileStepper'
+import { ProfileSectionView } from '../components/profile/ProfileSectionView'
+import {
+  ProfileCoverHeader,
+  PROFILE_SETTINGS_NAV,
+  ProfileSettingsNav,
+} from '../components/profile/ProfileSettingsShell'
+import { ProfileSettingsPanel } from '../components/profile/ProfileSettingsPanel'
 import { GeneralStep } from '../components/profile/steps/GeneralStep'
 import { LocationStep } from '../components/profile/steps/LocationStep'
 import { PhotosStep } from '../components/profile/steps/PhotosStep'
@@ -13,7 +16,6 @@ import { ServicesStep } from '../components/profile/steps/ServicesStep'
 import {
   calculateProfileProgress,
   DEFAULT_SALON_PROFILE,
-  PROFILE_STEPS,
 } from '../data/salon-profile-defaults'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { FieldErrors, ProfileStep, SalonProfile } from '../types/salon-profile'
@@ -23,11 +25,27 @@ const STORAGE_KEY = 'eventop_salon_profile'
 function loadProfile(): SalonProfile {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
-    if (stored) return { ...DEFAULT_SALON_PROFILE, ...JSON.parse(stored) }
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<SalonProfile> & {
+        amenities?: unknown
+      }
+      const { amenities: _legacyAmenities, ...rest } = parsed
+      return {
+        ...DEFAULT_SALON_PROFILE,
+        ...rest,
+        services: Array.isArray(rest.services)
+          ? rest.services
+          : DEFAULT_SALON_PROFILE.services,
+      }
+    }
   } catch {
     /* use defaults */
   }
   return DEFAULT_SALON_PROFILE
+}
+
+function cloneProfile(profile: SalonProfile): SalonProfile {
+  return structuredClone(profile)
 }
 
 function validateStep(step: ProfileStep, profile: SalonProfile): FieldErrors {
@@ -35,7 +53,7 @@ function validateStep(step: ProfileStep, profile: SalonProfile): FieldErrors {
 
   if (step === 'general') {
     if (profile.name.trim().length < 3) errors.name = 'El nombre debe tener al menos 3 caracteres'
-    if (profile.types.length === 0) errors.types = 'Seleccioná al menos un tipo de salón'
+    if (profile.types.length === 0) errors.types = 'Seleccioná al menos un tipo'
     if (profile.description.trim().length < 20)
       errors.description = 'La descripción debe tener al menos 20 caracteres'
   }
@@ -49,7 +67,7 @@ function validateStep(step: ProfileStep, profile: SalonProfile): FieldErrors {
     if (profile.capacityMin <= 0) errors.capacityMin = 'La capacidad mínima debe ser mayor a 0'
     if (profile.capacityMax <= profile.capacityMin)
       errors.capacityMax = 'La capacidad máxima debe superar la mínima'
-    if (profile.pricePerHour <= 0) errors.pricePerHour = 'Ingresá un precio base válido'
+    if (profile.pricePerHour <= 0) errors.pricePerHour = 'Ingresá un precio válido'
   }
 
   if (step === 'photos') {
@@ -63,154 +81,160 @@ function validateStep(step: ProfileStep, profile: SalonProfile): FieldErrors {
 
 export default function SalonProfilePage() {
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
-  const [currentStep, setCurrentStep] = useState<ProfileStep>('general')
+  const [activeSection, setActiveSection] = useState<ProfileStep>('general')
   const [profile, setProfile] = useState<SalonProfile>(loadProfile)
-  const [savedSnapshot, setSavedSnapshot] = useState(JSON.stringify(loadProfile()))
+  const [draft, setDraft] = useState<SalonProfile | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
-  const [completedSteps, setCompletedSteps] = useState<Set<ProfileStep>>(new Set())
   const [isSaving, setIsSaving] = useState(false)
-  const [showSuccess, setShowSuccess] = useState(false)
 
+  const editing = draft !== null
+  const working = draft ?? profile
   const progress = useMemo(() => calculateProfileProgress(profile), [profile])
-  const isDirty = JSON.stringify(profile) !== savedSnapshot
-  const stepIndex = PROFILE_STEPS.findIndex((s) => s.id === currentStep)
-  const isLastStep = stepIndex === PROFILE_STEPS.length - 1
 
-  const updateProfile = useCallback((patch: Partial<SalonProfile>) => {
-    setProfile((prev) => ({ ...prev, ...patch }))
-    setShowSuccess(false)
+  const updateDraft = useCallback((patch: Partial<SalonProfile>) => {
+    setDraft((prev) => (prev ? { ...prev, ...patch } : prev))
     setErrors({})
   }, [])
 
-  const goNext = () => {
-    const stepErrors = validateStep(currentStep, profile)
+  const sectionHasError = useCallback(
+    (section: ProfileStep) =>
+      Object.keys(validateStep(section, working)).some((key) => key in errors),
+    [errors, working],
+  )
+
+  const startEdit = (section: ProfileStep = activeSection) => {
+    setActiveSection(section)
+    setDraft(cloneProfile(profile))
+    setErrors({})
+  }
+
+  const cancelEdit = () => {
+    setDraft(null)
+    setErrors({})
+  }
+
+  const selectSection = (section: ProfileStep) => {
+    if (editing) cancelEdit()
+    setActiveSection(section)
+  }
+
+  const handleSave = async () => {
+    if (!draft) return
+
+    const stepErrors = validateStep(activeSection, draft)
     if (Object.keys(stepErrors).length > 0) {
       setErrors(stepErrors)
       return
     }
-    setErrors({})
-    setCompletedSteps((prev) => new Set([...prev, currentStep]))
-    if (!isLastStep) {
-      setCurrentStep(PROFILE_STEPS[stepIndex + 1].id)
-    }
-  }
-
-  const goPrev = () => {
-    if (stepIndex > 0) {
-      setErrors({})
-      setCurrentStep(PROFILE_STEPS[stepIndex - 1].id)
-    }
-  }
-
-  const handleSave = async () => {
-    const allErrors: FieldErrors = {}
-    for (const step of PROFILE_STEPS) {
-      Object.assign(allErrors, validateStep(step.id, profile))
-    }
-    if (Object.keys(allErrors).length > 0) {
-      setErrors(allErrors)
-      const firstErrorStep = PROFILE_STEPS.find(
-        (s) => Object.keys(validateStep(s.id, profile)).length > 0,
-      )
-      if (firstErrorStep) setCurrentStep(firstErrorStep.id)
-      return
-    }
 
     setIsSaving(true)
-    await new Promise((r) => setTimeout(r, 800))
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile))
-    setSavedSnapshot(JSON.stringify(profile))
+    await new Promise((r) => setTimeout(r, 500))
+    const next = cloneProfile(draft)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+    setProfile(next)
+    setDraft(null)
+    setErrors({})
     setIsSaving(false)
-    setShowSuccess(true)
-    setTimeout(() => setShowSuccess(false), 3000)
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen pb-24"
-    >
-      <DashboardLayout
-        salonName={salon}
-        title="Gestión del Perfil del Salón"
-        subtitle="RF-001 · Tu vitrina comercial en el Marketplace"
-        action={
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-bold ${
-              progress >= 80
-                ? 'bg-emerald-50 text-emerald-700'
-                : 'bg-primary/10 text-primary'
-            }`}
-          >
-            {progress >= 80 && <Check className="h-4 w-4" />}
-            Perfil al {progress}%
-          </span>
-        }
-      >
-        <div className="mb-8 rounded-xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-          <ProfileStepper
-            currentStep={currentStep}
-            onStepClick={setCurrentStep}
-            completedSteps={completedSteps}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen">
+      <DashboardLayout salonName={salon}>
+        <div className="mx-auto max-w-5xl space-y-5">
+          <ProfileCoverHeader
+            profile={profile}
+            progress={progress}
+            onEditPhotos={() => startEdit('photos')}
           />
-        </div>
 
-        <div className="grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-8">
-            {currentStep === 'general' && (
-              <GeneralStep profile={profile} errors={errors} onChange={updateProfile} />
-            )}
-            {currentStep === 'location' && (
-              <LocationStep profile={profile} errors={errors} onChange={updateProfile} />
-            )}
-            {currentStep === 'pricing' && (
-              <PricingStep profile={profile} errors={errors} onChange={updateProfile} />
-            )}
-            {currentStep === 'photos' && (
-              <PhotosStep profile={profile} errors={errors} onChange={updateProfile} />
-            )}
-            {currentStep === 'services' && (
-              <ServicesStep profile={profile} onChange={updateProfile} />
-            )}
+          <div className="grid gap-5 lg:grid-cols-[14rem_minmax(0,1fr)]">
+            <aside className="rounded-2xl border border-slate-200 bg-white p-2 shadow-[0_1px_2px_rgba(15,23,42,0.04)] lg:sticky lg:top-6 lg:self-start">
+              <div className="mb-1 flex gap-1 overflow-x-auto pb-1 lg:hidden">
+                {PROFILE_SETTINGS_NAV.map(({ id, label }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => selectSection(id)}
+                    className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                      activeSection === id
+                        ? 'bg-primary text-white'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="hidden lg:block">
+                <ProfileSettingsNav
+                  activeSection={activeSection}
+                  onSelect={selectSection}
+                  sectionHasError={sectionHasError}
+                />
+              </div>
+            </aside>
 
-            <div className="mt-6 flex items-center justify-between">
-              <button
-                type="button"
-                onClick={goPrev}
-                disabled={stepIndex === 0}
-                className="btn-secondary disabled:opacity-40"
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Anterior
-              </button>
-
-              {!isLastStep ? (
-                <button type="button" onClick={goNext} className="btn-primary">
-                  Siguiente
-                  <ArrowRight className="h-4 w-4" />
-                </button>
+            <ProfileSettingsPanel
+              editing={editing}
+              isSaving={isSaving}
+              onEdit={() => startEdit()}
+              onCancel={cancelEdit}
+              onSave={handleSave}
+            >
+              {editing ? (
+                <>
+                  {activeSection === 'general' && (
+                    <GeneralStep
+                      profile={working}
+                      errors={errors}
+                      onChange={updateDraft}
+                      embedded
+                      hideLabels
+                    />
+                  )}
+                  {activeSection === 'location' && (
+                    <LocationStep
+                      profile={working}
+                      errors={errors}
+                      onChange={updateDraft}
+                      embedded
+                      hideLabels
+                    />
+                  )}
+                  {activeSection === 'pricing' && (
+                    <PricingStep
+                      profile={working}
+                      errors={errors}
+                      onChange={updateDraft}
+                      embedded
+                      hideLabels
+                    />
+                  )}
+                  {activeSection === 'photos' && (
+                    <PhotosStep
+                      profile={working}
+                      errors={errors}
+                      onChange={updateDraft}
+                      embedded
+                      hideLabels
+                    />
+                  )}
+                  {activeSection === 'services' && (
+                    <ServicesStep
+                      profile={working}
+                      onChange={updateDraft}
+                      embedded
+                      hideLabels
+                    />
+                  )}
+                </>
               ) : (
-                <button type="button" onClick={handleSave} className="btn-primary">
-                  <Check className="h-4 w-4" />
-                  Finalizar perfil
-                </button>
+                <ProfileSectionView section={activeSection} profile={profile} />
               )}
-            </div>
-          </div>
-
-          <div className="lg:col-span-4">
-            <MarketplacePreview profile={profile} progress={progress} />
+            </ProfileSettingsPanel>
           </div>
         </div>
       </DashboardLayout>
-
-      <SaveBar
-        isDirty={isDirty}
-        isSaving={isSaving}
-        showSuccess={showSuccess}
-        onSave={handleSave}
-      />
     </motion.div>
   )
 }

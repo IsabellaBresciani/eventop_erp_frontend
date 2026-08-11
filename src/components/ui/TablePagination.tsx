@@ -62,7 +62,7 @@ export function TablePagination({
               onClick={() => onPageChange(pageNumber)}
               className={`flex h-9 min-w-[2.25rem] items-center justify-center rounded-full px-2 text-[13px] font-semibold transition-colors ${
                 pageNumber === page
-                  ? 'bg-primary text-white shadow-[0_2px_8px_rgba(94,23,235,0.3)]'
+                  ? 'bg-primary text-white shadow-fab'
                   : 'text-apple-label hover:bg-apple-fill'
               }`}
               aria-label={`Página ${pageNumber}`}

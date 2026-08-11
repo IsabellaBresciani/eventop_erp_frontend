@@ -101,7 +101,7 @@ export function FeaturesSection() {
 }
 
 function CalendarMiniPreview() {
-  const colors = ['bg-blue-500', 'bg-amber-500', 'bg-emerald-500', 'bg-violet-500']
+  const colors = ['bg-primary', 'bg-primary-800', 'bg-gold', 'bg-primary-400']
   return (
     <div className="grid grid-cols-7 gap-1">
       {Array.from({ length: 14 }, (_, i) => (

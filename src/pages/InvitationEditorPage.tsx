@@ -1,12 +1,13 @@
 import { motion } from 'framer-motion'
-import { ImagePlus, Upload } from 'lucide-react'
-import { useCallback, useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { ArrowLeft, ImagePlus, Upload } from 'lucide-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { MOCK_EVENTS } from '../data/dashboard'
+import { getTemplate } from '../data/invitation-templates'
 import {
-  buildDefaultConfig,
-  getTemplate,
-} from '../data/invitation-templates'
+  ensureInvitationConfig,
+  saveInvitationConfig,
+} from '../data/invitations-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { InvitationConfig, InvitationTemplateId } from '../types/invitation'
 import { MUSIC_TRACKS } from '../types/invitation'
@@ -16,40 +17,23 @@ import { LinkManager } from '../components/invitation/LinkManager'
 import { TemplateCarousel } from '../components/invitation/TemplateCarousel'
 import { Toggle } from '../components/agenda/SettingsCard'
 
-const STORAGE_PREFIX = 'eventop_invitation_'
-
-function loadConfig(eventId: string): InvitationConfig | null {
-  try {
-    const stored = localStorage.getItem(`${STORAGE_PREFIX}${eventId}`)
-    if (stored) return JSON.parse(stored) as InvitationConfig
-  } catch {
-    /* ignore */
-  }
-  return null
-}
-
 export default function InvitationEditorPage() {
-  const { salon } = useAuthGuard()
-  const [searchParams] = useSearchParams()
-  const eventId = searchParams.get('event') ?? 'evt-001'
+  const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
+  const { eventId = 'evt-001' } = useParams<{ eventId: string }>()
   const fileRef = useRef<HTMLInputElement>(null)
 
   const event = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
 
-  const [config, setConfig] = useState<InvitationConfig>(() => {
-    const saved = loadConfig(event.id)
-    if (saved) return saved
-    return buildDefaultConfig(
-      event.id,
-      `${event.clientName} — ${event.eventType}`,
-      event.date,
-      `${event.startTime} hs`,
-      salon,
-      mapEventTypeToTemplate(event.eventType),
-    )
-  })
-
+  const [config, setConfig] = useState<InvitationConfig>(() =>
+    ensureInvitationConfig(event, salon),
+  )
   const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    const nextEvent = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
+    setConfig(ensureInvitationConfig(nextEvent, salon))
+    setSaved(false)
+  }, [eventId, salon])
 
   const updateConfig = useCallback((patch: Partial<InvitationConfig>) => {
     setConfig((prev) => ({ ...prev, ...patch }))
@@ -60,9 +44,10 @@ export default function InvitationEditorPage() {
     const template = getTemplate(templateId)
     updateConfig({
       templateId,
-      coverUrl: config.coverUrl === getTemplate(config.templateId).defaultCover
-        ? template.defaultCover
-        : config.coverUrl,
+      coverUrl:
+        config.coverUrl === getTemplate(config.templateId).defaultCover
+          ? template.defaultCover
+          : config.coverUrl,
     })
   }
 
@@ -72,7 +57,7 @@ export default function InvitationEditorPage() {
   }
 
   const handleSave = () => {
-    localStorage.setItem(`${STORAGE_PREFIX}${config.eventId}`, JSON.stringify(config))
+    saveInvitationConfig(config)
     setSaved(true)
     setTimeout(() => setSaved(false), 3000)
   }
@@ -85,16 +70,22 @@ export default function InvitationEditorPage() {
     >
       <DashboardLayout
         salonName={salon}
-        title="Editor de Invitaciones"
-        subtitle="RF-201 · RF-202 · RF-203 — Personalizá la experiencia de tus invitados"
+        title="Editar invitación"
+        subtitle={config.eventTitle}
         action={
-          <button
-            type="button"
-            onClick={handleSave}
-            className={`dash-btn-primary ${saved ? 'bg-emerald-600 hover:bg-emerald-600' : ''}`}
-          >
-            {saved ? 'Guardado ✓' : 'Guardar cambios'}
-          </button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Link to="/dashboard/invitaciones" className="dash-btn-secondary py-2 text-sm">
+              <ArrowLeft className="h-4 w-4" />
+              Volver
+            </Link>
+            <button
+              type="button"
+              onClick={handleSave}
+              className={`dash-btn-primary ${saved ? 'bg-emerald-600 hover:bg-emerald-600' : ''}`}
+            >
+              {saved ? 'Guardado ✓' : 'Guardar cambios'}
+            </button>
+          </div>
         }
       >
         <div className="grid gap-8 lg:grid-cols-12">
@@ -107,8 +98,6 @@ export default function InvitationEditorPage() {
             </div>
 
             <div className="rounded-card border border-surface-border bg-white p-6 shadow-card">
-              <h3 className="mb-5 text-sm font-bold text-slate-900">Panel de Personalización</h3>
-
               <div className="space-y-5">
                 <div>
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -119,16 +108,17 @@ export default function InvitationEditorPage() {
                     tabIndex={0}
                     onClick={() => fileRef.current?.click()}
                     onKeyDown={(e) => e.key === 'Enter' && fileRef.current?.click()}
-                    className="relative h-40 cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 transition-colors hover:border-primary/50"
+                    className="flex cursor-pointer items-center gap-4 rounded-xl border border-dashed border-primary/30 bg-primary/5 p-4 transition-colors hover:bg-primary/10"
                   >
-                    <img
-                      src={config.coverUrl}
-                      alt="Portada"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/30 opacity-0 transition-opacity hover:opacity-100">
-                      <Upload className="h-6 w-6 text-white" />
-                      <span className="mt-1 text-xs font-medium text-white">Cambiar imagen</span>
+                    <div className="h-16 w-24 overflow-hidden rounded-lg bg-slate-100">
+                      <img src={config.coverUrl} alt="" className="h-full w-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
+                        <Upload className="h-4 w-4 text-primary" />
+                        Cambiar portada
+                      </p>
+                      <p className="mt-0.5 text-xs text-slate-500">JPG o PNG</p>
                     </div>
                     <input
                       ref={fileRef}
@@ -142,13 +132,13 @@ export default function InvitationEditorPage() {
 
                 <div>
                   <label
-                    htmlFor="event-title"
+                    htmlFor="inv-title"
                     className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                   >
                     Título del evento
                   </label>
                   <input
-                    id="event-title"
+                    id="inv-title"
                     type="text"
                     value={config.eventTitle}
                     onChange={(e) => updateConfig({ eventTitle: e.target.value })}
@@ -156,15 +146,65 @@ export default function InvitationEditorPage() {
                   />
                 </div>
 
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label
+                      htmlFor="inv-date"
+                      className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
+                    >
+                      Fecha
+                    </label>
+                    <input
+                      id="inv-date"
+                      type="date"
+                      value={config.eventDate}
+                      onChange={(e) => updateConfig({ eventDate: e.target.value })}
+                      className="input-field"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="inv-time"
+                      className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
+                    >
+                      Horario
+                    </label>
+                    <input
+                      id="inv-time"
+                      type="text"
+                      value={config.eventTime}
+                      onChange={(e) => updateConfig({ eventTime: e.target.value })}
+                      className="input-field"
+                      placeholder="20:00 hs"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label
-                    htmlFor="music-track"
+                    htmlFor="inv-venue"
+                    className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
+                  >
+                    Lugar
+                  </label>
+                  <input
+                    id="inv-venue"
+                    type="text"
+                    value={config.venue}
+                    onChange={(e) => updateConfig({ venue: e.target.value })}
+                    className="input-field"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="inv-music"
                     className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                   >
                     Música de fondo
                   </label>
                   <select
-                    id="music-track"
+                    id="inv-music"
                     value={config.musicTrack}
                     onChange={(e) => updateConfig({ musicTrack: e.target.value })}
                     className="input-field"
@@ -180,8 +220,8 @@ export default function InvitationEditorPage() {
                 <Toggle
                   enabled={config.countdownEnabled}
                   onChange={(countdownEnabled) => updateConfig({ countdownEnabled })}
-                  label="Cuenta regresiva (Countdown)"
-                  description="Muestra los días restantes hasta el evento en la invitación"
+                  label="Cuenta regresiva"
+                  description="Muestra los días restantes hasta el evento"
                 />
               </div>
             </div>
@@ -197,7 +237,7 @@ export default function InvitationEditorPage() {
                 <div className="flex items-center gap-2">
                   <ImagePlus className="h-4 w-4 text-primary" />
                   <span>
-                    Evento: <strong className="text-slate-700">{event.id.toUpperCase()}</strong>
+                    Evento: <strong className="text-slate-700">{event.clientName}</strong>
                   </span>
                 </div>
                 <a
@@ -215,11 +255,4 @@ export default function InvitationEditorPage() {
       </DashboardLayout>
     </motion.div>
   )
-}
-
-function mapEventTypeToTemplate(eventType: string): InvitationTemplateId {
-  if (eventType.includes('Infantil') || eventType.includes('Cumpleaños')) return 'infantil'
-  if (eventType.includes('XV')) return 'xv'
-  if (eventType.includes('Corporativo')) return 'corporativo'
-  return 'boda'
 }

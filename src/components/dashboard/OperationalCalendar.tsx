@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, Plus, Settings } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Settings, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
@@ -6,19 +6,21 @@ import {
   loadCalendarSettings,
 } from '../../data/calendar-settings'
 import { EVENT_STATUS_CONFIG, addDays, getPeriodLabel, getWeekStart, groupEventsByDate, toDateKey } from '../../data/dashboard'
-import type { CalendarEvent } from '../../types/dashboard'
+import type { CalendarEvent, EventStatus } from '../../types/dashboard'
 
 export type { CalendarViewMode }
 
 interface OperationalCalendarProps {
   events: CalendarEvent[]
   selectedDate: string | null
+  statusFilter?: EventStatus | 'all'
   viewMode: CalendarViewMode
   currentDate: Date
   onViewModeChange: (mode: CalendarViewMode) => void
   onCurrentDateChange: (date: Date) => void
   onSelectDate: (date: string | null) => void
   onSelectEvent: (event: CalendarEvent) => void
+  onStatusFilterChange?: (status: EventStatus | 'all') => void
   onNewEvent?: () => void
 }
 
@@ -35,17 +37,24 @@ const VIEW_LABELS: Record<CalendarViewMode, string> = {
 export function OperationalCalendar({
   events,
   selectedDate,
+  statusFilter = 'all',
   viewMode,
   currentDate,
   onViewModeChange,
   onCurrentDateChange,
   onSelectDate,
   onSelectEvent,
+  onStatusFilterChange,
   onNewEvent,
 }: OperationalCalendarProps) {
   const [settings] = useState(loadCalendarSettings)
 
   const eventsByDate = useMemo(() => groupEventsByDate(events), [events])
+
+  const handleStatusClick = (status: EventStatus) => {
+    if (!onStatusFilterChange) return
+    onStatusFilterChange(statusFilter === status ? 'all' : status)
+  }
 
   const navigate = (direction: -1 | 1) => {
     const next = new Date(currentDate)
@@ -129,16 +138,62 @@ export function OperationalCalendar({
 
       <div className="px-4 py-5 sm:px-6 sm:py-6">
         {settings.showLegend && (
-          <div className="mb-5 flex flex-wrap gap-2">
-            {Object.entries(EVENT_STATUS_CONFIG).map(([key, { label, color }]) => (
-              <span
-                key={key}
-                className="inline-flex items-center gap-1.5 rounded-full bg-black/[0.04] px-3 py-1.5 text-xs font-medium text-slate-600"
-              >
-                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
-                {label}
-              </span>
-            ))}
+          <div className="mb-5 space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(EVENT_STATUS_CONFIG).map(([key, { label, color }]) => {
+                const status = key as EventStatus
+                const active = statusFilter === status
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => handleStatusClick(status)}
+                    aria-pressed={active}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
+                      active
+                        ? 'text-slate-900'
+                        : 'bg-black/[0.04] font-medium text-slate-600 hover:bg-black/[0.07]'
+                    }`}
+                    style={
+                      active
+                        ? {
+                            backgroundColor: `${color}24`,
+                            outline: `2px solid ${color}`,
+                            outlineOffset: '1px',
+                          }
+                        : undefined
+                    }
+                    title={
+                      active
+                        ? `Quitar filtro: ${label}`
+                        : `Filtrar calendario: ${label}`
+                    }
+                  >
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
+                    {label}
+                  </button>
+                )
+              })}
+            </div>
+
+            {statusFilter !== 'all' && (
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span>
+                  Mostrando solo:{' '}
+                  <strong className="text-slate-800">
+                    {EVENT_STATUS_CONFIG[statusFilter].label}
+                  </strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onStatusFilterChange?.('all')}
+                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 font-semibold text-slate-600 transition-colors hover:bg-slate-200"
+                >
+                  <X className="h-3 w-3" />
+                  Limpiar
+                </button>
+              </div>
+            )}
           </div>
         )}
 
@@ -265,7 +320,7 @@ function MonthView({
               singleEvent && statusColor
                 ? { backgroundColor: `${statusColor}10`, borderColor: `${statusColor}22` }
                 : hasEvents && dayEvents.length > 1
-                  ? { backgroundColor: 'rgba(94, 23, 235, 0.05)', borderColor: 'rgba(94, 23, 235, 0.1)' }
+                  ? { backgroundColor: 'rgba(106, 36, 227, 0.06)', borderColor: 'rgba(106, 36, 227, 0.15)' }
                   : undefined
             }
           >

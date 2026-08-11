@@ -8,9 +8,9 @@ interface BusinessHealthProps {
 }
 
 const THEMES = [
-  'from-violet-50/70 to-white',
+  'from-primary-50/80 to-white',
+  'from-secondary/50 to-white',
   'from-primary-50/60 to-white',
-  'from-indigo-50/50 to-white',
 ] as const
 
 export function BusinessHealth({ metrics }: BusinessHealthProps) {
@@ -63,7 +63,7 @@ export function BusinessHealth({ metrics }: BusinessHealthProps) {
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/80">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-primary-400 transition-all duration-700"
+              className="h-full rounded-full bg-gradient-to-r from-primary to-primary-800 text-primary transition-all duration-700"
               style={{ width: `${metrics.occupancyRate}%` }}
             />
           </div>
@@ -111,14 +111,14 @@ function CircularProgress({ value }: { value: number }) {
 
   return (
     <div className="relative h-20 w-20 shrink-0">
-      <svg className="h-20 w-20 -rotate-90" viewBox="0 0 80 80">
-        <circle cx="40" cy="40" r={radius} fill="none" stroke="rgba(255,255,255,0.8)" strokeWidth="6" />
+      <svg className="h-20 w-20 -rotate-90 text-primary" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r={radius} fill="none" stroke="rgba(17,24,39,0.08)" strokeWidth="6" />
         <circle
           cx="40"
           cy="40"
           r={radius}
           fill="none"
-          stroke="#5e17eb"
+          stroke="currentColor"
           strokeWidth="6"
           strokeLinecap="round"
           strokeDasharray={circumference}

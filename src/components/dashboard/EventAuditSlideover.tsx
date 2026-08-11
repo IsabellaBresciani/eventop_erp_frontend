@@ -322,7 +322,7 @@ export function EventAuditSlideover({
                   </div>
                   <div className="h-2.5 overflow-hidden rounded-full bg-surface">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-primary to-primary-400 transition-all"
+                      className="h-full rounded-full bg-gradient-to-r from-primary to-primary-800 transition-all"
                       style={{ width: `${attendancePct}%` }}
                     />
                   </div>
@@ -332,7 +332,7 @@ export function EventAuditSlideover({
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <DocButton icon={FileText} label="Presupuesto PDF" sub="RF-006" />
                   <Link
-                    to={`/dashboard/invitaciones?event=${current.id}`}
+                    to={`/dashboard/invitaciones/${current.id}`}
                     className="flex flex-col items-center gap-1 rounded-xl border border-surface-border bg-white px-3 py-3 transition-all hover:border-primary/30 hover:bg-primary/5"
                   >
                     <ExternalLink className="h-5 w-5 text-primary" />
@@ -413,7 +413,7 @@ export function EventAuditSlideover({
                 </button>
               ) : (
                 <Link
-                  to={`/dashboard/invitaciones?event=${current.id}`}
+                  to={`/dashboard/invitaciones/${current.id}`}
                   className="btn-primary w-full"
                 >
                   <ExternalLink className="h-4 w-4" />

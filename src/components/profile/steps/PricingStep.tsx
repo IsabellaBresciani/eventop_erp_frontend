@@ -6,9 +6,17 @@ interface PricingStepProps {
   profile: SalonProfile
   errors: FieldErrors
   onChange: (patch: Partial<SalonProfile>) => void
+  embedded?: boolean
+  hideLabels?: boolean
 }
 
-export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
+export function PricingStep({
+  profile,
+  errors,
+  onChange,
+  embedded,
+  hideLabels,
+}: PricingStepProps) {
   const updatePackage = (id: string, field: string, value: string | number) => {
     onChange({
       packages: profile.packages.map((p) => (p.id === id ? { ...p, [field]: value } : p)),
@@ -21,7 +29,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
         ...profile.packages,
         {
           id: `pkg-${Date.now()}`,
-          name: 'Nuevo paquete',
+          name: '',
           minPrice: 0,
           maxPrice: 0,
           description: '',
@@ -35,18 +43,15 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
   }
 
   return (
-    <StepCard
-      title="Capacidad, Precios y Oferta"
-      description="RF-008 · RF-010 — Define tu oferta comercial para el Marketplace."
-    >
-      <div className="space-y-6">
-        <div className="grid gap-5 sm:grid-cols-2">
+    <StepCard title="Precios" embedded={embedded}>
+      <div className="space-y-5">
+        <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             label="Capacidad mínima"
             htmlFor="capacity-min"
             required
             error={errors.capacityMin}
-            isComplete={profile.capacityMin > 0}
+            hideLabel={hideLabels}
           >
             <div className="flex items-center gap-2">
               <input
@@ -55,6 +60,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
                 min={1}
                 value={profile.capacityMin}
                 onChange={(e) => onChange({ capacityMin: Number(e.target.value) })}
+                placeholder="Mín."
                 className="input-field"
               />
               <span className="text-sm text-slate-500">personas</span>
@@ -66,7 +72,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
             htmlFor="capacity-max"
             required
             error={errors.capacityMax}
-            isComplete={profile.capacityMax > profile.capacityMin}
+            hideLabel={hideLabels}
           >
             <div className="flex items-center gap-2">
               <input
@@ -75,6 +81,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
                 min={1}
                 value={profile.capacityMax}
                 onChange={(e) => onChange({ capacityMax: Number(e.target.value) })}
+                placeholder="Máx."
                 className="input-field"
               />
               <span className="text-sm text-slate-500">personas</span>
@@ -86,13 +93,13 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
           label="Precio Base por Hora"
           required
           error={errors.pricePerHour}
-          isComplete={profile.pricePerHour > 0}
+          hideLabel={hideLabels}
         >
           <div className="flex gap-2">
             <select
               value={profile.currency}
               onChange={(e) => onChange({ currency: e.target.value as SalonProfile['currency'] })}
-              className="input-field w-24 text-primary font-semibold"
+              className="input-field w-24 font-semibold text-primary"
             >
               <option value="ARS">ARS</option>
               <option value="USD">USD</option>
@@ -103,16 +110,13 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
               value={profile.pricePerHour}
               onChange={(e) => onChange({ pricePerHour: Number(e.target.value) })}
               className="input-field flex-1 font-semibold text-primary"
-              placeholder="85000"
+              placeholder="Precio por hora"
             />
           </div>
         </FormField>
 
         <div>
-          <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Paquetes (RF-010)
-            </p>
+          <div className="mb-3 flex items-center justify-end">
             <button type="button" onClick={addPackage} className="btn-ghost py-1 text-xs">
               <Plus className="h-3.5 w-3.5" />
               Agregar paquete
@@ -161,7 +165,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
                   type="text"
                   value={pkg.description}
                   onChange={(e) => updatePackage(pkg.id, 'description', e.target.value)}
-                  placeholder="Descripción breve del paquete"
+                  placeholder="Descripción"
                   className="input-field mt-2"
                 />
               </div>
@@ -169,8 +173,8 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
           </div>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <FormField label="Política de cancelación">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField label="Política de cancelación" hideLabel={hideLabels}>
             <div className="grid grid-cols-2 gap-2">
               {(['flexible', 'strict'] as const).map((policy) => (
                 <button
@@ -189,7 +193,7 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
             </div>
           </FormField>
 
-          <FormField label="Depósito en garantía" htmlFor="deposit-percent">
+          <FormField label="Depósito" htmlFor="deposit-percent" hideLabel={hideLabels}>
             <div className="flex items-center gap-2">
               <input
                 id="deposit-percent"
@@ -199,8 +203,9 @@ export function PricingStep({ profile, errors, onChange }: PricingStepProps) {
                 value={profile.depositPercent}
                 onChange={(e) => onChange({ depositPercent: Number(e.target.value) })}
                 className="input-field w-24"
+                placeholder="%"
               />
-              <span className="text-sm text-slate-500">% del total</span>
+              <span className="text-sm text-slate-500">% seña</span>
             </div>
           </FormField>
         </div>

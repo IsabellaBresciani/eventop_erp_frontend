@@ -4,18 +4,18 @@ import {
   ChevronLeft,
   ChevronRight,
   LayoutGrid,
-  LogOut,
   Menu,
-  MessageSquare,
+  Inbox,
+  Mail,
   QrCode,
-  Settings,
-  UserCircle,
+  BarChart3,
   Users,
   X,
 } from 'lucide-react'
 import { type ReactNode, useCallback, useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { clearAuthSession, getAuthSession } from '../../lib/auth-session'
+import { ProfileAccountMenu } from './ProfileAccountMenu'
 
 interface DashboardLayoutProps {
   salonName: string
@@ -27,16 +27,15 @@ interface DashboardLayoutProps {
 
 const ADMIN_NAV_ITEMS = [
   { to: '/dashboard', icon: LayoutGrid, label: 'Inicio', exact: true },
-  { to: '/dashboard/mensajeria', icon: MessageSquare, label: 'Mensajes', exact: false },
+  { to: '/dashboard/mensajeria', icon: Inbox, label: 'Consultas', exact: false },
+  { to: '/dashboard/invitaciones', icon: Mail, label: 'Invitaciones', exact: false },
+  { to: '/dashboard/reportes', icon: BarChart3, label: 'Reportes', exact: false },
   { to: '/dashboard/empleados', icon: Users, label: 'Empleados', exact: false },
   { to: '/dashboard/checkin', icon: QrCode, label: 'Check-in', exact: false },
-  { to: '/dashboard/agenda', icon: Settings, label: 'Agenda', exact: false },
-  { to: '/dashboard/perfil', icon: UserCircle, label: 'Perfil', exact: false },
 ]
 
 const EMPLOYEE_NAV_ITEMS = [
   { to: '/dashboard/mis-eventos', icon: CalendarDays, label: 'Mis eventos', exact: true },
-  { to: '/dashboard/mi-perfil', icon: UserCircle, label: 'Mi perfil', exact: false },
 ]
 
 const SIDEBAR_STORAGE_KEY = 'eventop_sidebar_expanded'
@@ -111,11 +110,11 @@ export function DashboardLayout({
           className={`flex items-center gap-3 ${showLabels ? '' : 'justify-center'}`}
           onClick={() => setMobileSidebarOpen(false)}
         >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[22%] bg-gradient-to-br from-primary to-primary-500 text-sm font-bold text-white shadow-soft">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-sm font-bold text-white shadow-soft">
             ET
           </div>
           {showLabels && (
-            <span className="text-[15px] font-semibold tracking-[-0.01em] text-slate-900">
+            <span className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
               Even<span className="text-primary">Top</span>
             </span>
           )}
@@ -125,7 +124,7 @@ export function DashboardLayout({
           <button
             type="button"
             onClick={() => setMobileSidebarOpen(false)}
-            className="rounded-xl p-2 text-slate-500 transition-colors hover:bg-white/70 lg:hidden"
+            className="rounded-xl p-2 text-ink/40 transition-colors hover:bg-white/80 hover:text-ink lg:hidden"
             aria-label="Cerrar menú"
           >
             <X className="h-5 w-5" strokeWidth={1.75} />
@@ -154,51 +153,33 @@ export function DashboardLayout({
       </nav>
 
       <div
-        className={`flex flex-col gap-2 border-t border-primary/10 p-3 ${
+        className={`flex flex-col gap-2 border-t border-black/[0.05] p-3 ${
           showLabels ? '' : 'items-center'
         }`}
       >
         {showLabels && (
           <button
             type="button"
-            className="relative flex rounded-xl p-2.5 text-slate-500 transition-colors hover:bg-white/70"
+            className="relative flex rounded-xl p-2.5 text-ink/45 transition-colors hover:bg-white/80 hover:text-ink"
             aria-label="Notificaciones"
           >
             <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-white" />
+            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-gold ring-2 ring-white" />
           </button>
         )}
 
-        <Link
-          to={profilePath}
-          className={`dash-nav-item ${showLabels ? '' : 'justify-center px-2'}`}
-          title={salonName}
-          onClick={() => setMobileSidebarOpen(false)}
-        >
-          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-            {salonName.slice(0, 2).toUpperCase()}
-          </span>
-          {showLabels && <span className="truncate">{salonName}</span>}
-        </Link>
-
-        <button
-          type="button"
-          onClick={handleLogout}
-          title="Cerrar sesión"
-          className={`dash-nav-item text-slate-400 hover:bg-red-50 hover:text-red-500 ${
-            showLabels ? '' : 'justify-center px-2'
-          }`}
-        >
-          <span className="dash-nav-icon-wrap">
-            <LogOut className="h-[18px] w-[18px]" strokeWidth={1.75} />
-          </span>
-          {showLabels && <span>Salir</span>}
-        </button>
+        <ProfileAccountMenu
+          salonName={salonName}
+          settingsPath={profilePath}
+          showLabel={showLabels}
+          onNavigate={() => setMobileSidebarOpen(false)}
+          onLogout={handleLogout}
+        />
 
         <button
           type="button"
           onClick={toggleSidebar}
-          className={`dash-nav-item hidden text-slate-400 hover:bg-white/70 hover:text-slate-600 lg:flex ${
+          className={`dash-nav-item hidden text-ink/40 hover:bg-white/80 hover:text-ink lg:flex ${
             showLabels ? '' : 'justify-center px-2'
           }`}
           aria-label={sidebarExpanded ? 'Contraer menú' : 'Expandir menú'}
@@ -249,10 +230,10 @@ export function DashboardLayout({
               <Menu className="h-5 w-5" strokeWidth={1.75} />
             </button>
             <Link to={homePath} className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-[22%] bg-gradient-to-br from-primary to-primary-500 text-xs font-bold text-white shadow-soft">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-xs font-bold text-white shadow-soft">
                 ET
               </div>
-              <span className="text-sm font-semibold text-slate-900">
+              <span className="text-sm font-semibold text-ink">
                 Even<span className="text-primary">Top</span>
               </span>
             </Link>
@@ -267,12 +248,13 @@ export function DashboardLayout({
               <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
               <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-white" />
             </button>
-            <Link
-              to={profilePath}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary"
-            >
-              {salonName.slice(0, 2).toUpperCase()}
-            </Link>
+            <ProfileAccountMenu
+              salonName={salonName}
+              settingsPath={profilePath}
+              align="right"
+              placement="down"
+              onLogout={handleLogout}
+            />
           </div>
         </header>
 

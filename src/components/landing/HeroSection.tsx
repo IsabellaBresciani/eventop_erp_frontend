@@ -16,7 +16,7 @@ export function HeroSection({ onOpenRegister, onOpenLogin }: HeroSectionProps) {
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage:
-              'radial-gradient(circle at 1px 1px, #5e17eb 1px, transparent 0)',
+              'radial-gradient(circle at 1px 1px, var(--color-primary) 1px, transparent 0)',
             backgroundSize: '32px 32px',
           }}
         />
@@ -37,7 +37,7 @@ export function HeroSection({ onOpenRegister, onOpenLogin }: HeroSectionProps) {
           <FadeIn delay={0.1}>
             <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
               Automatiza tu salón,{' '}
-              <span className="bg-gradient-to-r from-primary to-primary-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-primary-800 bg-clip-text text-transparent">
                 recupera tu tiempo
               </span>
             </h1>
@@ -143,7 +143,7 @@ function MiniCalendar() {
     3: 'bg-blue-500',
     7: 'bg-amber-500',
     12: 'bg-emerald-500',
-    15: 'bg-violet-500',
+    15: 'bg-gold-500',
     18: 'bg-emerald-500',
     22: 'bg-blue-500',
     25: 'bg-red-400',

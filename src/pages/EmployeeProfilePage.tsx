@@ -33,7 +33,7 @@ export default function EmployeeProfilePage() {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <DashboardLayout
         salonName={salon}
-        title="Mi perfil"
+        title="Configuración"
         subtitle="Tus datos de acceso al ERP del salón"
       >
         <div className="grid gap-6 lg:grid-cols-12">

@@ -6,8 +6,8 @@ export type { CalendarViewMode }
 export { MOCK_EVENTS } from './event-details'
 
 export const EVENT_STATUS_CONFIG = {
-  presupuestado: { label: 'Presupuestado', color: '#3b82f6' },
-  senado: { label: 'Señado', color: '#f59e0b' },
+  presupuestado: { label: 'Presupuestado', color: '#6A24E3' },
+  senado: { label: 'Señado', color: '#F5C518' },
   pagado: { label: 'Pagado', color: '#10b981' },
   reservado: { label: 'Reservado', color: '#8b5cf6' },
   cerrado: { label: 'Cerrado', color: '#6b7280' },

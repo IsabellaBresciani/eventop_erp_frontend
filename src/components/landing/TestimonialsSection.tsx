@@ -10,7 +10,7 @@ const testimonials = [
     quote:
       'Antes pasaba horas respondiendo las mismas consultas. Con EvenTop, los presupuestos se generan solos y el calendario nunca más se desordenó.',
     initials: 'MG',
-    color: 'from-violet-500 to-primary',
+    color: 'from-primary to-primary-800',
   },
   {
     name: 'Carlos Méndez',
@@ -20,7 +20,7 @@ const testimonials = [
     quote:
       'El Marketplace nos trajo clientes que no conocíamos. Y las invitaciones con QR impresionaron a cada anfitrión que pasó por acá.',
     initials: 'CM',
-    color: 'from-blue-500 to-cyan-500',
+    color: 'from-primary-800 to-primary-700',
   },
   {
     name: 'Lucía Fernández',
@@ -30,7 +30,7 @@ const testimonials = [
     quote:
       'La ficha de auditoría de cada evento es oro puro. Tengo todo — pagos, servicios, invitados — en un panel lateral sin recargar nada.',
     initials: 'LF',
-    color: 'from-emerald-500 to-teal-500',
+    color: 'from-secondary-400 to-secondary-600',
   },
 ]
 

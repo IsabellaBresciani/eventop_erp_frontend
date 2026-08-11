@@ -14,6 +14,23 @@ export type PhotoTag = 'pista' | 'cocina' | 'exteriores' | 'salon' | 'otro'
 
 export type Currency = 'ARS' | 'USD'
 
+export type VenueServiceCategory =
+  | 'VENUE_SET_UP'
+  | 'ENTERTAINMENT'
+  | 'FOOD_BEVERAGE'
+  | 'DECORATION'
+  | 'STAFFING'
+  | 'MEDIA'
+
+export type VenueServicePricingModel =
+  | 'PER_PERSON'
+  | 'FIXED'
+  | 'PER_UNIT'
+  | 'PER_PACKAGE'
+  | 'PER_MINUTE_TIME'
+
+export type VenueServiceStatus = 'ACTIVE' | 'INACTIVE'
+
 export interface SalonPackage {
   id: string
   name: string
@@ -30,11 +47,18 @@ export interface SalonPhoto {
   isCover: boolean
 }
 
-export interface SalonAmenity {
-  id: string
-  label: string
-  enabled: boolean
-  included: boolean
+/** Maps to venue_services */
+export interface VenueService {
+  id: number
+  name: string
+  description: string
+  termsAndConditions: string
+  category: VenueServiceCategory
+  pricingModel: VenueServicePricingModel
+  basePrice: number
+  minQuantity: number
+  maxQuantity: number
+  status: VenueServiceStatus
 }
 
 export interface SalonProfile {
@@ -53,7 +77,7 @@ export interface SalonProfile {
   cancellationPolicy: CancellationPolicy
   depositPercent: number
   photos: SalonPhoto[]
-  amenities: SalonAmenity[]
+  services: VenueService[]
 }
 
 export interface FieldErrors {

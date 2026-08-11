@@ -10,10 +10,12 @@ import EmployeeProfilePage from './pages/EmployeeProfilePage'
 import DashboardPage from './pages/DashboardPage'
 import InvitationEditorPage from './pages/InvitationEditorPage'
 import InvitationGuestPage from './pages/InvitationGuestPage'
+import InvitationsPage from './pages/InvitationsPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import MarketplaceSalonPage from './pages/MarketplaceSalonPage'
 import MessagingPage from './pages/MessagingPage'
+import ReportsPage from './pages/ReportsPage'
 import SalonProfilePage from './pages/SalonProfilePage'
 
 export default function App() {
@@ -58,7 +60,23 @@ export default function App() {
           path="/dashboard/invitaciones"
           element={
             <PageTransition>
+              <InvitationsPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/invitaciones/:eventId"
+          element={
+            <PageTransition>
               <InvitationEditorPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/reportes"
+          element={
+            <PageTransition>
+              <ReportsPage />
             </PageTransition>
           }
         />

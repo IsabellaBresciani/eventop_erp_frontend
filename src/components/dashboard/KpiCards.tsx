@@ -1,4 +1,4 @@
-import { CalendarClock, MessageSquare, ToggleLeft, ToggleRight } from 'lucide-react'
+import { CalendarClock, Inbox, ToggleLeft, ToggleRight } from 'lucide-react'
 import { type ComponentType, type ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { CalendarEvent } from '../../types/dashboard'
@@ -10,9 +10,9 @@ interface KpiCardsProps {
 }
 
 const CARD_THEMES = [
-  'from-primary-50/80 to-white border-primary/10',
-  'from-violet-50/60 to-white border-violet-100/60',
-  'from-emerald-50/60 to-white border-emerald-100/60',
+  'from-primary-50 to-white border-primary/10',
+  'from-secondary/80 to-white border-primary/10',
+  'from-gold-50 to-white border-gold/20',
 ] as const
 
 export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
@@ -44,7 +44,7 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
       </KpiCard>
 
       <KpiCard
-        icon={MessageSquare}
+        icon={Inbox}
         title="Consultas"
         theme={CARD_THEMES[1]}
         badge={pendingQueries > 0 ? pendingQueries : undefined}

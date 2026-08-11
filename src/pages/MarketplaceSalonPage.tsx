@@ -1,31 +1,25 @@
 import {
   BadgeCheck,
   Calendar,
-  Car,
-  ChefHat,
   MapPin,
-  Radio,
   Shield,
   Star,
-  Wifi,
 } from 'lucide-react'
-import { type ComponentType, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   loadMarketplaceAgenda,
   loadMarketplaceProfile,
 } from '../data/marketplace'
-import { formatPrice, SALON_TYPE_OPTIONS } from '../data/salon-profile-defaults'
+import {
+  formatPrice,
+  getServiceCategoryLabel,
+  getServicePricingModelLabel,
+  SALON_TYPE_OPTIONS,
+} from '../data/salon-profile-defaults'
 import { BudgetCalculator } from '../components/marketplace/BudgetCalculator'
 import { ImmersiveGallery } from '../components/marketplace/ImmersiveGallery'
 import { VisitBookingModal } from '../components/marketplace/VisitBookingModal'
-
-const AMENITY_ICONS: Record<string, ComponentType<{ className?: string }>> = {
-  wifi: Wifi,
-  catering: ChefHat,
-  parking: Car,
-  sound: Radio,
-}
 
 export default function MarketplaceSalonPage() {
   const profile = loadMarketplaceProfile()
@@ -36,7 +30,8 @@ export default function MarketplaceSalonPage() {
     .map((t) => SALON_TYPE_OPTIONS.find((o) => o.id === t)?.label)
     .filter(Boolean)
 
-  const activeAmenities = profile.amenities.filter((a) => a.enabled)
+  const activeServices = (profile.services ?? []).filter((s) => s.status === 'ACTIVE')
+
 
   return (
     <div className="min-h-screen bg-surface">
@@ -85,29 +80,33 @@ export default function MarketplaceSalonPage() {
               </div>
             </div>
 
-            {activeAmenities.length > 0 && (
+            {activeServices.length > 0 && (
               <section className="mt-8">
-                <h2 className="mb-4 text-sm font-bold text-slate-900">Servicios y amenidades</h2>
+                <h2 className="mb-4 text-sm font-bold text-slate-900">Servicios</h2>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {activeAmenities.map((amenity) => {
-                    const Icon = AMENITY_ICONS[amenity.id] ?? Wifi
-                    return (
-                      <div
-                        key={amenity.id}
-                        className="flex items-center gap-3 rounded-xl border border-surface-border bg-white p-3"
-                      >
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                          <Icon className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-slate-800">{amenity.label}</p>
-                          <p className="text-[10px] text-slate-400">
-                            {amenity.included ? 'Incluido' : 'Adicional'}
-                          </p>
-                        </div>
-                      </div>
-                    )
-                  })}
+                  {activeServices.map((service) => (
+                    <div
+                      key={service.id}
+                      className="rounded-xl border border-surface-border bg-white p-3"
+                    >
+                      <p className="text-sm font-medium text-slate-800">{service.name}</p>
+                      <p className="mt-0.5 text-[11px] font-semibold text-primary">
+                        {getServiceCategoryLabel(service.category)}
+                      </p>
+                      {service.description && (
+                        <p className="mt-1 line-clamp-2 text-xs text-slate-500">
+                          {service.description}
+                        </p>
+                      )}
+                      <p className="mt-2 text-xs font-semibold text-slate-700">
+                        {formatPrice(service.basePrice, profile.currency)}
+                        <span className="font-normal text-slate-400">
+                          {' '}
+                          · {getServicePricingModelLabel(service.pricingModel)}
+                        </span>
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </section>
             )}
