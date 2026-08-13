@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { CalendarPlus, X } from 'lucide-react'
 import { type FormEvent, useEffect, useState } from 'react'
 import type { CalendarEvent } from '../../types/dashboard'
+import { useTranslation } from 'react-i18next'
 
 export interface NewEventFormData {
   clientName: string
@@ -23,6 +24,7 @@ interface NewEventModalProps {
 const EVENT_TYPES = ['Boda', 'XV Años', 'Cumpleaños', 'Cumpleaños Infantil', 'Corporativo']
 
 export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEventModalProps) {
+  const { t } = useTranslation()
   const [clientName, setClientName] = useState('')
   const [eventType, setEventType] = useState(EVENT_TYPES[0])
   const [date, setDate] = useState(defaultDate ?? '')
@@ -93,8 +95,12 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
                   <CalendarPlus className="h-5 w-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900">Nuevo evento</h2>
-                  <p className="text-sm text-slate-500">Cargá los datos básicos del evento</p>
+                  <h2 className="text-lg font-semibold text-slate-900">
+                    {t('neweventmodal.nuevo_evento')}
+                  </h2>
+                  <p className="text-sm text-slate-500">
+                    {t('neweventmodal.carg_los_datos_bsicos_del_evento')}
+                  </p>
                 </div>
               </div>
               <button
@@ -108,19 +114,19 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <Field label="Cliente">
+              <Field label={t('neweventmodal.cliente')}>
                 <input
                   type="text"
                   value={clientName}
                   onChange={(e) => setClientName(e.target.value)}
-                  placeholder="Nombre y apellido"
+                  placeholder={t('neweventmodal.nombre_y_apellido')}
                   className="input-field"
                   required
                 />
               </Field>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Tipo de evento">
+                <Field label={t('neweventmodal.tipo_de_evento')}>
                   <select
                     value={eventType}
                     onChange={(e) => setEventType(e.target.value)}
@@ -133,7 +139,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
                     ))}
                   </select>
                 </Field>
-                <Field label="Fecha">
+                <Field label={t('neweventmodal.fecha')}>
                   <input
                     type="date"
                     value={date}
@@ -145,7 +151,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Hora inicio">
+                <Field label={t('neweventmodal.hora_inicio')}>
                   <input
                     type="time"
                     value={startTime}
@@ -154,7 +160,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
                     required
                   />
                 </Field>
-                <Field label="Hora fin">
+                <Field label={t('neweventmodal.hora_fin')}>
                   <input
                     type="time"
                     value={endTime}
@@ -166,7 +172,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
               </div>
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Invitados estimados">
+                <Field label={t('neweventmodal.invitados_estimados')}>
                   <input
                     type="number"
                     min={1}
@@ -176,7 +182,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
                     required
                   />
                 </Field>
-                <Field label="Presupuesto (ARS)">
+                <Field label={t('neweventmodal.presupuesto_ars')}>
                   <input
                     type="number"
                     min={0}
@@ -191,10 +197,10 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
 
               <div className="flex flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end">
                 <button type="button" onClick={handleClose} className="btn-secondary px-5 py-2.5">
-                  Cancelar
+                  {t('neweventmodal.cancelar')}
                 </button>
                 <button type="submit" className="btn-primary px-5 py-2.5">
-                  Crear evento
+                  {t('neweventmodal.crear_evento')}
                 </button>
               </div>
             </form>
@@ -206,6 +212,7 @@ export function NewEventModal({ isOpen, onClose, onCreate, defaultDate }: NewEve
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
+
   return (
     <label className="block">
       <span className="mb-1.5 block text-xs font-semibold text-slate-600">{label}</span>

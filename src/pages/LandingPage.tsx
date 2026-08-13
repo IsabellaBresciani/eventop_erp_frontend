@@ -20,7 +20,10 @@ export default function LandingPage() {
     <div className="min-h-screen">
       <Navbar onOpenAuth={openAuth} />
       <main>
-        <HeroSection onOpenRegister={() => openAuth('register')} onOpenLogin={() => openAuth('login')} />
+        <HeroSection
+          onOpenRegister={() => openAuth('register')}
+          onOpenLogin={() => openAuth('login')}
+        />
         <ProblemSolutionSection />
         <FeaturesSection />
         <TestimonialsSection />

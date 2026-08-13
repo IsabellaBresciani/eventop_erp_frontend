@@ -3,6 +3,7 @@ import { type ComponentType } from 'react'
 import { Link } from 'react-router-dom'
 import { formatPrice, SALON_TYPE_OPTIONS } from '../../data/salon-profile-defaults'
 import type { SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 interface MarketplacePreviewProps {
   profile: SalonProfile
@@ -10,6 +11,7 @@ interface MarketplacePreviewProps {
 }
 
 export function MarketplacePreview({ profile, progress }: MarketplacePreviewProps) {
+  const { t } = useTranslation()
   const cover = profile.photos.find((p) => p.isCover) ?? profile.photos[0]
   const typeLabels = profile.types
     .map((t) => SALON_TYPE_OPTIONS.find((o) => o.id === t)?.label)
@@ -18,7 +20,7 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
   return (
     <div className="sticky top-24 space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-900">Live Preview</h3>
+        <h3 className="text-sm font-bold text-slate-900">{t('marketplacepreview.live_preview')}</h3>
         <div className="flex items-center gap-2">
           <span
             className={`rounded-full px-2.5 py-1 text-xs font-bold ${
@@ -29,13 +31,14 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
                   : 'bg-primary/10 text-primary'
             }`}
           >
-            Perfil al {progress}%
+            {t('marketplacepreview.perfil_al')}
+            {progress}%
           </span>
           <Link
             to="/marketplace"
             target="_blank"
             className="rounded-lg p-1.5 text-slate-400 hover:bg-primary/5 hover:text-primary"
-            title="Ver vitrina pública"
+            title={t('marketplacepreview.ver_vitrina_pblica')}
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </Link>
@@ -48,7 +51,7 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
             <img src={cover.url} alt={profile.name} className="h-full w-full object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-slate-400">
-              Sin foto de portada
+              {t('marketplacepreview.sin_foto_de_portada')}
             </div>
           )}
 
@@ -62,7 +65,9 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
             </div>
             <div className="flex items-center gap-1 rounded-lg border border-white/20 bg-white/20 px-2 py-1 backdrop-blur-md">
               <BadgeCheck className="h-3.5 w-3.5 text-emerald-300" />
-              <span className="text-[10px] font-semibold text-white">Verificado</span>
+              <span className="text-[10px] font-semibold text-white">
+                {t('marketplacepreview.verificado')}
+              </span>
             </div>
           </div>
         </div>
@@ -79,7 +84,9 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
                 </span>
               ))
             ) : (
-              <span className="text-xs text-slate-400">Sin tipo seleccionado</span>
+              <span className="text-xs text-slate-400">
+                {t('marketplacepreview.sin_tipo_seleccionado')}
+              </span>
             )}
           </div>
 
@@ -113,7 +120,7 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
           {profile.packages.length > 0 && (
             <div className="mt-4 rounded-xl bg-surface p-3">
               <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                Paquete destacado
+                {t('marketplacepreview.paquete_destacado')}
               </p>
               <p className="mt-1 text-sm font-semibold text-slate-800">
                 {profile.packages[0].name}
@@ -126,14 +133,14 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
           )}
 
           <button type="button" className="btn-primary mt-4 w-full py-2.5 text-xs">
-            Agendar Visita
+            {t('marketplacepreview.agendar_visita')}
           </button>
         </div>
       </div>
 
       {progress < 100 && (
         <p className="text-center text-[11px] text-slate-400">
-          Completá tu perfil para mejorar el posicionamiento en el Marketplace
+          {t('marketplacepreview.complet_tu_perfil_para_mejorar_el_posici')}
         </p>
       )}
     </div>
@@ -147,6 +154,7 @@ function PreviewRow({
   icon: ComponentType<{ className?: string }>
   label: string
 }) {
+
   return (
     <div className="flex items-center gap-2 text-xs text-slate-600">
       <Icon className="h-3.5 w-3.5 shrink-0 text-primary" />

@@ -2,12 +2,14 @@ import { Calendar, Clock, MapPin, Music } from 'lucide-react'
 import { type ComponentType } from 'react'
 import { getTemplate } from '../../data/invitation-templates'
 import type { InvitationConfig } from '../../types/invitation'
+import { useTranslation } from 'react-i18next'
 
 interface InvitationPreviewProps {
   config: InvitationConfig
 }
 
 export function InvitationPreview({ config }: InvitationPreviewProps) {
+  const { t } = useTranslation()
   const template = getTemplate(config.templateId)
   const daysUntil = getDaysUntil(config.eventDate)
 
@@ -20,7 +22,9 @@ export function InvitationPreview({ config }: InvitationPreviewProps) {
 
   return (
     <div className="sticky top-24">
-      <p className="mb-3 text-sm font-bold text-slate-900">Vista previa en tiempo real</p>
+      <p className="mb-3 text-sm font-bold text-slate-900">
+        {t('invitationpreview.vista_previa_en_tiempo_real')}
+      </p>
 
       <div className="mx-auto w-full max-w-[280px]">
         <div className="rounded-[2rem] border-[6px] border-slate-800 bg-slate-800 p-1.5 shadow-2xl">
@@ -28,7 +32,7 @@ export function InvitationPreview({ config }: InvitationPreviewProps) {
             <div className="relative h-36">
               <img
                 src={config.coverUrl}
-                alt="Portada"
+                alt={t('invitationpreview.portada')}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -44,14 +48,26 @@ export function InvitationPreview({ config }: InvitationPreviewProps) {
                 className="text-center text-[10px] font-semibold uppercase tracking-[0.2em]"
                 style={{ color: template.accentColor }}
               >
-                Estás invitado
+                {t('invitationpreview.ests_invitado')}
               </p>
 
               {config.countdownEnabled && daysUntil > 0 && (
                 <div className="mt-3 flex justify-center gap-2">
-                  <CountdownUnit value={daysUntil} label="días" color={template.accentColor} />
-                  <CountdownUnit value={12} label="hs" color={template.accentColor} />
-                  <CountdownUnit value={45} label="min" color={template.accentColor} />
+                  <CountdownUnit
+                    value={daysUntil}
+                    label={t('invitationpreview.das')}
+                    color={template.accentColor}
+                  />
+                  <CountdownUnit
+                    value={12}
+                    label={t('invitationpreview.hs')}
+                    color={template.accentColor}
+                  />
+                  <CountdownUnit
+                    value={45}
+                    label={t('invitationpreview.min')}
+                    color={template.accentColor}
+                  />
                 </div>
               )}
 
@@ -64,7 +80,7 @@ export function InvitationPreview({ config }: InvitationPreviewProps) {
               {config.musicTrack !== 'none' && (
                 <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-slate-500">
                   <Music className="h-3 w-3" />
-                  Música de fondo activa
+                  {t('invitationpreview.msica_de_fondo_activa')}
                 </div>
               )}
 
@@ -73,33 +89,24 @@ export function InvitationPreview({ config }: InvitationPreviewProps) {
                 className="mt-4 w-full rounded-xl py-2.5 text-xs font-bold text-white shadow-md"
                 style={{ backgroundColor: template.accentColor }}
               >
-                Confirmar asistencia
+                {t('invitationpreview.confirmar_asistencia')}
               </button>
             </div>
           </div>
         </div>
 
         <p className="mt-3 text-center text-[10px] text-slate-400">
-          Así verán los invitados tu invitación
+          {t('invitationpreview.as_vern_los_invitados_tu_invitacin')}
         </p>
       </div>
     </div>
   )
 }
 
-function CountdownUnit({
-  value,
-  label,
-  color,
-}: {
-  value: number
-  label: string
-  color: string
-}) {
+function CountdownUnit({ value, label, color }: { value: number; label: string; color: string }) {
+
   return (
-    <div
-      className="flex flex-col items-center rounded-lg bg-white/80 px-2.5 py-1.5 shadow-sm"
-    >
+    <div className="flex flex-col items-center rounded-lg bg-white/80 px-2.5 py-1.5 shadow-sm">
       <span className="text-sm font-bold" style={{ color }}>
         {value}
       </span>
@@ -115,6 +122,7 @@ function PreviewRow({
   icon: ComponentType<{ className?: string }>
   text: string
 }) {
+
   return (
     <div className="flex items-center gap-2 text-[11px] text-slate-600">
       <Icon className="h-3 w-3 shrink-0 text-slate-400" />

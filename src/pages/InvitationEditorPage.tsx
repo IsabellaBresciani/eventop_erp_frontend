@@ -4,10 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MOCK_EVENTS } from '../data/dashboard'
 import { getTemplate } from '../data/invitation-templates'
-import {
-  ensureInvitationConfig,
-  saveInvitationConfig,
-} from '../data/invitations-storage'
+import { ensureInvitationConfig, saveInvitationConfig } from '../data/invitations-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { InvitationConfig, InvitationTemplateId } from '../types/invitation'
 import { MUSIC_TRACKS } from '../types/invitation'
@@ -16,17 +13,17 @@ import { InvitationPreview } from '../components/invitation/InvitationPreview'
 import { LinkManager } from '../components/invitation/LinkManager'
 import { TemplateCarousel } from '../components/invitation/TemplateCarousel'
 import { Toggle } from '../components/agenda/SettingsCard'
+import { useTranslation } from 'react-i18next'
 
 export default function InvitationEditorPage() {
+  const { t } = useTranslation()
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
   const { eventId = 'evt-001' } = useParams<{ eventId: string }>()
   const fileRef = useRef<HTMLInputElement>(null)
 
   const event = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
 
-  const [config, setConfig] = useState<InvitationConfig>(() =>
-    ensureInvitationConfig(event, salon),
-  )
+  const [config, setConfig] = useState<InvitationConfig>(() => ensureInvitationConfig(event, salon))
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
@@ -63,20 +60,16 @@ export default function InvitationEditorPage() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen pb-12"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen pb-12">
       <DashboardLayout
         salonName={salon}
-        title="Editar invitación"
+        title={t('invitationeditorpage.editar_invitacin')}
         subtitle={config.eventTitle}
         action={
           <div className="flex flex-wrap items-center gap-2">
             <Link to="/dashboard/invitaciones" className="dash-btn-secondary py-2 text-sm">
               <ArrowLeft className="h-4 w-4" />
-              Volver
+              {t('invitationeditorpage.volver')}
             </Link>
             <button
               type="button"
@@ -91,17 +84,14 @@ export default function InvitationEditorPage() {
         <div className="grid gap-8 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-7">
             <div className="rounded-card border border-surface-border bg-white p-6 shadow-card">
-              <TemplateCarousel
-                selected={config.templateId}
-                onSelect={selectTemplate}
-              />
+              <TemplateCarousel selected={config.templateId} onSelect={selectTemplate} />
             </div>
 
             <div className="rounded-card border border-surface-border bg-white p-6 shadow-card">
               <div className="space-y-5">
                 <div>
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Foto de portada
+                    {t('invitationeditorpage.foto_de_portada')}
                   </label>
                   <div
                     role="button"
@@ -116,9 +106,11 @@ export default function InvitationEditorPage() {
                     <div>
                       <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
                         <Upload className="h-4 w-4 text-primary" />
-                        Cambiar portada
+                        {t('invitationeditorpage.cambiar_portada')}
                       </p>
-                      <p className="mt-0.5 text-xs text-slate-500">JPG o PNG</p>
+                      <p className="mt-0.5 text-xs text-slate-500">
+                        {t('invitationeditorpage.jpg_o_png')}
+                      </p>
                     </div>
                     <input
                       ref={fileRef}
@@ -135,7 +127,7 @@ export default function InvitationEditorPage() {
                     htmlFor="inv-title"
                     className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                   >
-                    Título del evento
+                    {t('invitationeditorpage.ttulo_del_evento')}
                   </label>
                   <input
                     id="inv-title"
@@ -152,7 +144,7 @@ export default function InvitationEditorPage() {
                       htmlFor="inv-date"
                       className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                     >
-                      Fecha
+                      {t('invitationeditorpage.fecha')}
                     </label>
                     <input
                       id="inv-date"
@@ -167,7 +159,7 @@ export default function InvitationEditorPage() {
                       htmlFor="inv-time"
                       className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                     >
-                      Horario
+                      {t('invitationeditorpage.horario')}
                     </label>
                     <input
                       id="inv-time"
@@ -175,7 +167,7 @@ export default function InvitationEditorPage() {
                       value={config.eventTime}
                       onChange={(e) => updateConfig({ eventTime: e.target.value })}
                       className="input-field"
-                      placeholder="20:00 hs"
+                      placeholder={t('invitationeditorpage.2000_hs')}
                     />
                   </div>
                 </div>
@@ -185,7 +177,7 @@ export default function InvitationEditorPage() {
                     htmlFor="inv-venue"
                     className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                   >
-                    Lugar
+                    {t('invitationeditorpage.lugar')}
                   </label>
                   <input
                     id="inv-venue"
@@ -201,7 +193,7 @@ export default function InvitationEditorPage() {
                     htmlFor="inv-music"
                     className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
                   >
-                    Música de fondo
+                    {t('invitationeditorpage.msica_de_fondo')}
                   </label>
                   <select
                     id="inv-music"
@@ -220,7 +212,7 @@ export default function InvitationEditorPage() {
                 <Toggle
                   enabled={config.countdownEnabled}
                   onChange={(countdownEnabled) => updateConfig({ countdownEnabled })}
-                  label="Cuenta regresiva"
+                  label={t('invitationeditorpage.cuenta_regresiva')}
                   description="Muestra los días restantes hasta el evento"
                 />
               </div>
@@ -237,7 +229,8 @@ export default function InvitationEditorPage() {
                 <div className="flex items-center gap-2">
                   <ImagePlus className="h-4 w-4 text-primary" />
                   <span>
-                    Evento: <strong className="text-slate-700">{event.clientName}</strong>
+                    {t('invitationeditorpage.evento')}
+                    <strong className="text-slate-700">{event.clientName}</strong>
                   </span>
                 </div>
                 <a
@@ -246,7 +239,7 @@ export default function InvitationEditorPage() {
                   rel="noopener noreferrer"
                   className="font-semibold text-primary hover:underline"
                 >
-                  Vista invitado →
+                  {t('invitationeditorpage.vista_invitado')}
                 </a>
               </div>
             </div>

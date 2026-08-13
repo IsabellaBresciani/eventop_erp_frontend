@@ -3,6 +3,7 @@ import { Check, FileText, Loader2, Mail, MessageCircle, X } from 'lucide-react'
 import { useState } from 'react'
 import { formatCurrency } from '../../data/dashboard'
 import type { Inquiry } from '../../types/messaging'
+import { useTranslation } from 'react-i18next'
 
 interface PdfGeneratorModalProps {
   inquiry: Inquiry | null
@@ -12,6 +13,7 @@ interface PdfGeneratorModalProps {
 }
 
 export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGeneratorModalProps) {
+  const { t } = useTranslation()
   const [step, setStep] = useState<'preview' | 'sending' | 'done'>('preview')
   const [channel, setChannel] = useState<'email' | 'whatsapp' | 'both'>('both')
 
@@ -53,9 +55,15 @@ export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGener
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <FileText className="h-5 w-5 text-primary" />
-                <h3 className="font-bold text-slate-900">Generar Presupuesto PDF</h3>
+                <h3 className="font-bold text-slate-900">
+                  {t('pdfgeneratormodal.generar_presupuesto_pdf')}
+                </h3>
               </div>
-              <button type="button" onClick={reset} className="rounded-lg p-1.5 text-slate-400 hover:bg-surface">
+              <button
+                type="button"
+                onClick={reset}
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-surface"
+              >
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -64,28 +72,43 @@ export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGener
               <>
                 <div className="rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-white p-5">
                   <div className="mb-3 flex items-center justify-between border-b border-surface-border pb-3">
-                    <span className="text-lg font-bold text-primary">EvenTop</span>
-                    <span className="text-xs text-slate-400">RF-006</span>
+                    <span className="text-lg font-bold text-primary">
+                      {t('pdfgeneratormodal.eventop')}
+                    </span>
+                    <span className="text-xs text-slate-400">{t('pdfgeneratormodal.rf006')}</span>
                   </div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Presupuesto formal
+                    {t('pdfgeneratormodal.presupuesto_formal')}
                   </p>
                   <h4 className="mt-1 text-lg font-bold text-slate-900">{inquiry.clientName}</h4>
                   <div className="mt-3 space-y-1 text-sm text-slate-600">
-                    <p>Evento: <strong>{inquiry.eventType}</strong></p>
-                    <p>Fecha: <strong>{formatDate(inquiry.eventDate)}</strong></p>
-                    <p>Invitados: <strong>{inquiry.guests}</strong></p>
+                    <p>
+                      {t('pdfgeneratormodal.evento')}
+                      <strong>{inquiry.eventType}</strong>
+                    </p>
+                    <p>
+                      {t('pdfgeneratormodal.fecha')}
+                      <strong>{formatDate(inquiry.eventDate)}</strong>
+                    </p>
+                    <p>
+                      {t('pdfgeneratormodal.invitados')}
+                      <strong>{inquiry.guests}</strong>
+                    </p>
                   </div>
                   <div className="mt-4 border-t border-surface-border pt-3">
                     <p className="text-2xl font-bold text-slate-900">
                       {formatCurrency(inquiry.estimatedBudget ?? 0)}
                     </p>
-                    <p className="text-xs text-slate-500">Seña 30% · Validez 48hs</p>
+                    <p className="text-xs text-slate-500">
+                      {t('pdfgeneratormodal.sea_30_validez_48hs')}
+                    </p>
                   </div>
                 </div>
 
                 <div className="mt-4">
-                  <p className="mb-2 text-xs font-semibold text-slate-500">Enviar por</p>
+                  <p className="mb-2 text-xs font-semibold text-slate-500">
+                    {t('pdfgeneratormodal.enviar_por')}
+                  </p>
                   <div className="grid grid-cols-3 gap-2">
                     {(
                       [
@@ -113,7 +136,7 @@ export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGener
 
                 <button type="button" onClick={handleSend} className="btn-primary mt-5 w-full">
                   <FileText className="h-4 w-4" />
-                  Generar y enviar presupuesto
+                  {t('pdfgeneratormodal.generar_y_enviar_presupuesto')}
                 </button>
               </>
             )}
@@ -121,8 +144,13 @@ export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGener
             {step === 'sending' && (
               <div className="py-10 text-center">
                 <Loader2 className="mx-auto h-10 w-10 animate-spin text-primary" />
-                <p className="mt-4 font-medium text-slate-800">Generando PDF...</p>
-                <p className="text-sm text-slate-500">Enviando a {inquiry.email}</p>
+                <p className="mt-4 font-medium text-slate-800">
+                  {t('pdfgeneratormodal.generando_pdf')}
+                </p>
+                <p className="text-sm text-slate-500">
+                  {t('pdfgeneratormodal.enviando_a')}
+                  {inquiry.email}
+                </p>
               </div>
             )}
 
@@ -131,9 +159,12 @@ export function PdfGeneratorModal({ inquiry, isOpen, onClose, onSent }: PdfGener
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
                   <Check className="h-6 w-6 text-emerald-600" />
                 </div>
-                <p className="font-bold text-slate-900">¡Presupuesto enviado!</p>
+                <p className="font-bold text-slate-900">
+                  {t('pdfgeneratormodal.presupuesto_enviado')}
+                </p>
                 <p className="mt-1 text-sm text-slate-500">
-                  PDF enviado por {channel === 'both' ? 'email y WhatsApp' : channel}
+                  {t('pdfgeneratormodal.pdf_enviado_por')}
+                  {channel === 'both' ? 'email y WhatsApp' : channel}
                 </p>
               </div>
             )}

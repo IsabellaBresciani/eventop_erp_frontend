@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Mail, UserPlus, X } from 'lucide-react'
 import { type FormEvent, type ReactNode, useEffect, useState } from 'react'
 import type { EmployeeFormData } from '../../types/employees'
+import { useTranslation } from 'react-i18next'
 
 interface EmployeeFormModalProps {
   isOpen: boolean
@@ -26,6 +27,7 @@ export function EmployeeFormModal({
   initial,
   title = 'Nuevo empleado',
 }: EmployeeFormModalProps) {
+  const { t } = useTranslation()
   const [form, setForm] = useState<EmployeeFormData>(initial ?? EMPTY)
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export function EmployeeFormModal({
             onClick={onClose}
             aria-label="Cerrar"
           />
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div className="pointer-events-none fixed inset-0 z-50 flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.97, y: 16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -71,7 +73,7 @@ export function EmployeeFormModal({
                     <div>
                       <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
                       <p className="mt-0.5 text-[13px] text-slate-500">
-                        Completá los datos del miembro del equipo
+                        {t('employeeformmodal.complet_los_datos_del_miembro_del_equipo')}
                       </p>
                     </div>
                   </div>
@@ -85,34 +87,37 @@ export function EmployeeFormModal({
                 </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="max-h-[min(70vh,640px)] overflow-y-auto px-6 py-5">
+              <form
+                onSubmit={handleSubmit}
+                className="max-h-[min(70vh,640px)] overflow-y-auto px-6 py-5"
+              >
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <Field label="Nombre" htmlFor="emp-first-name">
+                    <Field label={t('employeeformmodal.nombre')} htmlFor="emp-first-name">
                       <input
                         id="emp-first-name"
                         required
                         value={form.firstName}
                         onChange={(e) => update({ firstName: e.target.value })}
                         className="input-field"
-                        placeholder="María"
+                        placeholder={t('employeeformmodal.mara')}
                         autoComplete="given-name"
                       />
                     </Field>
-                    <Field label="Apellido" htmlFor="emp-last-name">
+                    <Field label={t('employeeformmodal.apellido')} htmlFor="emp-last-name">
                       <input
                         id="emp-last-name"
                         required
                         value={form.lastName}
                         onChange={(e) => update({ lastName: e.target.value })}
                         className="input-field"
-                        placeholder="González"
+                        placeholder={t('employeeformmodal.gonzlez')}
                         autoComplete="family-name"
                       />
                     </Field>
                   </div>
 
-                  <Field label="DNI" htmlFor="emp-dni">
+                  <Field label={t('employeeformmodal.dni')} htmlFor="emp-dni">
                     <input
                       id="emp-dni"
                       required
@@ -124,7 +129,7 @@ export function EmployeeFormModal({
                     />
                   </Field>
 
-                  <Field label="Email" htmlFor="emp-email">
+                  <Field label={t('employeeformmodal.email')} htmlFor="emp-email">
                     <input
                       id="emp-email"
                       required
@@ -132,12 +137,12 @@ export function EmployeeFormModal({
                       value={form.email}
                       onChange={(e) => update({ email: e.target.value })}
                       className="input-field"
-                      placeholder="empleado@salon.com"
+                      placeholder={t('employeeformmodal.empleadosaloncom')}
                       autoComplete="email"
                     />
                   </Field>
 
-                  <Field label="Teléfono" htmlFor="emp-phone">
+                  <Field label={t('employeeformmodal.telfono')} htmlFor="emp-phone">
                     <input
                       id="emp-phone"
                       required
@@ -153,18 +158,21 @@ export function EmployeeFormModal({
                   <div className="flex items-start gap-2.5 rounded-xl border border-primary/10 bg-primary/5 px-4 py-3">
                     <Mail className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                     <p className="text-[12px] leading-relaxed text-slate-600">
-                      Al guardar, el empleado recibirá un email de invitación con acceso al ERP para
-                      ver sus eventos asignados.
+                      {t('employeeformmodal.al_guardar_el_empleado_recibir_un_email_')}
                     </p>
                   </div>
                 </div>
 
                 <div className="mt-6 flex flex-col-reverse gap-2 border-t border-black/[0.05] pt-5 sm:flex-row sm:justify-end">
-                  <button type="button" onClick={onClose} className="dash-btn-secondary w-full sm:w-auto">
-                    Cancelar
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="dash-btn-secondary w-full sm:w-auto"
+                  >
+                    {t('employeeformmodal.cancelar')}
                   </button>
                   <button type="submit" className="dash-btn-primary w-full sm:w-auto">
-                    Guardar empleado
+                    {t('employeeformmodal.guardar_empleado')}
                   </button>
                 </div>
               </form>
@@ -185,6 +193,7 @@ function Field({
   htmlFor: string
   children: ReactNode
 }) {
+
   return (
     <label htmlFor={htmlFor} className="block">
       <span className="mb-1.5 block text-[13px] font-medium text-slate-700">{label}</span>

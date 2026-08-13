@@ -3,6 +3,7 @@ import { type ComponentType, type ReactNode, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { CalendarEvent } from '../../types/dashboard'
 import { getCountdown } from '../../data/dashboard'
+import { useTranslation } from 'react-i18next'
 
 interface KpiCardsProps {
   nextEvent: CalendarEvent | null
@@ -16,12 +17,18 @@ const CARD_THEMES = [
 ] as const
 
 export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
+  const { t } = useTranslation()
   const [weekendAvailable, setWeekendAvailable] = useState(true)
   const countdown = nextEvent ? getCountdown(nextEvent.date) : null
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <KpiCard icon={CalendarClock} title="Próximo evento" theme={CARD_THEMES[0]} onClick={() => {}}>
+      <KpiCard
+        icon={CalendarClock}
+        title={t('kpicards.prximo_evento')}
+        theme={CARD_THEMES[0]}
+        onClick={() => {}}
+      >
         {nextEvent ? (
           <>
             <p className="text-xl font-semibold tracking-tight text-slate-900">
@@ -32,40 +39,43 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
             </p>
             {countdown && (
               <div className="mt-4 flex gap-2">
-                <CountdownUnit value={countdown.days} label="días" />
-                <CountdownUnit value={countdown.hours} label="hs" />
-                <CountdownUnit value={countdown.minutes} label="min" />
+                <CountdownUnit value={countdown.days} label={t('kpicards.das')} />
+                <CountdownUnit value={countdown.hours} label={t('kpicards.hs')} />
+                <CountdownUnit value={countdown.minutes} label={t('kpicards.min')} />
               </div>
             )}
           </>
         ) : (
-          <p className="text-sm text-slate-500">No hay eventos próximos</p>
+          <p className="text-sm text-slate-500">{t('kpicards.no_hay_eventos_prximos')}</p>
         )}
       </KpiCard>
 
       <KpiCard
         icon={Inbox}
-        title="Consultas"
+        title={t('kpicards.consultas')}
         theme={CARD_THEMES[1]}
         badge={pendingQueries > 0 ? pendingQueries : undefined}
         to="/dashboard/mensajeria"
       >
         <p className="text-3xl font-semibold tracking-tight text-slate-900">{pendingQueries}</p>
         <p className="mt-1 text-sm text-slate-500">
-          {pendingQueries === 1 ? 'nueva consulta' : 'nuevas consultas'} · 3 presupuestos por enviar
+          {pendingQueries === 1 ? 'nueva consulta' : 'nuevas consultas'}{' '}
+          {t('kpicards.3_presupuestos_por_enviar')}
         </p>
       </KpiCard>
 
       <KpiCard
         icon={weekendAvailable ? ToggleRight : ToggleLeft}
-        title="Disponibilidad"
+        title={t('kpicards.disponibilidad')}
         theme={CARD_THEMES[2]}
         className="sm:col-span-2 lg:col-span-1"
         onClick={() => setWeekendAvailable(!weekendAvailable)}
       >
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-lg font-semibold text-slate-900">Este fin de semana</p>
+            <p className="text-lg font-semibold text-slate-900">
+              {t('kpicards.este_fin_de_semana')}
+            </p>
             <span
               className={`mt-2 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
                 weekendAvailable
@@ -118,6 +128,7 @@ function KpiCard({
   onClick?: () => void
   to?: string
 }) {
+
   const cardClass = `group w-full rounded-bento border bg-gradient-to-br p-6 text-left shadow-soft transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-elevated ${theme} ${className}`
 
   const content = (
@@ -157,6 +168,7 @@ function KpiCard({
 }
 
 function CountdownUnit({ value, label }: { value: number; label: string }) {
+
   return (
     <div className="flex flex-col items-center rounded-2xl bg-white/70 px-3.5 py-2 shadow-soft">
       <span className="text-lg font-semibold text-primary">{value}</span>

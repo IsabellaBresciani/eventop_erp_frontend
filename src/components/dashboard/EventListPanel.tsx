@@ -1,18 +1,11 @@
 import { motion } from 'framer-motion'
-import {
-  ArrowRight,
-  Calendar,
-  ChevronDown,
-  Clock,
-  Search,
-  Users,
-  X,
-} from 'lucide-react'
+import { ArrowRight, Calendar, ChevronDown, Clock, Search, Users, X } from 'lucide-react'
 import { useMemo } from 'react'
 import { EVENT_STATUS_CONFIG, formatCurrency } from '../../data/dashboard'
 import { TablePagination } from '../ui/TablePagination'
 import { usePagination } from '../../hooks/usePagination'
 import type { CalendarEvent, EventStatus } from '../../types/dashboard'
+import { useTranslation } from 'react-i18next'
 
 export interface EventListFilters {
   query: string
@@ -37,7 +30,7 @@ const STATUS_OPTIONS = [
     value,
     label,
   })),
-] 
+]
 
 const PAGE_SIZE = 6
 
@@ -51,6 +44,7 @@ export function EventListPanel({
   onSelectEvent,
   eventTypes,
 }: EventListPanelProps) {
+  const { t } = useTranslation()
   const hasActiveFilters =
     filters.query.trim() !== '' ||
     filters.status !== 'all' ||
@@ -64,10 +58,7 @@ export function EventListPanel({
   )
 
   const sortedEvents = useMemo(
-    () =>
-      [...events].sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      ),
+    () => [...events].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
     [events],
   )
 
@@ -94,7 +85,7 @@ export function EventListPanel({
               type="search"
               value={filters.query}
               onChange={(e) => onFiltersChange({ query: e.target.value })}
-              placeholder="Buscar por evento o cliente..."
+              placeholder={t('eventlistpanel.buscar_por_evento_o_cliente')}
               className="catalog-search w-full rounded-full py-2.5 pl-11"
             />
           </div>
@@ -153,7 +144,7 @@ export function EventListPanel({
                 onClick={clearFilters}
                 className="text-xs font-semibold text-primary transition-colors hover:text-primary-600"
               >
-                Limpiar filtros
+                {t('eventlistpanel.limpiar_filtros')}
               </button>
             )}
           </div>
@@ -163,8 +154,12 @@ export function EventListPanel({
           {sortedEvents.length === 0 ? (
             <div className="catalog-empty col-span-full">
               <Calendar className="mb-3 h-9 w-9 text-slate-300" strokeWidth={1.5} />
-              <p className="text-sm font-medium text-slate-600">No hay eventos que coincidan</p>
-              <p className="mt-1 text-xs text-slate-400">Probá con otros términos o filtros</p>
+              <p className="text-sm font-medium text-slate-600">
+                {t('eventlistpanel.no_hay_eventos_que_coincidan')}
+              </p>
+              <p className="mt-1 text-xs text-slate-400">
+                {t('eventlistpanel.prob_con_otros_trminos_o_filtros')}
+              </p>
             </div>
           ) : (
             paginatedItems.map((event, index) => (
@@ -201,6 +196,7 @@ function ToolbarSelect({
   onChange: (value: string) => void
   options: { value: string; label: string }[]
 }) {
+
   return (
     <div className="relative w-full shrink-0 lg:w-auto lg:min-w-[11.5rem]">
       <select
@@ -229,6 +225,7 @@ function EventCard({
   index: number
   onSelect: () => void
 }) {
+  const { t } = useTranslation()
   const status = EVENT_STATUS_CONFIG[event.status]
 
   return (
@@ -259,9 +256,10 @@ function EventCard({
       </h3>
 
       <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-slate-500">
-        Evento de {event.eventType.toLowerCase()} con {event.guests} invitados. Horario{' '}
-        {event.startTime} – {event.endTime} hs. Presupuesto total{' '}
-        {formatCurrency(event.totalAmount)}.
+        {t('eventlistpanel.evento_de')}
+        {event.eventType.toLowerCase()} {t('eventlistpanel.con')}
+        {event.guests} {t('eventlistpanel.invitados_horario')} {event.startTime} – {event.endTime}{' '}
+        {t('eventlistpanel.hs_presupuesto_total')} {formatCurrency(event.totalAmount)}.
       </p>
 
       <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-4">
@@ -274,13 +272,10 @@ function EventCard({
             <Clock className="h-3.5 w-3.5" />
             {event.startTime}
           </span>
-          <span
-            className="h-2 w-2 rounded-full"
-            style={{ backgroundColor: status.color }}
-          />
+          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: status.color }} />
         </div>
         <span className="flex items-center gap-1 text-sm font-semibold text-primary">
-          Ver
+          {t('eventlistpanel.ver')}
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </span>
       </div>

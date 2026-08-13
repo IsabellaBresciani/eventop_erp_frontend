@@ -1,6 +1,5 @@
 import type { ManagedSalon } from '../types/auth'
 
-/** Salones demo asociados al admin */
 export const DEMO_ADMIN_SALONS: ManagedSalon[] = [
   {
     id: 'salon-olivos',

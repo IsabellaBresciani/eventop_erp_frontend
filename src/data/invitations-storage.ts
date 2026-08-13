@@ -28,17 +28,12 @@ export function loadInvitationConfig(eventId: string): InvitationConfig | null {
   try {
     const stored = localStorage.getItem(`${INVITATION_STORAGE_PREFIX}${eventId}`)
     if (stored) return JSON.parse(stored) as InvitationConfig
-  } catch {
-    /* ignore */
-  }
+  } catch {}
   return null
 }
 
 export function saveInvitationConfig(config: InvitationConfig): void {
-  localStorage.setItem(
-    `${INVITATION_STORAGE_PREFIX}${config.eventId}`,
-    JSON.stringify(config),
-  )
+  localStorage.setItem(`${INVITATION_STORAGE_PREFIX}${config.eventId}`, JSON.stringify(config))
 }
 
 export function ensureInvitationConfig(
@@ -155,9 +150,7 @@ export function loadRsvps(eventId: string): GuestConfirmation[] {
       localStorage.setItem(seedKey(eventId), '1')
       return seed
     }
-  } catch {
-    /* ignore */
-  }
+  } catch {}
   return (SEED_RSVPS[eventId] ?? []).map(normalizeGuest)
 }
 
@@ -175,9 +168,7 @@ export function addRsvp(eventId: string, guest: GuestConfirmation): GuestConfirm
 export function upsertRsvp(eventId: string, guest: GuestConfirmation): GuestConfirmation[] {
   const current = loadRsvps(eventId)
   const exists = current.some((g) => g.id === guest.id)
-  const next = exists
-    ? current.map((g) => (g.id === guest.id ? guest : g))
-    : [...current, guest]
+  const next = exists ? current.map((g) => (g.id === guest.id ? guest : g)) : [...current, guest]
   saveRsvps(eventId, next)
   return next
 }
@@ -201,7 +192,9 @@ export function createEmptyGuest(): GuestConfirmation {
   }
 }
 
-export function getInvitationListItems(events: CalendarEvent[] = MOCK_EVENTS): InvitationListItem[] {
+export function getInvitationListItems(
+  events: CalendarEvent[] = MOCK_EVENTS,
+): InvitationListItem[] {
   return [...events]
     .sort((a, b) => a.date.localeCompare(b.date))
     .map((event) => {

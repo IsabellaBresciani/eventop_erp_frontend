@@ -20,9 +20,7 @@ export function loadCalendarSettings(): CalendarSettings {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) return { ...DEFAULT_CALENDAR_SETTINGS, ...JSON.parse(stored) }
-  } catch {
-    /* use defaults */
-  }
+  } catch {}
   return DEFAULT_CALENDAR_SETTINGS
 }
 

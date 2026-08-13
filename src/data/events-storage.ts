@@ -3,7 +3,6 @@ import { MOCK_EVENTS } from './event-details'
 
 const STORAGE_KEY = 'eventop_calendar_events'
 
-/** Asignaciones demo iniciales */
 const DEFAULT_ASSIGNMENTS: Record<string, string[]> = {
   'evt-001': ['emp-001', 'emp-002'],
   'evt-003': ['emp-001'],
@@ -15,9 +14,7 @@ export function loadEvents(): CalendarEvent[] {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) return JSON.parse(stored) as CalendarEvent[]
-  } catch {
-    /* use defaults */
-  }
+  } catch {}
 
   return MOCK_EVENTS.map((event) => ({
     ...event,

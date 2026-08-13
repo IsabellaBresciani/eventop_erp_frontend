@@ -18,6 +18,7 @@ import {
 } from '../../data/messaging'
 import { INQUIRY_SOURCE_LABELS, type Inquiry, type InquiryStatus } from '../../types/messaging'
 import { PdfGeneratorModal } from './PdfGeneratorModal'
+import { useTranslation } from 'react-i18next'
 
 interface InquiryDetailProps {
   inquiry: Inquiry | null
@@ -32,6 +33,7 @@ const STATUS_ACTIONS: { id: InquiryStatus; label: string }[] = [
 ]
 
 export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
+  const { t } = useTranslation()
   const [pdfOpen, setPdfOpen] = useState(false)
   const [statusMenuOpen, setStatusMenuOpen] = useState(false)
 
@@ -40,7 +42,9 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
       <div className="flex h-full items-center justify-center rounded-card border border-surface-border bg-white shadow-card">
         <div className="text-center">
           <Inbox className="mx-auto h-12 w-12 text-slate-300" />
-          <p className="mt-3 text-sm text-slate-500">Seleccioná una consulta para ver el detalle</p>
+          <p className="mt-3 text-sm text-slate-500">
+            {t('inquirydetail.seleccion_una_consulta_para_ver_el_detal')}
+          </p>
         </div>
       </div>
     )
@@ -66,10 +70,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
   }
 
   const toggleArchive = () => {
-    onStatusChange(
-      inquiry.id,
-      inquiry.status === 'archivada' ? 'leida' : 'archivada',
-    )
+    onStatusChange(inquiry.id, inquiry.status === 'archivada' ? 'leida' : 'archivada')
   }
 
   return (
@@ -80,7 +81,9 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-lg font-bold text-slate-900">{inquiry.clientName}</h2>
-                <span className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${status.bg} ${status.text}`}>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${status.bg} ${status.text}`}
+                >
                   {status.label}
                 </span>
                 <span className="rounded-full bg-surface px-2.5 py-1 text-[10px] font-semibold text-slate-500">
@@ -88,17 +91,20 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-500">
-                {inquiry.eventType} · {inquiry.guests} invitados · {formatInquiryDate(inquiry.eventDate)}
+                {inquiry.eventType} · {inquiry.guests} {t('inquirydetail.invitados')}{' '}
+                {formatInquiryDate(inquiry.eventDate)}
               </p>
               <p className="mt-1 text-xs text-slate-400">
-                Recibida {formatReceivedAt(inquiry.receivedAt)} · {inquiry.lastActivity}
+                {t('inquirydetail.recibida')}
+                {formatReceivedAt(inquiry.receivedAt)} · {inquiry.lastActivity}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2">
               {inquiry.estimatedBudget != null && (
                 <span className="text-sm font-bold text-primary">
-                  Est. {formatCurrency(inquiry.estimatedBudget)}
+                  {t('inquirydetail.est')}
+                  {formatCurrency(inquiry.estimatedBudget)}
                 </span>
               )}
               <div className="relative">
@@ -110,7 +116,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
                   aria-haspopup="menu"
                 >
                   <MoreHorizontal className="h-4 w-4" />
-                  Estado
+                  {t('inquirydetail.estado')}
                 </button>
                 {statusMenuOpen && (
                   <>
@@ -162,7 +168,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
         <div className="flex-1 space-y-5 overflow-y-auto p-5">
           <section>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Mensaje del cliente
+              {t('inquirydetail.mensaje_del_cliente')}
             </h3>
             <div className="mt-2 rounded-xl border border-surface-border bg-surface/40 px-4 py-3">
               <p className="whitespace-pre-wrap text-sm leading-relaxed text-slate-800">
@@ -173,7 +179,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
 
           <section>
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Contacto
+              {t('inquirydetail.contacto')}
             </h3>
             <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-600">
               <span className="flex items-center gap-1.5">
@@ -188,9 +194,11 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
           </section>
 
           <section className="rounded-xl border border-dashed border-primary/25 bg-primary/[0.03] p-4">
-            <h3 className="text-sm font-bold text-slate-900">Responder por fuera de EvenTop</h3>
+            <h3 className="text-sm font-bold text-slate-900">
+              {t('inquirydetail.responder_por_fuera_de_eventop')}
+            </h3>
             <p className="mt-1 text-xs text-slate-500">
-              Abrí WhatsApp o el correo con un borrador listo. El seguimiento queda en esta bandeja.
+              {t('inquirydetail.abr_whatsapp_o_el_correo_con_un_borrador')}
             </p>
             <div className="mt-4 flex flex-col gap-2 sm:flex-row">
               <a
@@ -201,7 +209,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               >
                 <MessageCircle className="h-4 w-4" />
-                Responder por WhatsApp
+                {t('inquirydetail.responder_por_whatsapp')}
               </a>
               <a
                 href={mailtoUrl}
@@ -209,7 +217,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-surface-border bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-surface"
               >
                 <Mail className="h-4 w-4" />
-                Responder por email
+                {t('inquirydetail.responder_por_email')}
               </a>
             </div>
           </section>
@@ -222,7 +230,7 @@ export function InquiryDetail({ inquiry, onStatusChange }: InquiryDetailProps) {
             className="btn-primary w-full sm:w-auto"
           >
             <FileText className="h-4 w-4" />
-            Generar presupuesto PDF
+            {t('inquirydetail.generar_presupuesto_pdf')}
           </button>
         </div>
       </div>

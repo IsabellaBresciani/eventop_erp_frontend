@@ -10,6 +10,7 @@ import type { ComponentType } from 'react'
 import { Link } from 'react-router-dom'
 import { SALON_TYPE_OPTIONS } from '../../data/salon-profile-defaults'
 import type { ProfileStep, SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 export const PROFILE_SETTINGS_NAV: {
   id: ProfileStep
@@ -29,11 +30,8 @@ interface ProfileCoverHeaderProps {
   onEditPhotos?: () => void
 }
 
-export function ProfileCoverHeader({
-  profile,
-  progress,
-  onEditPhotos,
-}: ProfileCoverHeaderProps) {
+export function ProfileCoverHeader({ profile, progress, onEditPhotos }: ProfileCoverHeaderProps) {
+  const { t } = useTranslation()
   const cover = profile.photos.find((p) => p.isCover) ?? profile.photos[0]
   const avatar = profile.photos.find((p) => !p.isCover) ?? cover
   const typeLabels = profile.types
@@ -47,7 +45,7 @@ export function ProfileCoverHeader({
           <img src={cover.url} alt="" className="h-full w-full object-cover" />
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-primary/20 to-primary-800/30 text-sm font-medium text-white/80">
-            Agregá una foto de portada
+            {t('profilesettingsshell.agreg_una_foto_de_portada')}
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
@@ -69,7 +67,7 @@ export function ProfileCoverHeader({
             type="button"
             onClick={onEditPhotos}
             disabled={!onEditPhotos}
-            className="group relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-md sm:h-32 sm:w-32 disabled:cursor-default"
+            className="group relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-white bg-slate-100 shadow-md disabled:cursor-default sm:h-32 sm:w-32"
             aria-label="Cambiar foto de perfil"
           >
             {avatar ? (
@@ -95,9 +93,7 @@ export function ProfileCoverHeader({
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <span
                 className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${
-                  progress >= 80
-                    ? 'bg-emerald-50 text-emerald-700'
-                    : 'bg-primary/10 text-primary'
+                  progress >= 80 ? 'bg-emerald-50 text-emerald-700' : 'bg-primary/10 text-primary'
                 }`}
               >
                 {progress}%
@@ -107,7 +103,7 @@ export function ProfileCoverHeader({
                 target="_blank"
                 className="text-xs font-semibold text-primary hover:underline"
               >
-                Ver perfil público
+                {t('profilesettingsshell.ver_perfil_pblico')}
               </Link>
             </div>
           </div>
@@ -128,6 +124,7 @@ export function ProfileSettingsNav({
   onSelect,
   sectionHasError,
 }: ProfileSettingsNavProps) {
+
   return (
     <nav className="space-y-1" aria-label="Secciones del perfil">
       {PROFILE_SETTINGS_NAV.map(({ id, label, icon: Icon }) => {

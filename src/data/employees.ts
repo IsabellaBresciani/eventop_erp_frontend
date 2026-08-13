@@ -34,9 +34,7 @@ export function loadEmployees(): Employee[] {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) return JSON.parse(stored) as Employee[]
-  } catch {
-    /* use defaults */
-  }
+  } catch {}
   return DEFAULT_EMPLOYEES
 }
 
@@ -67,7 +65,10 @@ export function createEmployee(data: EmployeeFormData): Employee {
   return employee
 }
 
-export function updateEmployee(id: string, patch: Partial<EmployeeFormData> & { active?: boolean }): Employee | null {
+export function updateEmployee(
+  id: string,
+  patch: Partial<EmployeeFormData> & { active?: boolean },
+): Employee | null {
   const employees = loadEmployees()
   const index = employees.findIndex((e) => e.id === id)
   if (index === -1) return null
@@ -76,9 +77,7 @@ export function updateEmployee(id: string, patch: Partial<EmployeeFormData> & { 
     ...employees[index],
     ...patch,
     tempPassword:
-      patch.dni !== undefined
-        ? generateTempPassword(patch.dni)
-        : employees[index].tempPassword,
+      patch.dni !== undefined ? generateTempPassword(patch.dni) : employees[index].tempPassword,
   }
   employees[index] = updated
   saveEmployees(employees)
@@ -90,9 +89,7 @@ export function deleteEmployee(id: string): void {
 }
 
 export function findEmployeeByEmail(email: string): Employee | undefined {
-  return loadEmployees().find(
-    (e) => e.email.toLowerCase() === email.toLowerCase() && e.active,
-  )
+  return loadEmployees().find((e) => e.email.toLowerCase() === email.toLowerCase() && e.active)
 }
 
 export function authenticateEmployee(email: string, password: string): Employee | null {
@@ -101,7 +98,6 @@ export function authenticateEmployee(email: string, password: string): Employee 
   return employee
 }
 
-/** Simula el envío del email de invitación al empleado */
 export function sendEmployeeInviteEmail(employee: Employee): void {
   console.info(
     `[EvenTop] Email de invitación enviado a ${employee.email} — contraseña temporal: ${employee.tempPassword}`,

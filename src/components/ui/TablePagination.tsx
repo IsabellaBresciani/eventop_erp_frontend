@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface TablePaginationProps {
   page: number
@@ -21,6 +22,7 @@ export function TablePagination({
   itemLabel = 'resultados',
   className = '',
 }: TablePaginationProps) {
+  const { t } = useTranslation()
   if (totalItems <= pageSize) return null
 
   const rangeStart = (page - 1) * pageSize + 1
@@ -33,7 +35,9 @@ export function TablePagination({
       aria-label="Paginación de tabla"
     >
       <p className="text-[13px] text-apple-label">
-        Mostrando {rangeStart}–{rangeEnd} de {totalItems} {itemLabel}
+        {t('tablepagination.mostrando')}
+        {rangeStart}–{rangeEnd} {t('tablepagination.de')}
+        {totalItems} {itemLabel}
       </p>
 
       <div className="flex items-center gap-1">

@@ -3,6 +3,7 @@ import { Eye, EyeOff, Lock, Mail, User, X } from 'lucide-react'
 import { type FormEvent, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Logo } from './Logo'
+import { useTranslation } from 'react-i18next'
 
 type AuthMode = 'login' | 'register'
 
@@ -13,6 +14,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthModalProps) {
+  const { t } = useTranslation()
   const [mode, setMode] = useState<AuthMode>(initialMode)
   const [showPassword, setShowPassword] = useState(false)
 
@@ -72,7 +74,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                     : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
-                Registrarse
+                {t('authmodal.registrarse')}
               </button>
               <button
                 type="button"
@@ -83,7 +85,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                     : 'text-slate-500 hover:text-slate-700'
                 }`}
               >
-                Iniciar sesión
+                {t('authmodal.iniciar_sesin')}
               </button>
             </div>
 
@@ -102,7 +104,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                   <User className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="Nombre del salón"
+                    placeholder={t('authmodal.nombre_del_saln')}
                     className="input-field pl-10"
                     required
                   />
@@ -113,7 +115,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                 <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="email"
-                  placeholder="Correo electrónico"
+                  placeholder={t('authmodal.correo_electrnico')}
                   className="input-field pl-10"
                   required
                 />
@@ -123,7 +125,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                 <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Contraseña"
+                  placeholder={t('authmodal.contrasea')}
                   className="input-field pl-10 pr-10"
                   required
                 />
@@ -139,8 +141,12 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
 
               {mode === 'login' && (
                 <div className="text-right">
-                  <Link to="/login" onClick={onClose} className="text-xs font-medium text-primary hover:underline">
-                    ¿Olvidaste tu contraseña?
+                  <Link
+                    to="/login"
+                    onClick={onClose}
+                    className="text-xs font-medium text-primary hover:underline"
+                  >
+                    {t('authmodal.olvidaste_tu_contrasea')}
                   </Link>
                 </div>
               )}
@@ -155,7 +161,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                 <div className="w-full border-t border-surface-border" />
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="bg-white px-3 text-slate-400">o continúa con</span>
+                <span className="bg-white px-3 text-slate-400">{t('authmodal.o_contina_con')}</span>
               </div>
             </div>
 
@@ -178,7 +184,7 @@ export function AuthModal({ isOpen, onClose, initialMode = 'register' }: AuthMod
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              Continuar con Google
+              {t('authmodal.continuar_con_google')}
             </button>
           </motion.div>
         </motion.div>

@@ -1,12 +1,17 @@
 import { ChevronLeft, ChevronRight, Plus, Settings, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { type CalendarViewMode, loadCalendarSettings } from '../../data/calendar-settings'
 import {
-  type CalendarViewMode,
-  loadCalendarSettings,
-} from '../../data/calendar-settings'
-import { EVENT_STATUS_CONFIG, addDays, getPeriodLabel, getWeekStart, groupEventsByDate, toDateKey } from '../../data/dashboard'
+  EVENT_STATUS_CONFIG,
+  addDays,
+  getPeriodLabel,
+  getWeekStart,
+  groupEventsByDate,
+  toDateKey,
+} from '../../data/dashboard'
 import type { CalendarEvent, EventStatus } from '../../types/dashboard'
+import { useTranslation } from 'react-i18next'
 
 export type { CalendarViewMode }
 
@@ -47,6 +52,7 @@ export function OperationalCalendar({
   onStatusFilterChange,
   onNewEvent,
 }: OperationalCalendarProps) {
+  const { t } = useTranslation()
   const [settings] = useState(loadCalendarSettings)
 
   const eventsByDate = useMemo(() => groupEventsByDate(events), [events])
@@ -88,7 +94,7 @@ export function OperationalCalendar({
       <div className="border-b border-black/[0.05] px-6 py-5 sm:px-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="dash-section-label">Calendario</p>
+            <p className="dash-section-label">{t('operationalcalendar.calendario')}</p>
             <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-slate-900">
               {periodLabel}
             </h2>
@@ -99,7 +105,7 @@ export function OperationalCalendar({
             {onNewEvent && (
               <button type="button" onClick={onNewEvent} className="dash-btn-primary">
                 <Plus className="h-4 w-4" />
-                Nuevo evento
+                {t('operationalcalendar.nuevo_evento')}
               </button>
             )}
 
@@ -128,7 +134,7 @@ export function OperationalCalendar({
               to="/dashboard/agenda"
               className="rounded-apple bg-black/[0.04] p-2.5 text-slate-600 transition-colors hover:bg-black/[0.06] hover:text-slate-800"
               aria-label="Configuración avanzada de agenda"
-              title="Configuración avanzada de agenda"
+              title={t('operationalcalendar.configuracin_avanzada_de_agenda')}
             >
               <Settings className="h-5 w-5" />
             </Link>
@@ -163,11 +169,7 @@ export function OperationalCalendar({
                           }
                         : undefined
                     }
-                    title={
-                      active
-                        ? `Quitar filtro: ${label}`
-                        : `Filtrar calendario: ${label}`
-                    }
+                    title={active ? `Quitar filtro: ${label}` : `Filtrar calendario: ${label}`}
                   >
                     <span className="h-2 w-2 rounded-full" style={{ backgroundColor: color }} />
                     {label}
@@ -179,7 +181,7 @@ export function OperationalCalendar({
             {statusFilter !== 'all' && (
               <div className="flex items-center gap-2 text-xs text-slate-500">
                 <span>
-                  Mostrando solo:{' '}
+                  {t('operationalcalendar.mostrando_solo')}{' '}
                   <strong className="text-slate-800">
                     {EVENT_STATUS_CONFIG[statusFilter].label}
                   </strong>
@@ -190,7 +192,7 @@ export function OperationalCalendar({
                   className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 font-semibold text-slate-600 transition-colors hover:bg-slate-200"
                 >
                   <X className="h-3 w-3" />
-                  Limpiar
+                  {t('operationalcalendar.limpiar')}
                 </button>
               </div>
             )}
@@ -234,6 +236,7 @@ function ViewModeToggle({
   viewMode: CalendarViewMode
   onChange: (mode: CalendarViewMode) => void
 }) {
+
   return (
     <div className="segmented-control">
       {(['month', 'week', 'day'] as CalendarViewMode[]).map((mode) => (
@@ -263,6 +266,7 @@ function MonthView({
   largeCells: boolean
   onDayClick: (dateStr: string, dayEvents: CalendarEvent[]) => void
 }) {
+
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
 
@@ -320,7 +324,10 @@ function MonthView({
               singleEvent && statusColor
                 ? { backgroundColor: `${statusColor}10`, borderColor: `${statusColor}22` }
                 : hasEvents && dayEvents.length > 1
-                  ? { backgroundColor: 'rgba(106, 36, 227, 0.06)', borderColor: 'rgba(106, 36, 227, 0.15)' }
+                  ? {
+                      backgroundColor: 'rgba(106, 36, 227, 0.06)',
+                      borderColor: 'rgba(106, 36, 227, 0.15)',
+                    }
                   : undefined
             }
           >
@@ -380,6 +387,7 @@ function WeekView({
   onDayClick: (dateStr: string, dayEvents: CalendarEvent[]) => void
   onSelectEvent: (event: CalendarEvent) => void
 }) {
+  const { t } = useTranslation()
   const weekStart = getWeekStart(currentDate)
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i))
   const todayKey = toDateKey(DEMO_TODAY)
@@ -425,7 +433,9 @@ function WeekView({
 
             <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto">
               {dayEvents.length === 0 ? (
-                <p className="px-1 text-[10px] text-slate-400">Sin eventos</p>
+                <p className="px-1 text-[10px] text-slate-400">
+                  {t('operationalcalendar.sin_eventos')}
+                </p>
               ) : (
                 dayEvents.map((event) => {
                   const status = EVENT_STATUS_CONFIG[event.status]
@@ -469,6 +479,7 @@ function DayView({
   eventsByDate: Map<string, CalendarEvent[]>
   onSelectEvent: (event: CalendarEvent) => void
 }) {
+  const { t } = useTranslation()
   const dateStr = toDateKey(currentDate)
   const dayEvents = [...(eventsByDate.get(dateStr) ?? [])].sort((a, b) =>
     a.startTime.localeCompare(b.startTime),
@@ -494,8 +505,12 @@ function DayView({
 
       {dayEvents.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-apple-lg border border-dashed border-black/[0.08] bg-black/[0.02] py-16 text-center">
-          <p className="text-sm font-medium text-slate-600">No hay eventos este día</p>
-          <p className="mt-1 text-xs text-slate-400">Navegá a otra fecha o cambiá los filtros</p>
+          <p className="text-sm font-medium text-slate-600">
+            {t('operationalcalendar.no_hay_eventos_este_da')}
+          </p>
+          <p className="mt-1 text-xs text-slate-400">
+            {t('operationalcalendar.naveg_a_otra_fecha_o_cambi_los_filtros')}
+          </p>
         </div>
       ) : (
         dayEvents.map((event) => {
@@ -517,7 +532,7 @@ function DayView({
               <div className="min-w-0 flex-1">
                 <p className="text-base font-semibold text-slate-900">{event.clientName}</p>
                 <p className="mt-0.5 text-sm text-slate-500">
-                  {event.eventType} · {event.guests} invitados
+                  {event.eventType} · {event.guests} {t('operationalcalendar.invitados')}
                 </p>
                 <span
                   className="mt-2 inline-flex rounded-full px-2 py-0.5 text-[10px] font-semibold text-white"

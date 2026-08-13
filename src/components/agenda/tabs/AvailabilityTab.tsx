@@ -2,6 +2,7 @@ import { ChevronDown } from 'lucide-react'
 import { SLOT_OPTIONS, WEEKDAY_LABELS } from '../../../data/agenda-defaults'
 import type { AgendaSettings, Weekday } from '../../../types/agenda-settings'
 import { Label, SettingsCard, Toggle } from '../SettingsCard'
+import { useTranslation } from 'react-i18next'
 
 interface AvailabilityTabProps {
   settings: AgendaSettings
@@ -9,6 +10,7 @@ interface AvailabilityTabProps {
 }
 
 export function AvailabilityTab({ settings, onChange }: AvailabilityTabProps) {
+  const { t } = useTranslation()
   const toggleDay = (day: Weekday) => {
     onChange({
       openDays: { ...settings.openDays, [day]: !settings.openDays[day] },
@@ -18,16 +20,18 @@ export function AvailabilityTab({ settings, onChange }: AvailabilityTabProps) {
   return (
     <div className="space-y-6">
       <SettingsCard
-        title="Granularidad del Slot"
+        title={t('availabilitytab.granularidad_del_slot')}
         description="Define la escala visual del calendario operativo y del Marketplace."
       >
-        <Label htmlFor="slot-granularity">Intervalo de tiempo</Label>
+        <Label htmlFor="slot-granularity">{t('availabilitytab.intervalo_de_tiempo')}</Label>
         <div className="relative">
           <select
             id="slot-granularity"
             value={settings.slotGranularity}
             onChange={(e) =>
-              onChange({ slotGranularity: Number(e.target.value) as AgendaSettings['slotGranularity'] })
+              onChange({
+                slotGranularity: Number(e.target.value) as AgendaSettings['slotGranularity'],
+              })
             }
             className="input-field appearance-none pr-10"
           >
@@ -42,7 +46,7 @@ export function AvailabilityTab({ settings, onChange }: AvailabilityTabProps) {
       </SettingsCard>
 
       <SettingsCard
-        title="Disponibilidad Semanal"
+        title={t('availabilitytab.disponibilidad_semanal')}
         description="Los días desmarcados se bloquean automáticamente en el Marketplace."
       >
         <div className="grid gap-2 sm:grid-cols-2">
@@ -59,7 +63,9 @@ export function AvailabilityTab({ settings, onChange }: AvailabilityTabProps) {
                     : 'border-surface-border bg-surface/50 hover:border-slate-300'
                 }`}
               >
-                <span className={`text-sm font-medium ${isOpen ? 'text-primary' : 'text-slate-400'}`}>
+                <span
+                  className={`text-sm font-medium ${isOpen ? 'text-primary' : 'text-slate-400'}`}
+                >
                   {WEEKDAY_LABELS[day]}
                 </span>
                 <span
@@ -75,19 +81,19 @@ export function AvailabilityTab({ settings, onChange }: AvailabilityTabProps) {
         </div>
         {!settings.openDays.mon && (
           <p className="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
-            Los lunes están bloqueados y no aparecerán como disponibles en el Marketplace.
+            {t('availabilitytab.los_lunes_estn_bloqueados_y_no_aparecern')}
           </p>
         )}
       </SettingsCard>
 
       <SettingsCard
-        title="Feriados Nacionales"
+        title={t('availabilitytab.feriados_nacionales')}
         description="Importa y bloquea automáticamente los días festivos de Argentina."
       >
         <Toggle
           enabled={settings.blockHolidays}
           onChange={(blockHolidays) => onChange({ blockHolidays })}
-          label="Bloquear feriados automáticamente"
+          label={t('availabilitytab.bloquear_feriados_automticamente')}
           description="Incluye feriados nacionales oficiales en el calendario del salón y del Marketplace."
         />
       </SettingsCard>

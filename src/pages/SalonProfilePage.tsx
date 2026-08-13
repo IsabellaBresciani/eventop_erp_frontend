@@ -13,10 +13,7 @@ import { LocationStep } from '../components/profile/steps/LocationStep'
 import { PhotosStep } from '../components/profile/steps/PhotosStep'
 import { PricingStep } from '../components/profile/steps/PricingStep'
 import { ServicesStep } from '../components/profile/steps/ServicesStep'
-import {
-  calculateProfileProgress,
-  DEFAULT_SALON_PROFILE,
-} from '../data/salon-profile-defaults'
+import { calculateProfileProgress, DEFAULT_SALON_PROFILE } from '../data/salon-profile-defaults'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { FieldErrors, ProfileStep, SalonProfile } from '../types/salon-profile'
 
@@ -33,14 +30,10 @@ function loadProfile(): SalonProfile {
       return {
         ...DEFAULT_SALON_PROFILE,
         ...rest,
-        services: Array.isArray(rest.services)
-          ? rest.services
-          : DEFAULT_SALON_PROFILE.services,
+        services: Array.isArray(rest.services) ? rest.services : DEFAULT_SALON_PROFILE.services,
       }
     }
-  } catch {
-    /* use defaults */
-  }
+  } catch {}
   return DEFAULT_SALON_PROFILE
 }
 
@@ -220,12 +213,7 @@ export default function SalonProfilePage() {
                     />
                   )}
                   {activeSection === 'services' && (
-                    <ServicesStep
-                      profile={working}
-                      onChange={updateDraft}
-                      embedded
-                      hideLabels
-                    />
+                    <ServicesStep profile={working} onChange={updateDraft} embedded hideLabels />
                   )}
                 </>
               ) : (

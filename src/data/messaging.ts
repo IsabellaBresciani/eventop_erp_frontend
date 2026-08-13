@@ -128,7 +128,6 @@ export const MOCK_INQUIRIES: Inquiry[] = [
   },
 ]
 
-/** Digits only for wa.me links (Argentina: keep country code). */
 export function phoneToWhatsAppDigits(phone: string): string {
   const digits = phone.replace(/\D/g, '')
   if (digits.startsWith('54')) return digits

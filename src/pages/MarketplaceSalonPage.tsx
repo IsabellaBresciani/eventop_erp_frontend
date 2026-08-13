@@ -1,16 +1,7 @@
-import {
-  BadgeCheck,
-  Calendar,
-  MapPin,
-  Shield,
-  Star,
-} from 'lucide-react'
+import { BadgeCheck, Calendar, MapPin, Shield, Star } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  loadMarketplaceAgenda,
-  loadMarketplaceProfile,
-} from '../data/marketplace'
+import { loadMarketplaceAgenda, loadMarketplaceProfile } from '../data/marketplace'
 import {
   formatPrice,
   getServiceCategoryLabel,
@@ -20,8 +11,10 @@ import {
 import { BudgetCalculator } from '../components/marketplace/BudgetCalculator'
 import { ImmersiveGallery } from '../components/marketplace/ImmersiveGallery'
 import { VisitBookingModal } from '../components/marketplace/VisitBookingModal'
+import { useTranslation } from 'react-i18next'
 
 export default function MarketplaceSalonPage() {
+  const { t } = useTranslation()
   const profile = loadMarketplaceProfile()
   const agenda = loadMarketplaceAgenda()
   const [visitOpen, setVisitOpen] = useState(false)
@@ -32,7 +25,6 @@ export default function MarketplaceSalonPage() {
 
   const activeServices = (profile.services ?? []).filter((s) => s.status === 'ACTIVE')
 
-
   return (
     <div className="min-h-screen bg-surface">
       <ImmersiveGallery profile={profile} />
@@ -41,7 +33,7 @@ export default function MarketplaceSalonPage() {
         <div className="mb-4 flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
             <BadgeCheck className="h-3.5 w-3.5" />
-            Salón Verificado por EvenTop
+            {t('marketplacesalonpage.saln_verificado_por_eventop')}
           </span>
           <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-700">
             <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
@@ -75,14 +67,16 @@ export default function MarketplaceSalonPage() {
                   rel="noopener noreferrer"
                   className="mt-1 inline-block text-xs font-medium text-primary hover:underline"
                 >
-                  Ver en Google Maps →
+                  {t('marketplacesalonpage.ver_en_google_maps')}
                 </a>
               </div>
             </div>
 
             {activeServices.length > 0 && (
               <section className="mt-8">
-                <h2 className="mb-4 text-sm font-bold text-slate-900">Servicios</h2>
+                <h2 className="mb-4 text-sm font-bold text-slate-900">
+                  {t('marketplacesalonpage.servicios')}
+                </h2>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {activeServices.map((service) => (
                     <div
@@ -113,7 +107,9 @@ export default function MarketplaceSalonPage() {
 
             {profile.packages.length > 0 && (
               <section className="mt-8">
-                <h2 className="mb-4 text-sm font-bold text-slate-900">Paquetes destacados</h2>
+                <h2 className="mb-4 text-sm font-bold text-slate-900">
+                  {t('marketplacesalonpage.paquetes_destacados')}
+                </h2>
                 <div className="space-y-3">
                   {profile.packages.map((pkg) => (
                     <div
@@ -138,9 +134,10 @@ export default function MarketplaceSalonPage() {
 
             <div className="mt-8 flex items-center gap-2 rounded-xl bg-surface px-4 py-3 text-xs text-slate-500">
               <Shield className="h-4 w-4 text-primary" />
-              Política de cancelación:{' '}
+              {t('marketplacesalonpage.poltica_de_cancelacin')}{' '}
               <strong className="capitalize text-slate-700">{profile.cancellationPolicy}</strong>
-              · Seña del {profile.depositPercent}%
+              {t('marketplacesalonpage.sea_del')}
+              {profile.depositPercent}%
             </div>
           </div>
 
@@ -153,7 +150,7 @@ export default function MarketplaceSalonPage() {
               className="btn-secondary mt-4 w-full"
             >
               <Calendar className="h-4 w-4" />
-              Agendar Visita Técnica
+              {t('marketplacesalonpage.agendar_visita_tcnica')}
             </button>
           </div>
         </div>
@@ -166,10 +163,10 @@ export default function MarketplaceSalonPage() {
             onClick={() => setVisitOpen(true)}
             className="btn-secondary flex-1 py-3 text-sm"
           >
-            Agendar Visita
+            {t('marketplacesalonpage.agendar_visita')}
           </button>
           <button type="button" className="btn-primary flex-1 py-3 text-sm">
-            Cotizar evento
+            {t('marketplacesalonpage.cotizar_evento')}
           </button>
         </div>
       </div>
@@ -184,9 +181,9 @@ export default function MarketplaceSalonPage() {
       <footer className="border-t border-surface-border bg-white py-6 pb-24 lg:pb-6">
         <div className="section-container flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
           <Link to="/" className="font-semibold text-primary hover:underline">
-            EvenTop Marketplace
+            {t('marketplacesalonpage.eventop_marketplace')}
           </Link>
-          <span>Vitrina pública · RF-001 · RF-004 · RF-008</span>
+          <span>{t('marketplacesalonpage.vitrina_pblica_rf001_rf004_rf008')}</span>
         </div>
       </footer>
     </div>

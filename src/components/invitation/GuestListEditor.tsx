@@ -7,6 +7,7 @@ import {
   upsertRsvp,
 } from '../../data/invitations-storage'
 import type { GuestCompanion, GuestConfirmation } from '../../types/guest-invitation'
+import { useTranslation } from 'react-i18next'
 
 interface GuestListEditorProps {
   eventId: string
@@ -15,6 +16,7 @@ interface GuestListEditorProps {
 }
 
 export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorProps) {
+  const { t } = useTranslation()
   const [editing, setEditing] = useState<GuestConfirmation | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -67,9 +69,7 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
 
   const removeCompanion = (id: string) => {
     setEditing((prev) =>
-      prev
-        ? { ...prev, companions: prev.companions.filter((c) => c.id !== id) }
-        : prev,
+      prev ? { ...prev, companions: prev.companions.filter((c) => c.id !== id) } : prev,
     )
   }
 
@@ -104,16 +104,19 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h3 className="text-base font-semibold text-slate-900">Lista de invitados</h3>
+          <h3 className="text-base font-semibold text-slate-900">
+            {t('guestlisteditor.lista_de_invitados')}
+          </h3>
           <p className="mt-0.5 text-sm text-slate-500">
-            {guests.length} confirmaciones ·{' '}
-            {guests.reduce((n, g) => n + 1 + g.companions.length, 0)} personas
+            {guests.length} {t('guestlisteditor.confirmaciones')}{' '}
+            {guests.reduce((n, g) => n + 1 + g.companions.length, 0)}{' '}
+            {t('guestlisteditor.personas')}
           </p>
         </div>
         {!editing && (
           <button type="button" onClick={startCreate} className="dash-btn-primary py-2 text-sm">
             <Plus className="h-3.5 w-3.5" />
-            Agregar
+            {t('guestlisteditor.agregar')}
           </button>
         )}
       </div>
@@ -124,7 +127,11 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
             <p className="text-sm font-semibold text-slate-900">
               {guests.some((g) => g.id === editing.id) ? 'Editar invitado' : 'Nuevo invitado'}
             </p>
-            <button type="button" onClick={cancel} className="rounded-lg p-1.5 text-slate-400 hover:bg-white">
+            <button
+              type="button"
+              onClick={cancel}
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-white"
+            >
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -134,14 +141,14 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
               type="text"
               value={editing.firstName}
               onChange={(e) => updateField('firstName', e.target.value)}
-              placeholder="Nombre"
+              placeholder={t('guestlisteditor.nombre')}
               className="input-field"
             />
             <input
               type="text"
               value={editing.lastName}
               onChange={(e) => updateField('lastName', e.target.value)}
-              placeholder="Apellido"
+              placeholder={t('guestlisteditor.apellido')}
               className="input-field"
             />
           </div>
@@ -149,16 +156,18 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
             type="email"
             value={editing.email}
             onChange={(e) => updateField('email', e.target.value)}
-            placeholder="Email"
+            placeholder={t('guestlisteditor.email')}
             className="input-field"
           />
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-xs font-semibold text-slate-500">Acompañantes</p>
+              <p className="text-xs font-semibold text-slate-500">
+                {t('guestlisteditor.acompaantes')}
+              </p>
               <button type="button" onClick={addCompanion} className="btn-ghost py-1 text-xs">
                 <Plus className="h-3 w-3" />
-                Agregar
+                {t('guestlisteditor.agregar')}
               </button>
             </div>
             {editing.companions.map((c) => (
@@ -167,14 +176,14 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
                   type="text"
                   value={c.firstName}
                   onChange={(e) => updateCompanion(c.id, { firstName: e.target.value })}
-                  placeholder="Nombre"
+                  placeholder={t('guestlisteditor.nombre')}
                   className="input-field"
                 />
                 <input
                   type="text"
                   value={c.lastName}
                   onChange={(e) => updateCompanion(c.id, { lastName: e.target.value })}
-                  placeholder="Apellido"
+                  placeholder={t('guestlisteditor.apellido')}
                   className="input-field"
                 />
                 <button
@@ -192,11 +201,11 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
 
           <div className="flex justify-end gap-2">
             <button type="button" onClick={cancel} className="dash-btn-secondary py-2 text-sm">
-              Cancelar
+              {t('guestlisteditor.cancelar')}
             </button>
             <button type="button" onClick={save} className="dash-btn-primary py-2 text-sm">
               <Check className="h-3.5 w-3.5" />
-              Guardar
+              {t('guestlisteditor.guardar')}
             </button>
           </div>
         </div>
@@ -204,7 +213,7 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
 
       {guests.length === 0 && !editing ? (
         <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50 px-4 py-10 text-center text-sm text-slate-500">
-          Todavía no hay invitados. Agregá el primero o esperá confirmaciones del enlace público.
+          {t('guestlisteditor.todava_no_hay_invitados_agreg_el_primero')}
         </div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-slate-200">
@@ -212,12 +221,12 @@ export function GuestListEditor({ eventId, guests, onChange }: GuestListEditorPr
             <table className="min-w-full text-left text-sm">
               <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
                 <tr>
-                  <th className="px-4 py-3">Invitado</th>
-                  <th className="px-4 py-3">Contacto</th>
-                  <th className="px-4 py-3">Acompañantes</th>
-                  <th className="px-4 py-3">QR</th>
-                  <th className="px-4 py-3">Confirmó</th>
-                  <th className="px-4 py-3 text-right">Acciones</th>
+                  <th className="px-4 py-3">{t('guestlisteditor.invitado')}</th>
+                  <th className="px-4 py-3">{t('guestlisteditor.contacto')}</th>
+                  <th className="px-4 py-3">{t('guestlisteditor.acompaantes')}</th>
+                  <th className="px-4 py-3">{t('guestlisteditor.qr')}</th>
+                  <th className="px-4 py-3">{t('guestlisteditor.confirm')}</th>
+                  <th className="px-4 py-3 text-right">{t('guestlisteditor.acciones')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 bg-white">

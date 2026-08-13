@@ -1,12 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { AlertCircle, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 import { type FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { DEMO_ADMIN_SALONS } from '../data/admin-salons'
 import { authenticateEmployee } from '../data/employees'
 import { setAuthSession } from '../lib/auth-session'
-import { LogoMark } from '../components/ui/Logo'
+import { Logo } from '../components/ui/Logo'
 import { GoogleButton } from '../components/auth/GoogleButton'
+import tenantConfig from '../config/tenant.json'
 
 const DEMO_EMAIL = 'admin@eventop.com'
 const DEMO_PASSWORD = 'eventop2024'
@@ -24,6 +26,7 @@ function buildAdminSession(email: string, name = 'Administrador') {
 }
 
 export default function LoginPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -39,7 +42,7 @@ export default function LoginPage() {
     setFieldErrors({ email: false, password: false })
 
     if (!email.trim() || !password.trim()) {
-      setError('Por favor completá todos los campos.')
+      setError(t('login.error_empty'))
       setFieldErrors({ email: !email.trim(), password: !password.trim() })
       return
     }
@@ -70,7 +73,7 @@ export default function LoginPage() {
     }
 
     setIsLoading(false)
-    setError('Credenciales incorrectas. Verificá tu email y contraseña.')
+    setError(t('login.error_invalid'))
     setFieldErrors({ email: true, password: true })
   }
 
@@ -93,27 +96,20 @@ export default function LoginPage() {
 
       <motion.div
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
-        animate={
-          isExiting
-            ? { opacity: 0, y: -16, scale: 1.02 }
-            : { opacity: 1, y: 0, scale: 1 }
-        }
+        animate={isExiting ? { opacity: 0, y: -16, scale: 1.02 } : { opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 w-full max-w-[420px]"
       >
         <div className="rounded-card border border-white/60 bg-white/60 p-8 shadow-card-hover backdrop-blur-2xl sm:p-10">
-          <div className="mb-8 flex flex-col items-center">
-            <LogoMark className="h-14 w-14 rounded-2xl shadow-glow" />
-            <p className="mt-3 text-sm font-semibold tracking-wide text-primary">EvenTop</p>
+          <div className="absolute left-1/2 top-8 flex -translate-x-1/2 flex-col items-center md:hidden">
+            <Logo className="scale-125" />
           </div>
 
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-light tracking-tight text-slate-800 sm:text-3xl">
-              Bienvenido de nuevo
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+              {t('login.welcome_title', { appName: tenantConfig.VITE_APP_NAME })}
             </h1>
-            <p className="mt-2 text-sm text-slate-500">
-              Accedé a tu panel de administración
-            </p>
+            <p className="mt-2 text-sm text-slate-500">{t('login.welcome_subtitle')}</p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -135,7 +131,7 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label htmlFor="email" className="sr-only">
-                Correo electrónico
+                {t('login.email_placeholder')}
               </label>
               <div className="relative">
                 <Mail
@@ -152,19 +148,17 @@ export default function LoginPage() {
                     if (fieldErrors.email) setFieldErrors((prev) => ({ ...prev, email: false }))
                     if (error) setError('')
                   }}
-                  placeholder="Correo electrónico"
+                  placeholder={t('login.email_placeholder')}
                   autoComplete="email"
                   disabled={isLoading}
-                  className={`input-field pl-10 ${
-                    fieldErrors.email ? 'input-field-error' : ''
-                  }`}
+                  className={`input-field pl-10 ${fieldErrors.email ? 'input-field-error' : ''}`}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="sr-only">
-                Contraseña
+                {t('login.password_placeholder')}
               </label>
               <div className="relative">
                 <Lock
@@ -178,10 +172,11 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => {
                     setPassword(e.target.value)
-                    if (fieldErrors.password) setFieldErrors((prev) => ({ ...prev, password: false }))
+                    if (fieldErrors.password)
+                      setFieldErrors((prev) => ({ ...prev, password: false }))
                     if (error) setError('')
                   }}
-                  placeholder="Contraseña"
+                  placeholder={t('login.password_placeholder')}
                   autoComplete="current-password"
                   disabled={isLoading}
                   className={`input-field pl-10 pr-10 ${
@@ -207,7 +202,7 @@ export default function LoginPage() {
                 type="button"
                 className="text-xs font-medium text-slate-500 transition-colors hover:text-primary"
               >
-                ¿Olvidaste tu contraseña?
+                {t('login.forgot_password')}
               </button>
             </div>
 
@@ -219,10 +214,10 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Verificando acceso...
+                  {t('login.submit_loading')}
                 </>
               ) : (
-                'Entrar al Panel'
+                t('login.submit_button')
               )}
             </button>
           </form>
@@ -233,7 +228,7 @@ export default function LoginPage() {
             </div>
             <div className="relative flex justify-center">
               <span className="bg-white/60 px-3 text-xs text-slate-400 backdrop-blur-sm">
-                o continúa con
+                {t('login.or_continue')}
               </span>
             </div>
           </div>
@@ -241,17 +236,18 @@ export default function LoginPage() {
           <GoogleButton onClick={handleGoogleLogin} disabled={isLoading} />
 
           <p className="mt-8 text-center text-xs text-slate-400">
-            ¿No tenés cuenta?{' '}
+            {t('login.no_account')}{' '}
             <Link to="/" className="font-medium text-primary hover:underline">
-              Comenzar prueba gratis
+              {t('login.start_trial')}
             </Link>
           </p>
         </div>
 
         <p className="mt-6 text-center text-[11px] text-slate-400">
-          Admin: {DEMO_EMAIL} / {DEMO_PASSWORD}
+          {t('loginpage.admin')}
+          {DEMO_EMAIL} / {DEMO_PASSWORD}
           <br />
-          Empleado demo: lucia.fernandez@eventop.com / emp3245
+          {t('loginpage.empleado_demo_luciafernandezeventopcom_e')}
         </p>
       </motion.div>
     </div>

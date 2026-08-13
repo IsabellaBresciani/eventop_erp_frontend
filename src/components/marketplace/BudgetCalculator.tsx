@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { calculateBudgetEstimate } from '../../data/marketplace'
 import type { AgendaSettings } from '../../types/agenda-settings'
 import type { SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 interface BudgetCalculatorProps {
   profile: SalonProfile
@@ -10,6 +11,7 @@ interface BudgetCalculatorProps {
 }
 
 export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
+  const { t } = useTranslation()
   const [guests, setGuests] = useState(80)
   const [date, setDate] = useState('')
 
@@ -28,16 +30,23 @@ export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
           <Calculator className="h-4 w-4" />
         </div>
         <div>
-          <h3 className="text-sm font-bold text-slate-900">Presupuesto rápido</h3>
-          <p className="text-[10px] text-slate-400">RF-008 · Estimación instantánea</p>
+          <h3 className="text-sm font-bold text-slate-900">
+            {t('budgetcalculator.presupuesto_rpido')}
+          </h3>
+          <p className="text-[10px] text-slate-400">
+            {t('budgetcalculator.rf008_estimacin_instantnea')}
+          </p>
         </div>
       </div>
 
       <div className="space-y-3">
         <div>
-          <label htmlFor="calc-guests" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+          <label
+            htmlFor="calc-guests"
+            className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500"
+          >
             <Users className="h-3.5 w-3.5" />
-            Cantidad de invitados
+            {t('budgetcalculator.cantidad_de_invitados')}
           </label>
           <input
             id="calc-guests"
@@ -57,14 +66,17 @@ export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
             className="mt-2 w-full accent-primary"
           />
           <p className="mt-1 text-[10px] text-slate-400">
-            {profile.capacityMin}–{profile.capacityMax} personas
+            {profile.capacityMin}–{profile.capacityMax} {t('budgetcalculator.personas')}
           </p>
         </div>
 
         <div>
-          <label htmlFor="calc-date" className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500">
+          <label
+            htmlFor="calc-date"
+            className="mb-1.5 flex items-center gap-1.5 text-xs font-semibold text-slate-500"
+          >
             <Calendar className="h-3.5 w-3.5" />
-            Fecha del evento
+            {t('budgetcalculator.fecha_del_evento')}
           </label>
           <input
             id="calc-date"
@@ -81,28 +93,31 @@ export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
       <div
         className={`mt-4 rounded-xl p-4 ${
           estimate.available
-            ? 'bg-primary/5 border border-primary/20'
-            : 'bg-red-50 border border-red-100'
+            ? 'border border-primary/20 bg-primary/5'
+            : 'border border-red-100 bg-red-50'
         }`}
       >
         {estimate.available ? (
           <>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-primary">
-              Estimado ({estimate.hours}h de evento)
+              {t('budgetcalculator.estimado')}
+              {estimate.hours}
+              {t('budgetcalculator.h_de_evento')}
             </p>
             <p className="mt-1 text-2xl font-bold text-slate-900">{estimate.formattedTotal}</p>
             <p className="mt-1 text-xs text-slate-500">
-              Seña sugerida ({profile.depositPercent}%):{' '}
+              {t('budgetcalculator.sea_sugerida')}
+              {profile.depositPercent}%):{' '}
               <strong className="text-slate-700">{estimate.formattedDeposit}</strong>
             </p>
             <p className="mt-2 text-[10px] text-slate-400">
-              * Incluye buffer de {agenda.bufferHours}h. Precio orientativo.
+              {t('budgetcalculator.incluye_buffer_de')}
+              {agenda.bufferHours}
+              {t('budgetcalculator.h_precio_orientativo')}
             </p>
           </>
         ) : (
-          <p className="text-sm font-medium text-red-600">
-            {estimate.message ?? 'No disponible'}
-          </p>
+          <p className="text-sm font-medium text-red-600">{estimate.message ?? 'No disponible'}</p>
         )}
       </div>
 
@@ -111,7 +126,7 @@ export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
         disabled={!estimate.available}
         className="btn-primary mt-4 w-full disabled:opacity-50"
       >
-        Solicitar presupuesto formal
+        {t('budgetcalculator.solicitar_presupuesto_formal')}
       </button>
     </div>
   )

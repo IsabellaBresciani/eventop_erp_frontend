@@ -1,0 +1,740 @@
+{
+  "config": {
+    "VITE_APP_NAME": "ERP",
+    "VITE_APP_NAME_PREFIX": "My",
+    "VITE_APP_NAME_SUFFIX": "ERP",
+    "VITE_APP_PRIMARY_COLOR": "#6A24E3"
+  },
+  "features": {
+    "marketplace": true,
+    "sms_integration": false
+  },
+  "texts": {
+    "login": {
+      "welcome_title": "Bienvenido a {{appName}}",
+      "welcome_subtitle": "Ingresa a tu cuenta para gestionar tu salón",
+      "error_empty": "Por favor completá todos los campos.",
+      "error_invalid": "Credenciales incorrectas. Verificá tu email y contraseña.",
+      "email_placeholder": "Correo electrónico",
+      "password_placeholder": "Contraseña",
+      "forgot_password": "¿Olvidaste tu contraseña?",
+      "submit_button": "Entrar al Panel",
+      "submit_loading": "Verificando acceso...",
+      "or_continue": "o continúa con",
+      "no_account": "¿No tenés cuenta?",
+      "start_trial": "Comenzar prueba gratis"
+    },
+    "landing": {
+      "features": {
+        "subtitle": "Propuesta de valor",
+        "title": "Todo lo que tu salón necesita, en un solo ecosistema",
+        "management_title": "Gestión 360°",
+        "management_desc": "Registra el perfil completo de tu salón, servicios y amenidades. Tu vitrina en el Marketplace se actualiza automáticamente con cada cambio.",
+        "calendar_title": "Calendario Inteligente",
+        "calendar_desc": "Visualiza el estado de cada evento con códigos de color. Presupuestado, señado, pagado o suspendido — todo de un vistazo.",
+        "guest_title": "Experiencia del Invitado",
+        "guest_desc": "Invitaciones virtuales personalizables con confirmación de asistencia y código QR de acceso. Un diferencial premium que eleva la imagen de tu salón ante cada anfitrión."
+      }
+    },
+    "agendasettingspage": {
+      "configuracin_avanzada_de_agenda": "Configuración Avanzada de Agenda",
+      "rf003_reglas_de_negocio_para_el_erp_y_el": "RF-003 · Reglas de negocio para el ERP y el Marketplace"
+    },
+    "checkinpage": {
+      "salir": "Salir",
+      "checkin_qr": "Check-in QR",
+      "rf214": "RF-214",
+      "anfitrin": "Anfitrión:",
+      "han_ingresado": "Han ingresado",
+      "cdigos_de_prueba_evtm3n4o5p6_diego_evtq7": "Códigos de prueba: EVT-M3N4O5P6 (Diego) · EVT-Q7R8S9T0 (María) · EVT-INVALID (error)"
+    },
+    "dashboardpage": {
+      "hola": "Hola,"
+    },
+    "employeedetailpage": {
+      "volver_a_empleados": "Volver a empleados",
+      "dni": "DNI",
+      "editar": "Editar",
+      "desactivar": "Desactivar",
+      "eliminar": "Eliminar",
+      "eventos_participados": "Eventos participados",
+      "eventos_en_el_rango_seleccionado": "eventos en el rango seleccionado",
+      "desde": "DESDE",
+      "hasta": "HASTA",
+      "fecha": "FECHA",
+      "cliente": "CLIENTE",
+      "tipo": "TIPO",
+      "horario": "HORARIO",
+      "estado": "ESTADO",
+      "detalle_del_empleado": "Detalle del Empleado",
+      "gestin_y_eventos_asignados": "Gestión y eventos asignados"
+    },
+    "employeeeventspage": {
+      "desde": "Desde",
+      "hasta": "Hasta",
+      "limpiar_fechas": "Limpiar fechas",
+      "fecha": "Fecha",
+      "cliente": "Cliente",
+      "tipo": "Tipo",
+      "horario": "Horario",
+      "estado": "Estado",
+      "no_hay_eventos_que_coincidan_con_los_fil": "No hay eventos que coincidan con los filtros seleccionados.",
+      "estos_son_los_eventos_a_los_que_ests_asi": "Estos son los eventos a los que estás asignado",
+      "prximos_eventos": "Próximos eventos",
+      "eventos_realizados": "Eventos realizados",
+      "buscar_por_cliente_o_tipo_de_evento": "Buscar por cliente o tipo de evento..."
+    },
+    "employeeprofilepage": {
+      "empleado_del_saln": "Empleado del salón",
+      "resumen_de_trabajo": "Resumen de trabajo",
+      "actividad_registrada_en_eventop": "Actividad registrada en EvenTop",
+      "si_necesits_actualizar_tus_datos_de_cont": "Si necesitás actualizar tus datos de contacto, comunicate con el administrador del\n              salón.",
+      "configuracin": "Configuración",
+      "tus_datos_de_acceso_al_erp_del_saln": "Tus datos de acceso al ERP del salón",
+      "dni": "DNI",
+      "email": "Email",
+      "telfono": "Teléfono",
+      "estado": "Estado",
+      "prximos_eventos": "Próximos eventos",
+      "eventos_realizados": "Eventos realizados"
+    },
+    "employeespage": {
+      "empleados": "Empleados",
+      "gestin_unificada_de_personal": "Gestión unificada de personal"
+    },
+    "invitationeditorpage": {
+      "volver": "Volver",
+      "foto_de_portada": "Foto de portada",
+      "cambiar_portada": "Cambiar portada",
+      "jpg_o_png": "JPG o PNG",
+      "ttulo_del_evento": "Título del evento",
+      "fecha": "Fecha",
+      "horario": "Horario",
+      "lugar": "Lugar",
+      "msica_de_fondo": "Música de fondo",
+      "evento": "Evento:",
+      "vista_invitado": "Vista invitado →",
+      "editar_invitacin": "Editar invitación",
+      "2000_hs": "20:00 hs",
+      "cuenta_regresiva": "Cuenta regresiva"
+    },
+    "invitationguestpage": {
+      "ests_invitado": "Estás invitado",
+      "detalles_del_evento": "Detalles del evento",
+      "ver_en_google_maps": "Ver en Google Maps",
+      "confirmar_asistencia": "Confirmar asistencia",
+      "acompaantes": "Acompañantes (",
+      "agregar_acompaante_o_familiar": "Agregar acompañante o familiar",
+      "powered_by": "Powered by",
+      "eventop": "EvenTop",
+      "das": "días",
+      "hs": "hs",
+      "fecha": "Fecha",
+      "hora": "Hora",
+      "lugar": "Lugar",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "email_para_enviarte_el_qr": "Email (para enviarte el QR)",
+      "nombre_acompaante": "Nombre acompañante"
+    },
+    "invitationspage": {
+      "evento": "evento",
+      "conf": "conf. ·",
+      "pers": "pers.",
+      "no_hay_invitaciones_que_coincidan_con_la": "No hay invitaciones que coincidan con la búsqueda.",
+      "hs": "hs",
+      "editar_invitacin": "Editar invitación",
+      "vista_pblica": "Vista pública",
+      "seleccion_una_invitacin": "Seleccioná una invitación",
+      "vas_a_poder_editarla_copiar_el_enlace_y_": "Vas a poder editarla, copiar el enlace y ver quién confirmó asistencia.",
+      "invitaciones_virtuales": "Invitaciones virtuales",
+      "edit_invitaciones_y_revis_las_listas_de_": "Editá invitaciones y revisá las listas de invitados confirmados",
+      "buscar_por_evento_o_cliente": "Buscar por evento o cliente…"
+    },
+    "loginpage": {
+      "admin": "Admin:",
+      "empleado_demo_luciafernandezeventopcom_e": "Empleado demo: lucia.fernandez@eventop.com / emp3245"
+    },
+    "marketplacesalonpage": {
+      "saln_verificado_por_eventop": "Salón Verificado por EvenTop",
+      "ver_en_google_maps": "Ver en Google Maps →",
+      "servicios": "Servicios",
+      "paquetes_destacados": "Paquetes destacados",
+      "poltica_de_cancelacin": "Política de cancelación:",
+      "sea_del": "·\n              Seña del",
+      "agendar_visita_tcnica": "Agendar Visita Técnica",
+      "agendar_visita": "Agendar Visita",
+      "cotizar_evento": "Cotizar evento",
+      "eventop_marketplace": "EvenTop Marketplace",
+      "vitrina_pblica_rf001_rf004_rf008": "Vitrina pública · RF-001 · RF-004 · RF-008"
+    },
+    "messagingpage": {
+      "volver_a_consultas": "Volver a consultas",
+      "consultas": "Consultas",
+      "bandeja_de_consultas_respond_por_whatsap": "Bandeja de consultas · Respondé por WhatsApp o email y trackeá el estado"
+    },
+    "reportspage": {
+      "dashboard_de_reportes": "Dashboard de reportes",
+      "indicadores_operativos_y_comerciales": "Indicadores operativos y comerciales",
+      "datos_de_demostracin": "Datos de demostración",
+      "pginas": "Páginas",
+      "facturacin_2026": "Facturación 2026",
+      "conversin_a_pagado": "Conversión a pagado",
+      "cobros_vencidos": "Cobros vencidos"
+    },
+    "calendarminipreview": {
+      "minipreview": "Mini-Preview",
+      "vista_en_tiempo_real": "Vista en tiempo real",
+      "slots": "Slots:",
+      "feriados_nacionales_bloqueados": "🗓 Feriados nacionales bloqueados",
+      "das_abiertos": "Días abiertos",
+      "buffer_entre_eventos": "Buffer entre eventos",
+      "antelacin_mnima": "Antelación mínima",
+      "vencimiento_presupuesto": "Vencimiento presupuesto"
+    },
+    "savebar": {
+      "cambios_guardados_correctamente": "Cambios guardados correctamente",
+      "tens_cambios_sin_guardar": "Tenés cambios sin guardar",
+      "configuracin_sincronizada_con_erp_y_mark": "Configuración sincronizada con ERP y Marketplace",
+      "guardando": "Guardando..."
+    },
+    "googlebutton": {
+      "continuar_con_google": "Continuar con Google"
+    },
+    "manualsearch": {
+      "bsqueda_manual": "Búsqueda manual",
+      "ingres": "Ingresó",
+      "ok": "OK",
+      "buscar_por_nombre_o_apellido": "Buscar por nombre o apellido...",
+      "cdigo_qr_manual_evt": "Código QR manual (EVT-...)"
+    },
+    "scanfeedback": {
+      "toc_para_continuar": "Tocá para continuar"
+    },
+    "scannerview": {
+      "cmara_no_disponible_us_el_buscador_manua": "Cámara no disponible. Usá el buscador manual o ingresá el código.",
+      "apunt_al_cdigo_qr_del_invitado_rf214": "Apuntá al código QR del invitado · RF-214"
+    },
+    "businesshealth": {
+      "12_vs_mes_anterior": "+12% vs. mes anterior",
+      "de_presupuestos_convertidos": "de presupuestos convertidos",
+      "mes_actual": "Mes actual",
+      "ingresos_proyectados": "Ingresos proyectados",
+      "eventos_seados_y_por_cobrar": "Eventos señados y por cobrar",
+      "conversin": "Conversión",
+      "presupuestos_reservas": "Presupuestos → Reservas",
+      "ocupacin": "Ocupación"
+    },
+    "dashboardheader": {
+      "even": "Even",
+      "top": "Top",
+      "nuevo_evento": "Nuevo evento"
+    },
+    "dashboardlayout": {
+      "et": "ET",
+      "even": "Even",
+      "top": "Top"
+    },
+    "eventauditslideover": {
+      "cliente_recurrente": "Cliente recurrente —",
+      "h_buffer_de_limpieza_aplicado_automticam": "h buffer de limpieza aplicado automáticamente",
+      "sin_servicios_adicionales": "Sin servicios adicionales",
+      "no_hay_empleados_activos_agregalos_en_la": "No hay empleados activos. Agregalos en la sección Empleados.",
+      "historial_de_pagos": "Historial de pagos",
+      "confirmados_vs_capacidad": "Confirmados vs. capacidad",
+      "confirmado": "% confirmado",
+      "editar_invitacin": "Editar Invitación",
+      "rf201": "RF-201",
+      "lista_de_invitados_y_control_qr": "Lista de invitados y control QR",
+      "log_de_auditora": "Log de Auditoría (",
+      "editar_invitacin_virtual": "Editar Invitación Virtual",
+      "ficha_de_auditora_rf005_rf007_rf012": "Ficha de Auditoría · RF-005 · RF-007 · RF-012",
+      "informacin_del_cliente": "Información del Cliente",
+      "detalles_logsticos_y_de_servicio": "Detalles Logísticos y de Servicio",
+      "equipo_asignado": "Equipo asignado",
+      "panel_financiero_y_pagos": "Panel Financiero y Pagos",
+      "monto_total": "Monto total",
+      "saldo_pendiente": "Saldo pendiente",
+      "ecosistema_de_invitados": "Ecosistema de Invitados",
+      "presupuesto_pdf": "Presupuesto PDF"
+    },
+    "eventlistpanel": {
+      "limpiar_filtros": "Limpiar filtros",
+      "no_hay_eventos_que_coincidan": "No hay eventos que coincidan",
+      "prob_con_otros_trminos_o_filtros": "Probá con otros términos o filtros",
+      "evento_de": "Evento de",
+      "con": "con",
+      "invitados_horario": "invitados. Horario",
+      "hs_presupuesto_total": "hs. Presupuesto total",
+      "ver": "Ver",
+      "buscar_por_evento_o_cliente": "Buscar por evento o cliente..."
+    },
+    "floatingactions": {
+      "validar_qr": "Validar QR",
+      "nuevo_evento": "Nuevo evento",
+      "bloquear_fecha": "Bloquear fecha"
+    },
+    "kpicards": {
+      "no_hay_eventos_prximos": "No hay eventos próximos",
+      "3_presupuestos_por_enviar": "· 3 presupuestos por enviar",
+      "este_fin_de_semana": "Este fin de semana",
+      "prximo_evento": "Próximo evento",
+      "das": "días",
+      "hs": "hs",
+      "min": "min",
+      "consultas": "Consultas",
+      "disponibilidad": "Disponibilidad"
+    },
+    "neweventmodal": {
+      "nuevo_evento": "Nuevo evento",
+      "carg_los_datos_bsicos_del_evento": "Cargá los datos básicos del evento",
+      "cancelar": "Cancelar",
+      "crear_evento": "Crear evento",
+      "cliente": "Cliente",
+      "nombre_y_apellido": "Nombre y apellido",
+      "tipo_de_evento": "Tipo de evento",
+      "fecha": "Fecha",
+      "hora_inicio": "Hora inicio",
+      "hora_fin": "Hora fin",
+      "invitados_estimados": "Invitados estimados",
+      "presupuesto_ars": "Presupuesto (ARS)"
+    },
+    "operationalcalendar": {
+      "calendario": "Calendario",
+      "nuevo_evento": "Nuevo evento",
+      "mostrando_solo": "Mostrando solo:",
+      "limpiar": "Limpiar",
+      "sin_eventos": "Sin eventos",
+      "no_hay_eventos_este_da": "No hay eventos este día",
+      "naveg_a_otra_fecha_o_cambi_los_filtros": "Navegá a otra fecha o cambiá los filtros",
+      "invitados": "invitados",
+      "configuracin_avanzada_de_agenda": "Configuración avanzada de agenda"
+    },
+    "periodsummarycards": {
+      "resumen_del_periodo": "Resumen del periodo",
+      "vista": "· Vista",
+      "de": "de",
+      "das_con_evento": "días con evento",
+      "seas_cobradas_en_el_periodo": "Señas cobradas en el periodo",
+      "no_hay_eventos_prximos": "No hay eventos próximos",
+      "disponible_para_reservar": "Disponible para reservar",
+      "sin_fechas_libres_prximas": "Sin fechas libres próximas",
+      "vs_mes_anterior": "vs mes anterior",
+      "ocupacin": "Ocupación",
+      "facturacin": "Facturación",
+      "prximo_evento": "Próximo evento",
+      "prxima_fecha_libre": "Próxima fecha libre"
+    },
+    "profileaccountmenu": {
+      "hola": "¡Hola,",
+      "administrar_tu_saln": "Administrar tu salón",
+      "cerrar_sesin": "Cerrar sesión",
+      "cuenta": "Cuenta",
+      "configuracin": "Configuración"
+    },
+    "employeeformmodal": {
+      "complet_los_datos_del_miembro_del_equipo": "Completá los datos del miembro del equipo",
+      "al_guardar_el_empleado_recibir_un_email_": "Al guardar, el empleado recibirá un email de invitación con acceso al ERP para\n                      ver sus eventos asignados.",
+      "cancelar": "Cancelar",
+      "guardar_empleado": "Guardar empleado",
+      "nombre": "Nombre",
+      "mara": "María",
+      "apellido": "Apellido",
+      "gonzlez": "González",
+      "dni": "DNI",
+      "email": "Email",
+      "empleadosaloncom": "empleado@salon.com",
+      "telfono": "Teléfono"
+    },
+    "employeewidgets": {
+      "nuevo": "Nuevo",
+      "dni": "DNI",
+      "editar": "Editar",
+      "desactivar": "Desactivar",
+      "activar": "Activar",
+      "historial_de_eventos": "Historial de Eventos",
+      "listado_de_participacin_en_el_saln": "Listado de participación en el salón",
+      "desde": "DESDE",
+      "hasta": "HASTA",
+      "fecha": "FECHA",
+      "cliente": "CLIENTE",
+      "tipo": "TIPO",
+      "horario": "HORARIO",
+      "estado": "ESTADO",
+      "no_hay_eventos_registrados_para_este_emp": "No hay eventos registrados para este empleado.",
+      "buscar": "Buscar...",
+      "eliminar_empleado": "Eliminar empleado"
+    },
+    "guestlisteditor": {
+      "lista_de_invitados": "Lista de invitados",
+      "confirmaciones": "confirmaciones ·",
+      "personas": "personas",
+      "agregar": "Agregar",
+      "acompaantes": "Acompañantes",
+      "cancelar": "Cancelar",
+      "guardar": "Guardar",
+      "todava_no_hay_invitados_agreg_el_primero": "Todavía no hay invitados. Agregá el primero o esperá confirmaciones del enlace público.",
+      "invitado": "Invitado",
+      "contacto": "Contacto",
+      "qr": "QR",
+      "confirm": "Confirmó",
+      "acciones": "Acciones",
+      "nombre": "Nombre",
+      "apellido": "Apellido",
+      "email": "Email"
+    },
+    "invitationpreview": {
+      "vista_previa_en_tiempo_real": "Vista previa en tiempo real",
+      "ests_invitado": "Estás invitado",
+      "msica_de_fondo_activa": "Música de fondo activa",
+      "confirmar_asistencia": "Confirmar asistencia",
+      "as_vern_los_invitados_tu_invitacin": "Así verán los invitados tu invitación",
+      "portada": "Portada",
+      "das": "días",
+      "hs": "hs",
+      "min": "min"
+    },
+    "linkmanager": {
+      "gestor_de_enlace_rf204": "Gestor de Enlace (RF-204)",
+      "whatsapp": "WhatsApp",
+      "compartir": "Compartir"
+    },
+    "templatecarousel": {
+      "plantillas_rf203": "Plantillas (RF-203)"
+    },
+    "featuressection": {
+      "plantillas_para_boda_xv_infantil_y_corpo": "Plantillas para Boda, XV, Infantil y Corporativo",
+      "confirmacin_con_acompaantes_en_un_solo_e": "Confirmación con acompañantes en un solo envío",
+      "checkin_ultrarpido_el_da_del_evento": "Check-in ultra-rápido el día del evento",
+      "ests_invitado": "Estás invitado",
+      "boda_valentina_martn": "Boda Valentina & Martín",
+      "15_de_agosto_2000_hs": "15 de Agosto · 20:00 hs",
+      "confirmar_asistencia": "Confirmar asistencia"
+    },
+    "footer": {
+      "listo_para_profesionalizar_tu_saln": "¿Listo para profesionalizar tu salón?",
+      "nete_a_los_salones_que_ya_automatizaron_": "Únete a los salones que ya automatizaron su gestión. Prueba gratis por 14 días, sin\n                compromiso.",
+      "comenzar_prueba_gratis": "Comenzar Prueba Gratis",
+      "el_ecosistema_digital_para_la_gestin_pro": "El ecosistema digital para la gestión profesional de salones de eventos. ERP,\n              Marketplace e Invitaciones Inteligentes.",
+      "producto": "Producto",
+      "funciones": "Funciones",
+      "solucin": "Solución",
+      "marketplace": "Marketplace",
+      "precios": "Precios",
+      "soporte": "Soporte",
+      "centro_de_ayuda": "Centro de ayuda",
+      "poltica_de_privacidad": "Política de privacidad",
+      "trminos_de_servicio": "Términos de servicio",
+      "soporteeventopcom": "soporte@eventop.com",
+      "eventop_todos_los_derechos_reservados": "EvenTop. Todos los derechos reservados.",
+      "hecho_con_para_salones_de_eventos_en_lat": "Hecho con 💜 para salones de eventos en LATAM"
+    },
+    "herosection": {
+      "erp_marketplace_para_salones_de_eventos": "ERP + Marketplace para salones de eventos",
+      "automatiza_tu_saln": "Automatiza tu salón,",
+      "recupera_tu_tiempo": "recupera tu tiempo",
+      "el_ecosistema_digital_que_une_tu_erp_con": "El ecosistema digital que une tu ERP con un Marketplace profesional. Gestiona eventos,\n              presupuestos e invitaciones desde un solo lugar — y deja de perder consultas en\n              WhatsApp.",
+      "comenzar_prueba_gratis": "Comenzar Prueba Gratis",
+      "contactar_ventas": "Contactar Ventas",
+      "sin_tarjeta_de_crdito_configuracin_en_15": "Sin tarjeta de crédito · Configuración en 15 minutos · Soporte en español",
+      "paneleventopcom": "panel.eventop.com",
+      "agosto_2026": "Agosto 2026",
+      "presupuestado": "Presupuestado",
+      "pagado": "Pagado",
+      "prximo_evento": "Próximo evento",
+      "consultas_pendientes": "Consultas pendientes",
+      "ocupacin_del_mes": "Ocupación del mes"
+    },
+    "navbar": {
+      "login": "Login",
+      "comenzar_prueba_gratis": "Comenzar Prueba Gratis"
+    },
+    "problemsolutionsection": {
+      "el_cambio_que_necesitas": "El cambio que necesitas",
+      "del_caos_operativo_al_control_total": "Del caos operativo al control total",
+      "miles_de_salones_pierden_reservas_cada_s": "Miles de salones pierden reservas cada semana por desorden administrativo. EvenTop\n            convierte ese caos en un flujo automatizado.",
+      "antes": "Antes",
+      "caos_y_saturacin": "Caos y saturación",
+      "perd_3_reservas_el_mes_pasado_porque_olv": "\"Perdí 3 reservas el mes pasado porque olvidé responder consultas del fin de\n                  semana.\"",
+      "dueo_de_quinta_crdoba": "— Dueño de quinta, Córdoba",
+      "despus": "Después",
+      "con_eventop": "Con EvenTop",
+      "aumentamos_nuestras_reservas_un_30_en_el": "\"Aumentamos nuestras reservas un 30% en el primer trimestre.\"",
+      "saln_jardines_del_sur_buenos_aires": "— Salón Jardines del Sur, Buenos Aires"
+    },
+    "testimonialssection": {
+      "confianza": "Confianza",
+      "salones_que_ya_recuperaron_su_tiempo": "Salones que ya recuperaron su tiempo",
+      "ms_de_200_salones_en_argentina_confan_en": "Más de 200 salones en Argentina confían en EvenTop para gestionar sus eventos."
+    },
+    "budgetcalculator": {
+      "presupuesto_rpido": "Presupuesto rápido",
+      "rf008_estimacin_instantnea": "RF-008 · Estimación instantánea",
+      "cantidad_de_invitados": "Cantidad de invitados",
+      "personas": "personas",
+      "fecha_del_evento": "Fecha del evento",
+      "estimado": "Estimado (",
+      "h_de_evento": "h de evento)",
+      "sea_sugerida": "Seña sugerida (",
+      "incluye_buffer_de": "* Incluye buffer de",
+      "h_precio_orientativo": "h. Precio orientativo.",
+      "solicitar_presupuesto_formal": "Solicitar presupuesto formal"
+    },
+    "immersivegallery": {
+      "sin_fotos_disponibles": "Sin fotos disponibles",
+      "precio": "Precio",
+      "capacidad": "Capacidad"
+    },
+    "visitbookingmodal": {
+      "agendar_visita": "Agendar Visita",
+      "rf004": "RF-004 ·",
+      "visita_agendada": "¡Visita agendada!",
+      "te_contactaremos_para_confirmar_tu_visit": "Te contactaremos para confirmar tu visita técnica.",
+      "cerrar": "Cerrar",
+      "eleg_una_fecha": "Elegí una fecha",
+      "franjas_disponibles": "Franjas disponibles",
+      "open_house": "(Open House)",
+      "no_hay_visitas_programadas_ese_da_eleg_o": "No hay visitas programadas ese día. Elegí otra fecha.",
+      "se_solicitar_tipo_de_evento_e_invitados_": "Se solicitará tipo de evento e invitados al confirmar",
+      "confirmar_visita": "Confirmar visita"
+    },
+    "inquirydetail": {
+      "seleccion_una_consulta_para_ver_el_detal": "Seleccioná una consulta para ver el detalle",
+      "invitados": "invitados ·",
+      "recibida": "Recibida",
+      "est": "Est.",
+      "estado": "Estado",
+      "mensaje_del_cliente": "Mensaje del cliente",
+      "contacto": "Contacto",
+      "responder_por_fuera_de_eventop": "Responder por fuera de EvenTop",
+      "abr_whatsapp_o_el_correo_con_un_borrador": "Abrí WhatsApp o el correo con un borrador listo. El seguimiento queda en esta bandeja.",
+      "responder_por_whatsapp": "Responder por WhatsApp",
+      "responder_por_email": "Responder por email",
+      "generar_presupuesto_pdf": "Generar presupuesto PDF"
+    },
+    "inquiryinbox": {
+      "consultas": "Consultas",
+      "no_hay_consultas": "No hay consultas",
+      "invitados": "invitados ·",
+      "buscar_por_cliente_evento": "Buscar por cliente, evento..."
+    },
+    "pdfgeneratormodal": {
+      "generar_presupuesto_pdf": "Generar Presupuesto PDF",
+      "eventop": "EvenTop",
+      "rf006": "RF-006",
+      "presupuesto_formal": "Presupuesto formal",
+      "evento": "Evento:",
+      "fecha": "Fecha:",
+      "invitados": "Invitados:",
+      "sea_30_validez_48hs": "Seña 30% · Validez 48hs",
+      "enviar_por": "Enviar por",
+      "generar_y_enviar_presupuesto": "Generar y enviar presupuesto",
+      "generando_pdf": "Generando PDF...",
+      "enviando_a": "Enviando a",
+      "presupuesto_enviado": "¡Presupuesto enviado!",
+      "pdf_enviado_por": "PDF enviado por"
+    },
+    "marketplacepreview": {
+      "live_preview": "Live Preview",
+      "perfil_al": "Perfil al",
+      "sin_foto_de_portada": "Sin foto de portada",
+      "verificado": "Verificado",
+      "sin_tipo_seleccionado": "Sin tipo seleccionado",
+      "paquete_destacado": "Paquete destacado",
+      "agendar_visita": "Agendar Visita",
+      "complet_tu_perfil_para_mejorar_el_posici": "Completá tu perfil para mejorar el posicionamiento en el Marketplace",
+      "ver_vitrina_pblica": "Ver vitrina pública"
+    },
+    "profilesectionview": {
+      "sin_tipos_seleccionados": "Sin tipos seleccionados",
+      "sin_descripcin": "Sin descripción",
+      "personas": "personas",
+      "hora": "/ hora",
+      "cancelacin": "Cancelación",
+      "sea": "Seña",
+      "sin_fotos": "Sin fotos",
+      "portada": "Portada",
+      "sin_servicios_cargados": "Sin servicios cargados",
+      "inactivo": "Inactivo"
+    },
+    "profilesettingspanel": {
+      "cancelar": "Cancelar",
+      "guardar": "Guardar"
+    },
+    "profilesettingsshell": {
+      "agreg_una_foto_de_portada": "Agregá una foto de portada",
+      "ver_perfil_pblico": "Ver perfil público"
+    },
+    "reportwidgets": {
+      "mes": "Mes",
+      "eventos_2026": "Eventos 2026",
+      "eventos_2025": "Eventos 2025",
+      "fact_2026": "Fact. 2026",
+      "fact_2025": "Fact. 2025",
+      "embudo_de_conversin_comercial": "Embudo de conversión comercial:",
+      "presupuestado_reservado_seado_pagado": "Presupuestado → Reservado → Señado → Pagado",
+      "conv": "% conv.",
+      "de_cada_100_presupuestos_40_llegan_a_pag": "De cada 100 presupuestos, 40 llegan a Pagado en este mock.",
+      "cliente": "Cliente",
+      "cuota": "Cuota",
+      "vencimiento": "Vencimiento",
+      "monto": "Monto",
+      "estado": "Estado",
+      "facturacin_2026": "Facturación 2026",
+      "facturacin_2025": "Facturación 2025",
+      "por_cantidad": "Por cantidad",
+      "por_facturacin": "Por facturación",
+      "por_ao": "Por año",
+      "por_mes_top": "Por mes (top)",
+      "por_da_de_semana": "Por día de semana",
+      "por_horario": "Por horario",
+      "vencidas": "Vencidas",
+      "por_vencer": "Por vencer",
+      "cuotas_vencidas": "Cuotas vencidas",
+      "cuotas_por_vencer": "Cuotas por vencer"
+    },
+    "authmodal": {
+      "registrarse": "Registrarse",
+      "iniciar_sesin": "Iniciar sesión",
+      "olvidaste_tu_contrasea": "¿Olvidaste tu contraseña?",
+      "o_contina_con": "o continúa con",
+      "continuar_con_google": "Continuar con Google",
+      "nombre_del_saln": "Nombre del salón",
+      "correo_electrnico": "Correo electrónico",
+      "contrasea": "Contraseña"
+    },
+    "tablepagination": {
+      "mostrando": "Mostrando",
+      "de": "de"
+    },
+    "availabilitytab": {
+      "intervalo_de_tiempo": "Intervalo de tiempo",
+      "los_lunes_estn_bloqueados_y_no_aparecern": "Los lunes están bloqueados y no aparecerán como disponibles en el Marketplace.",
+      "granularidad_del_slot": "Granularidad del Slot",
+      "disponibilidad_semanal": "Disponibilidad Semanal",
+      "feriados_nacionales": "Feriados Nacionales",
+      "bloquear_feriados_automticamente": "Bloquear feriados automáticamente"
+    },
+    "eventtemplatestab": {
+      "tipo_de_evento": "Tipo de evento",
+      "duracin": "Duración",
+      "horas": "horas",
+      "agregar_tipo_de_evento": "Agregar tipo de evento",
+      "impacto_en_el_calendario": "Impacto en el calendario",
+      "al_seleccionar_boda_xv_en_el_calendario_": "Al seleccionar \"Boda / XV\" en el calendario, el sistema reserva automáticamente",
+      "horas_1": "horas\n            +",
+      "h_de_buffer_de_limpieza": "h de buffer de limpieza.",
+      "plantillas_de_eventos": "Plantillas de Eventos",
+      "vista_previa_de_bloques": "Vista previa de bloques"
+    },
+    "marketplacetab": {
+      "horas_de_buffer": "Horas de buffer",
+      "horas_entre_eventos": "horas entre eventos",
+      "antelacin_mnima": "Antelación mínima",
+      "horas": "Horas",
+      "das": "Días",
+      "evita_reservas_de_ltimo_momento": "Evita reservas de último momento",
+      "antelacin_mxima": "Antelación máxima",
+      "meses": "meses",
+      "protege_contra_inflacin_a_largo_plazo": "Protege contra inflación a largo plazo",
+      "bloqueo_temporal": "Bloqueo temporal",
+      "horas_para_registrar_la_sea_del_presupue": "horas para registrar la seña del presupuesto",
+      "margen_de_seguridad_buffer_time": "Margen de Seguridad (Buffer Time)",
+      "ventana_de_contratacin": "Ventana de Contratación",
+      "vencimiento_automtico": "Vencimiento Automático"
+    },
+    "visitstab": {
+      "agregar_franja_horaria": "Agregar franja horaria",
+      "capacidad_de_visitas": "Capacidad de Visitas",
+      "agenda_de_visitas_tcnicas": "Agenda de Visitas Técnicas",
+      "precalificacin": "Pre-Calificación",
+      "tipo_de_evento": "Tipo de evento",
+      "cantidad_de_invitados": "Cantidad de invitados",
+      "presupuesto_estimado": "Presupuesto estimado"
+    },
+    "visualtab": {
+      "avisar_antes_del_evento": "Avisar antes del evento",
+      "das_antes_si_falta_confirmar_depsito": "días antes si falta confirmar depósito",
+      "aadir_cierre_especfico": "Añadir cierre específico",
+      "paleta_de_estados_rf007": "Paleta de Estados (RF-007)",
+      "recordatorios_automticos": "Recordatorios Automáticos",
+      "excepciones_horarias": "Excepciones Horarias",
+      "motivo_del_cierre": "Motivo del cierre"
+    },
+    "guestwidgets": {
+      "confirmacin_exitosa": "¡Confirmación exitosa!",
+      "gracias": "Gracias,",
+      "tu_asistencia_qued_registrada": ". Tu asistencia quedó registrada.",
+      "present_este_cdigo_qr_el_da_del_evento_p": "Presentá este código QR el día del evento para ingresar",
+      "email_enviado": "Email enviado",
+      "enviamos_tu_cdigo_qr_a": "Enviamos tu código QR a",
+      "rf208_eventop_invitaciones": "RF-208 · EvenTop Invitaciones"
+    },
+    "generalstep": {
+      "general": "General",
+      "nombre_del_saln": "Nombre del Salón",
+      "nombre_del_saln_1": "Nombre del salón",
+      "tipo_de_saln": "Tipo de Salón",
+      "descripcin": "Descripción",
+      "descripcin_del_saln": "Descripción del salón"
+    },
+    "locationstep": {
+      "la_ubicacin_se_sincroniza_con_el_marketp": "La ubicación se sincroniza con el Marketplace.",
+      "ubicacin": "Ubicación",
+      "direccin": "Dirección",
+      "zona_barrio": "Zona / Barrio",
+      "zona_o_barrio": "Zona o barrio"
+    },
+    "photosstep": {
+      "arrastr_imgenes_o_hac_clic_para_subir": "Arrastrá imágenes o hacé clic para subir",
+      "portada": "Portada",
+      "eliminar": "Eliminar",
+      "agregar_ms": "Agregar más",
+      "fotos": "Fotos"
+    },
+    "pricingstep": {
+      "personas": "personas",
+      "ars": "ARS",
+      "usd": "USD",
+      "agregar_paquete": "Agregar paquete",
+      "sea": "% seña",
+      "precios": "Precios",
+      "capacidad_mnima": "Capacidad mínima",
+      "mn": "Mín.",
+      "capacidad_mxima": "Capacidad máxima",
+      "mx": "Máx.",
+      "precio_base_por_hora": "Precio Base por Hora",
+      "precio_por_hora": "Precio por hora",
+      "nombre_del_paquete": "Nombre del paquete",
+      "precio_mnimo": "Precio mínimo",
+      "precio_mximo": "Precio máximo",
+      "descripcin": "Descripción",
+      "poltica_de_cancelacin": "Política de cancelación",
+      "depsito": "Depósito"
+    },
+    "servicesstep": {
+      "agregar_servicio": "Agregar servicio",
+      "cancelar": "Cancelar",
+      "activo": "Activo",
+      "inactivo": "Inactivo",
+      "guardar_servicio": "Guardar servicio",
+      "cant": "Cant.",
+      "sin_servicios_cargados": "Sin servicios cargados",
+      "agreg_catering_dj_decoracin_u_otros_serv": "Agregá catering, DJ, decoración u otros servicios de tu salón.",
+      "agregar_el_primero": "Agregar el primero",
+      "servicios": "Servicios",
+      "nombre": "Nombre",
+      "ej_catering_completo": "Ej: Catering completo",
+      "categora": "Categoría",
+      "descripcin": "Descripción",
+      "qu_incluye_el_servicio": "Qué incluye el servicio",
+      "trminos_y_condiciones": "Términos y condiciones",
+      "condiciones_de_contratacin_mnimos_etc": "Condiciones de contratación, mínimos, etc.",
+      "modelo_de_precio": "Modelo de precio",
+      "precio_base": "Precio base",
+      "cantidad_mnima": "Cantidad mínima",
+      "cantidad_mxima": "Cantidad máxima",
+      "estado": "Estado"
+    }
+  }
+}

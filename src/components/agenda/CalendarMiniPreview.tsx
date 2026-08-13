@@ -1,12 +1,14 @@
 import { EVENT_STATUS_CONFIG } from '../../data/dashboard'
 import { WEEKDAY_SHORT } from '../../data/agenda-defaults'
 import type { AgendaSettings, Weekday } from '../../types/agenda-settings'
+import { useTranslation } from 'react-i18next'
 
 interface CalendarMiniPreviewProps {
   settings: AgendaSettings
 }
 
 export function CalendarMiniPreview({ settings }: CalendarMiniPreviewProps) {
+  const { t } = useTranslation()
   const weekdays = Object.keys(WEEKDAY_SHORT) as Weekday[]
   const openCount = weekdays.filter((d) => settings.openDays[d]).length
   const slotLabel =
@@ -20,7 +22,9 @@ export function CalendarMiniPreview({ settings }: CalendarMiniPreviewProps) {
     const weekdayKey = weekdays[weekdayIndex]
     const isOpen = settings.openDays[weekdayKey]
     const isHoliday = settings.blockHolidays && dayNum === 17
-    const isException = settings.exceptions.some((e) => e.date.endsWith(`-${String(dayNum).padStart(2, '0')}`))
+    const isException = settings.exceptions.some((e) =>
+      e.date.endsWith(`-${String(dayNum).padStart(2, '0')}`),
+    )
 
     let status: 'open' | 'closed' | 'holiday' | 'exception' | 'visit' = 'open'
     if (isException) status = 'exception'
@@ -38,11 +42,14 @@ export function CalendarMiniPreview({ settings }: CalendarMiniPreviewProps) {
     <div className="sticky top-24 rounded-card border border-surface-border bg-white p-5 shadow-card">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-slate-900">Mini-Preview</h3>
-          <p className="text-xs text-slate-500">Vista en tiempo real</p>
+          <h3 className="text-sm font-bold text-slate-900">
+            {t('calendarminipreview.minipreview')}
+          </h3>
+          <p className="text-xs text-slate-500">{t('calendarminipreview.vista_en_tiempo_real')}</p>
         </div>
         <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">
-          Slots: {slotLabel}
+          {t('calendarminipreview.slots')}
+          {slotLabel}
         </span>
       </div>
 
@@ -92,15 +99,23 @@ export function CalendarMiniPreview({ settings }: CalendarMiniPreviewProps) {
       </div>
 
       <div className="mt-4 space-y-2 border-t border-surface-border pt-4">
-        <PreviewStat label="Días abiertos" value={`${openCount}/7`} />
-        <PreviewStat label="Buffer entre eventos" value={`${settings.bufferHours}h`} />
+        <PreviewStat label={t('calendarminipreview.das_abiertos')} value={`${openCount}/7`} />
         <PreviewStat
-          label="Antelación mínima"
+          label={t('calendarminipreview.buffer_entre_eventos')}
+          value={`${settings.bufferHours}h`}
+        />
+        <PreviewStat
+          label={t('calendarminipreview.antelacin_mnima')}
           value={`${settings.minAdvanceValue} ${settings.minAdvanceUnit === 'hours' ? 'hs' : 'días'}`}
         />
-        <PreviewStat label="Vencimiento presupuesto" value={`${settings.quoteExpiryHours}hs`} />
+        <PreviewStat
+          label={t('calendarminipreview.vencimiento_presupuesto')}
+          value={`${settings.quoteExpiryHours}hs`}
+        />
         {settings.blockHolidays && (
-          <p className="text-[10px] text-amber-600">🗓 Feriados nacionales bloqueados</p>
+          <p className="text-[10px] text-amber-600">
+            {t('calendarminipreview.feriados_nacionales_bloqueados')}
+          </p>
         )}
       </div>
     </div>
@@ -108,6 +123,7 @@ export function CalendarMiniPreview({ settings }: CalendarMiniPreviewProps) {
 }
 
 function PreviewStat({ label, value }: { label: string; value: string }) {
+
   return (
     <div className="flex items-center justify-between text-xs">
       <span className="text-slate-500">{label}</span>

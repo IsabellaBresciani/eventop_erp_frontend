@@ -18,140 +18,34 @@ import MessagingPage from './pages/MessagingPage'
 import ReportsPage from './pages/ReportsPage'
 import SalonProfilePage from './pages/SalonProfilePage'
 
+const routes = [
+  { path: '/', element: <LandingPage /> },
+  { path: '/marketplace', element: <MarketplaceSalonPage /> },
+  { path: '/inv/:eventId', element: <InvitationGuestPage /> },
+  { path: '/login', element: <LoginPage /> },
+  { path: '/dashboard/invitaciones', element: <InvitationsPage /> },
+  { path: '/dashboard/invitaciones/:eventId', element: <InvitationEditorPage /> },
+  { path: '/dashboard/reportes', element: <ReportsPage /> },
+  { path: '/dashboard/checkin', element: <CheckinPage /> },
+  { path: '/dashboard/mensajeria', element: <MessagingPage /> },
+  { path: '/dashboard/perfil', element: <SalonProfilePage /> },
+  { path: '/dashboard/agenda', element: <AgendaSettingsPage /> },
+  { path: '/dashboard/empleados/:employeeId', element: <EmployeeDetailPage /> },
+  { path: '/dashboard/empleados', element: <EmployeesPage /> },
+  { path: '/dashboard/mi-perfil', element: <EmployeeProfilePage /> },
+  { path: '/dashboard/mis-eventos', element: <EmployeeEventsPage /> },
+  { path: '/dashboard', element: <DashboardPage /> },
+]
+
 export default function App() {
   const location = useLocation()
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <PageTransition>
-              <LandingPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/marketplace"
-          element={
-            <PageTransition>
-              <MarketplaceSalonPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/inv/:eventId"
-          element={
-            <PageTransition>
-              <InvitationGuestPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <PageTransition>
-              <LoginPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/invitaciones"
-          element={
-            <PageTransition>
-              <InvitationsPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/invitaciones/:eventId"
-          element={
-            <PageTransition>
-              <InvitationEditorPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/reportes"
-          element={
-            <PageTransition>
-              <ReportsPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/checkin"
-          element={
-            <PageTransition>
-              <CheckinPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/mensajeria"
-          element={
-            <PageTransition>
-              <MessagingPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/perfil"
-          element={
-            <PageTransition>
-              <SalonProfilePage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/agenda"
-          element={
-            <PageTransition>
-              <AgendaSettingsPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/empleados/:employeeId"
-          element={
-            <PageTransition>
-              <EmployeeDetailPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/empleados"
-          element={
-            <PageTransition>
-              <EmployeesPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/mi-perfil"
-          element={
-            <PageTransition>
-              <EmployeeProfilePage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/mis-eventos"
-          element={
-            <PageTransition>
-              <EmployeeEventsPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <PageTransition>
-              <DashboardPage />
-            </PageTransition>
-          }
-        />
+        {routes.map(({ path, element }) => (
+          <Route key={path} path={path} element={<PageTransition>{element}</PageTransition>} />
+        ))}
       </Routes>
     </AnimatePresence>
   )

@@ -1,10 +1,5 @@
 export type EventStatus =
-  | 'presupuestado'
-  | 'senado'
-  | 'pagado'
-  | 'reservado'
-  | 'cerrado'
-  | 'suspendido'
+  'presupuestado' | 'senado' | 'pagado' | 'reservado' | 'cerrado' | 'suspendido'
 
 export type ServicePrepStatus = 'pendiente' | 'en_proceso' | 'listo'
 
@@ -29,6 +24,17 @@ export interface AuditLogEntry {
   detail?: string
 }
 
+export interface Employee {
+  id: string
+  name: string
+  role: string
+  avatar: string
+  dni: string
+  phone: string
+  email: string
+  active: boolean
+  joinedDate: string
+}
 
 export interface CalendarEvent {
   id: string

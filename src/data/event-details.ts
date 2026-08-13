@@ -1,9 +1,4 @@
-import type {
-  AuditLogEntry,
-  CalendarEvent,
-  EventService,
-  PaymentRecord,
-} from '../types/dashboard'
+import type { AuditLogEntry, CalendarEvent, EventService, PaymentRecord } from '../types/dashboard'
 
 const svc = (name: string, status: EventService['status'] = 'pendiente'): EventService => ({
   name,
@@ -45,19 +40,27 @@ export const MOCK_EVENTS: CalendarEvent[] = [
     maxCapacity: 150,
     phone: '+54 11 4521-8834',
     email: 'valentina.garcia@email.com',
-    services: [
-      svc('Catering', 'listo'),
-      svc('DJ', 'listo'),
-      svc('Iluminación', 'en_proceso'),
-    ],
+    services: [svc('Catering', 'listo'), svc('DJ', 'listo'), svc('Iluminación', 'en_proceso')],
     payments: [
       pay('pay-1', '2026-07-10', 255000, 'Transferencia', 'Seña 30%'),
       pay('pay-2', '2026-07-28', 595000, 'Transferencia', 'Saldo final'),
     ],
     auditLog: [
-      log('al-1', '2026-07-28T14:30:00', 'María Admin', 'Estado → Pagado', 'Saldo completo registrado'),
+      log(
+        'al-1',
+        '2026-07-28T14:30:00',
+        'María Admin',
+        'Estado → Pagado',
+        'Saldo completo registrado',
+      ),
       log('al-2', '2026-07-10T11:00:00', 'María Admin', 'Estado → Señado', 'Seña del 30% recibida'),
-      log('al-3', '2026-07-05T09:15:00', 'Sistema', 'Evento creado', 'Presupuesto aprobado por cliente'),
+      log(
+        'al-3',
+        '2026-07-05T09:15:00',
+        'Sistema',
+        'Evento creado',
+        'Presupuesto aprobado por cliente',
+      ),
     ],
     invitationUrl: 'https://eventop.com/inv/valentina-martin',
   },
@@ -105,9 +108,7 @@ export const MOCK_EVENTS: CalendarEvent[] = [
     email: 'hola@estudioluna.com',
     services: [svc('Proyector', 'pendiente'), svc('Coffee break', 'pendiente')],
     payments: [],
-    auditLog: [
-      log('al-5b', '2026-07-22T09:00:00', 'Sistema', 'Presupuesto enviado'),
-    ],
+    auditLog: [log('al-5b', '2026-07-22T09:00:00', 'Sistema', 'Presupuesto enviado')],
   },
   {
     id: 'evt-010',
@@ -129,9 +130,7 @@ export const MOCK_EVENTS: CalendarEvent[] = [
     email: 'morales.familia@email.com',
     services: [svc('Animación', 'en_proceso'), svc('Catering', 'pendiente')],
     payments: [pay('pay-3b', '2026-07-29', 72000, 'Transferencia', 'Seña 30%')],
-    auditLog: [
-      log('al-1b', '2026-07-29T14:00:00', 'María Admin', 'Estado → Señado'),
-    ],
+    auditLog: [log('al-1b', '2026-07-29T14:00:00', 'María Admin', 'Estado → Señado')],
   },
   {
     id: 'evt-003',
@@ -210,9 +209,7 @@ export const MOCK_EVENTS: CalendarEvent[] = [
       svc('Valet parking', 'pendiente'),
     ],
     payments: [pay('pay-5', '2026-07-30', 276000, 'Transferencia', 'Seña 30%')],
-    auditLog: [
-      log('al-9', '2026-07-30T10:20:00', 'María Admin', 'Estado → Señado'),
-    ],
+    auditLog: [log('al-9', '2026-07-30T10:20:00', 'María Admin', 'Estado → Señado')],
     invitationUrl: 'https://eventop.com/inv/roberto-boda',
   },
   {
@@ -238,9 +235,7 @@ export const MOCK_EVENTS: CalendarEvent[] = [
       pay('pay-6', '2026-07-01', 123000, 'Tarjeta', 'Seña 30%'),
       pay('pay-7', '2026-07-20', 287000, 'Tarjeta', 'Saldo final'),
     ],
-    auditLog: [
-      log('al-10', '2026-07-20T15:00:00', 'María Admin', 'Estado → Pagado'),
-    ],
+    auditLog: [log('al-10', '2026-07-20T15:00:00', 'María Admin', 'Estado → Pagado')],
     invitationUrl: 'https://eventop.com/inv/ana-cumple',
   },
   {

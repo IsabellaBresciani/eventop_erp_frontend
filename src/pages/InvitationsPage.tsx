@@ -1,13 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import {
-  Calendar,
-  Copy,
-  ExternalLink,
-  Pencil,
-  Search,
-  Users,
-  X,
-} from 'lucide-react'
+import { Calendar, Copy, ExternalLink, Pencil, Search, Users, X } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
@@ -22,8 +14,10 @@ import {
 } from '../data/invitations-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { GuestConfirmation } from '../types/guest-invitation'
+import { useTranslation } from 'react-i18next'
 
 export default function InvitationsPage() {
+  const { t } = useTranslation()
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
@@ -86,17 +80,15 @@ export default function InvitationsPage() {
       await navigator.clipboard.writeText(publicUrl(item))
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch {
-      /* ignore */
-    }
+    } catch {}
   }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <DashboardLayout
         salonName={salon}
-        title="Invitaciones virtuales"
-        subtitle="Editá invitaciones y revisá las listas de invitados confirmados"
+        title={t('invitationspage.invitaciones_virtuales')}
+        subtitle={t('invitationspage.edit_invitaciones_y_revis_las_listas_de_')}
       >
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative max-w-md flex-1">
@@ -105,12 +97,13 @@ export default function InvitationsPage() {
               type="search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Buscar por evento o cliente…"
+              placeholder={t('invitationspage.buscar_por_evento_o_cliente')}
               className="input-field pl-10"
             />
           </div>
           <p className="text-sm text-slate-500">
-            {filtered.length} evento{filtered.length === 1 ? '' : 's'}
+            {filtered.length} {t('invitationspage.evento')}
+            {filtered.length === 1 ? '' : 's'}
           </p>
         </div>
 
@@ -131,11 +124,7 @@ export default function InvitationsPage() {
                   }`}
                 >
                   <div className="h-20 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-100 sm:h-24 sm:w-20">
-                    <img
-                      src={item.coverUrl}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
+                    <img src={item.coverUrl} alt="" className="h-full w-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-1 py-0.5">
                     <p className="truncate text-sm font-semibold text-slate-900">
@@ -161,7 +150,8 @@ export default function InvitationsPage() {
                       </span>
                       <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-600">
                         <Users className="h-3 w-3 text-primary" />
-                        {item.guestCount} conf. · {totalPeople} pers.
+                        {item.guestCount} {t('invitationspage.conf')}
+                        {totalPeople} {t('invitationspage.pers')}
                       </span>
                     </div>
                   </div>
@@ -171,7 +161,7 @@ export default function InvitationsPage() {
 
             {filtered.length === 0 && (
               <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-12 text-center text-sm text-slate-500">
-                No hay invitaciones que coincidan con la búsqueda.
+                {t('invitationspage.no_hay_invitaciones_que_coincidan_con_la')}
               </div>
             )}
           </div>
@@ -187,11 +177,7 @@ export default function InvitationsPage() {
                   className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
                 >
                   <div className="relative h-36 bg-slate-200 sm:h-44">
-                    <img
-                      src={selected.coverUrl}
-                      alt=""
-                      className="h-full w-full object-cover"
-                    />
+                    <img src={selected.coverUrl} alt="" className="h-full w-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                     <div className="absolute bottom-4 left-4 right-4">
                       <p className="text-lg font-bold text-white sm:text-xl">
@@ -199,7 +185,8 @@ export default function InvitationsPage() {
                           `${selected.event.clientName} — ${selected.event.eventType}`}
                       </p>
                       <p className="text-sm text-white/80">
-                        {formatInvitationDate(selected.event.date)} · {selected.event.startTime} hs
+                        {formatInvitationDate(selected.event.date)} · {selected.event.startTime}{' '}
+                        {t('invitationspage.hs')}
                       </p>
                     </div>
                     <button
@@ -219,7 +206,7 @@ export default function InvitationsPage() {
                       className="dash-btn-primary py-2 text-sm"
                     >
                       <Pencil className="h-3.5 w-3.5" />
-                      Editar invitación
+                      {t('invitationspage.editar_invitacin')}
                     </Link>
                     <button
                       type="button"
@@ -236,7 +223,7 @@ export default function InvitationsPage() {
                       className="dash-btn-secondary py-2 text-sm"
                     >
                       <ExternalLink className="h-3.5 w-3.5" />
-                      Vista pública
+                      {t('invitationspage.vista_pblica')}
                     </a>
                   </div>
 
@@ -257,10 +244,10 @@ export default function InvitationsPage() {
                 >
                   <Users className="h-10 w-10 text-slate-300" />
                   <p className="mt-3 text-sm font-medium text-slate-700">
-                    Seleccioná una invitación
+                    {t('invitationspage.seleccion_una_invitacin')}
                   </p>
                   <p className="mt-1 max-w-sm text-xs text-slate-500">
-                    Vas a poder editarla, copiar el enlace y ver quién confirmó asistencia.
+                    {t('invitationspage.vas_a_poder_editarla_copiar_el_enlace_y_')}
                   </p>
                 </motion.div>
               )}

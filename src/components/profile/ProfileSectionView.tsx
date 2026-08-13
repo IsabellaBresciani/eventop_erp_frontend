@@ -6,6 +6,7 @@ import {
   SALON_TYPE_OPTIONS,
 } from '../../data/salon-profile-defaults'
 import type { ProfileStep, SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 export function ProfileSectionView({
   section,
@@ -29,10 +30,12 @@ export function ProfileSectionView({
 }
 
 function EmptyHint({ children }: { children: string }) {
+
   return <p className="text-sm text-slate-400">{children}</p>
 }
 
 function GeneralView({ profile }: { profile: SalonProfile }) {
+  const { t } = useTranslation()
   const types = profile.types
     .map((t) => SALON_TYPE_OPTIONS.find((o) => o.id === t)?.label)
     .filter(Boolean)
@@ -53,7 +56,7 @@ function GeneralView({ profile }: { profile: SalonProfile }) {
             ))}
           </div>
         ) : (
-          <EmptyHint>Sin tipos seleccionados</EmptyHint>
+          <EmptyHint>{t('profilesectionview.sin_tipos_seleccionados')}</EmptyHint>
         )}
       </div>
       {profile.description ? (
@@ -61,13 +64,14 @@ function GeneralView({ profile }: { profile: SalonProfile }) {
           {profile.description}
         </p>
       ) : (
-        <EmptyHint>Sin descripción</EmptyHint>
+        <EmptyHint>{t('profilesectionview.sin_descripcin')}</EmptyHint>
       )}
     </div>
   )
 }
 
 function LocationView({ profile }: { profile: SalonProfile }) {
+
   return (
     <div className="space-y-3">
       <div className="flex items-start gap-2.5">
@@ -89,29 +93,33 @@ function LocationView({ profile }: { profile: SalonProfile }) {
 }
 
 function PricingView({ profile }: { profile: SalonProfile }) {
+  const { t } = useTranslation()
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap gap-6">
         <div className="flex items-center gap-2 text-slate-700">
           <Users className="h-4 w-4 text-primary" />
           <span className="text-[15px] font-medium">
-            {profile.capacityMin}–{profile.capacityMax} personas
+            {profile.capacityMin}–{profile.capacityMax} {t('profilesectionview.personas')}
           </span>
         </div>
         <p className="text-[15px] font-semibold text-slate-900">
           {formatPrice(profile.pricePerHour, profile.currency)}
-          <span className="ml-1 text-sm font-normal text-slate-400">/ hora</span>
+          <span className="ml-1 text-sm font-normal text-slate-400">
+            {t('profilesectionview.hora')}
+          </span>
         </p>
       </div>
 
       <div className="flex flex-wrap gap-3 text-sm text-slate-600">
         <span>
-          Cancelación{' '}
+          {t('profilesectionview.cancelacin')}{' '}
           <strong className="capitalize text-slate-800">{profile.cancellationPolicy}</strong>
         </span>
         <span className="text-slate-300">·</span>
         <span>
-          Seña <strong className="text-slate-800">{profile.depositPercent}%</strong>
+          {t('profilesectionview.sea')}
+          <strong className="text-slate-800">{profile.depositPercent}%</strong>
         </span>
       </div>
 
@@ -129,9 +137,7 @@ function PricingView({ profile }: { profile: SalonProfile }) {
                   {formatPrice(pkg.maxPrice, profile.currency)}
                 </p>
               </div>
-              {pkg.description && (
-                <p className="mt-1 text-xs text-slate-500">{pkg.description}</p>
-              )}
+              {pkg.description && <p className="mt-1 text-xs text-slate-500">{pkg.description}</p>}
             </div>
           ))}
         </div>
@@ -141,11 +147,12 @@ function PricingView({ profile }: { profile: SalonProfile }) {
 }
 
 function PhotosView({ profile }: { profile: SalonProfile }) {
+  const { t } = useTranslation()
   if (profile.photos.length === 0) {
     return (
       <div className="flex flex-col items-center gap-2 py-8 text-slate-400">
         <ImageIcon className="h-8 w-8" />
-        <p className="text-sm">Sin fotos</p>
+        <p className="text-sm">{t('profilesectionview.sin_fotos')}</p>
       </div>
     )
   }
@@ -153,11 +160,14 @@ function PhotosView({ profile }: { profile: SalonProfile }) {
   return (
     <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
       {profile.photos.map((photo) => (
-        <div key={photo.id} className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-100">
+        <div
+          key={photo.id}
+          className="relative aspect-[4/3] overflow-hidden rounded-xl bg-slate-100"
+        >
           <img src={photo.url} alt="" className="h-full w-full object-cover" />
           {photo.isCover && (
             <span className="absolute left-2 top-2 rounded-md bg-black/60 px-1.5 py-0.5 text-[10px] font-semibold text-white">
-              Portada
+              {t('profilesectionview.portada')}
             </span>
           )}
         </div>
@@ -167,8 +177,9 @@ function PhotosView({ profile }: { profile: SalonProfile }) {
 }
 
 function ServicesView({ profile }: { profile: SalonProfile }) {
+  const { t } = useTranslation()
   if (profile.services.length === 0) {
-    return <EmptyHint>Sin servicios cargados</EmptyHint>
+    return <EmptyHint>{t('profilesectionview.sin_servicios_cargados')}</EmptyHint>
   }
 
   return (
@@ -188,7 +199,9 @@ function ServicesView({ profile }: { profile: SalonProfile }) {
               {getServiceCategoryLabel(service.category)}
             </span>
             {service.status === 'INACTIVE' && (
-              <span className="text-[10px] font-semibold uppercase text-slate-400">Inactivo</span>
+              <span className="text-[10px] font-semibold uppercase text-slate-400">
+                {t('profilesectionview.inactivo')}
+              </span>
             )}
           </div>
           {service.description && (

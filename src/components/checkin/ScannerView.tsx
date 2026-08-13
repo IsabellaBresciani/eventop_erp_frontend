@@ -1,5 +1,6 @@
 import { Camera, ScanLine } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface ScannerViewProps {
   active: boolean
@@ -7,6 +8,7 @@ interface ScannerViewProps {
 }
 
 export function ScannerView({ active, onScan }: ScannerViewProps) {
+  const { t } = useTranslation()
   const videoRef = useRef<HTMLVideoElement>(null)
   const [cameraError, setCameraError] = useState(false)
   const [scanning, setScanning] = useState(false)
@@ -50,18 +52,12 @@ export function ScannerView({ active, onScan }: ScannerViewProps) {
   return (
     <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-slate-900">
       {!cameraError ? (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className="h-full w-full object-cover"
-        />
+        <video ref={videoRef} autoPlay playsInline muted className="h-full w-full object-cover" />
       ) : (
         <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
           <Camera className="h-12 w-12 text-slate-500" />
           <p className="text-sm text-slate-400">
-            Cámara no disponible. Usá el buscador manual o ingresá el código.
+            {t('scannerview.cmara_no_disponible_us_el_buscador_manua')}
           </p>
         </div>
       )}
@@ -83,7 +79,7 @@ export function ScannerView({ active, onScan }: ScannerViewProps) {
           {scanning ? 'Escaneando...' : 'Escanear QR'}
         </button>
         <p className="mt-2 text-center text-[10px] text-white/60">
-          Apuntá al código QR del invitado · RF-214
+          {t('scannerview.apunt_al_cdigo_qr_del_invitado_rf214')}
         </p>
       </div>
     </div>

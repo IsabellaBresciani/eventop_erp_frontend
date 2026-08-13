@@ -1,6 +1,7 @@
 import { Plus, Trash2 } from 'lucide-react'
 import type { FieldErrors, SalonProfile } from '../../../types/salon-profile'
 import { FormField, StepCard } from '../FormField'
+import { useTranslation } from 'react-i18next'
 
 interface PricingStepProps {
   profile: SalonProfile
@@ -10,13 +11,8 @@ interface PricingStepProps {
   hideLabels?: boolean
 }
 
-export function PricingStep({
-  profile,
-  errors,
-  onChange,
-  embedded,
-  hideLabels,
-}: PricingStepProps) {
+export function PricingStep({ profile, errors, onChange, embedded, hideLabels }: PricingStepProps) {
+  const { t } = useTranslation()
   const updatePackage = (id: string, field: string, value: string | number) => {
     onChange({
       packages: profile.packages.map((p) => (p.id === id ? { ...p, [field]: value } : p)),
@@ -43,11 +39,11 @@ export function PricingStep({
   }
 
   return (
-    <StepCard title="Precios" embedded={embedded}>
+    <StepCard title={t('pricingstep.precios')} embedded={embedded}>
       <div className="space-y-5">
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
-            label="Capacidad mínima"
+            label={t('pricingstep.capacidad_mnima')}
             htmlFor="capacity-min"
             required
             error={errors.capacityMin}
@@ -60,15 +56,15 @@ export function PricingStep({
                 min={1}
                 value={profile.capacityMin}
                 onChange={(e) => onChange({ capacityMin: Number(e.target.value) })}
-                placeholder="Mín."
+                placeholder={t('pricingstep.mn')}
                 className="input-field"
               />
-              <span className="text-sm text-slate-500">personas</span>
+              <span className="text-sm text-slate-500">{t('pricingstep.personas')}</span>
             </div>
           </FormField>
 
           <FormField
-            label="Capacidad máxima"
+            label={t('pricingstep.capacidad_mxima')}
             htmlFor="capacity-max"
             required
             error={errors.capacityMax}
@@ -81,16 +77,16 @@ export function PricingStep({
                 min={1}
                 value={profile.capacityMax}
                 onChange={(e) => onChange({ capacityMax: Number(e.target.value) })}
-                placeholder="Máx."
+                placeholder={t('pricingstep.mx')}
                 className="input-field"
               />
-              <span className="text-sm text-slate-500">personas</span>
+              <span className="text-sm text-slate-500">{t('pricingstep.personas')}</span>
             </div>
           </FormField>
         </div>
 
         <FormField
-          label="Precio Base por Hora"
+          label={t('pricingstep.precio_base_por_hora')}
           required
           error={errors.pricePerHour}
           hideLabel={hideLabels}
@@ -101,8 +97,8 @@ export function PricingStep({
               onChange={(e) => onChange({ currency: e.target.value as SalonProfile['currency'] })}
               className="input-field w-24 font-semibold text-primary"
             >
-              <option value="ARS">ARS</option>
-              <option value="USD">USD</option>
+              <option value="ARS">{t('pricingstep.ars')}</option>
+              <option value="USD">{t('pricingstep.usd')}</option>
             </select>
             <input
               type="number"
@@ -110,7 +106,7 @@ export function PricingStep({
               value={profile.pricePerHour}
               onChange={(e) => onChange({ pricePerHour: Number(e.target.value) })}
               className="input-field flex-1 font-semibold text-primary"
-              placeholder="Precio por hora"
+              placeholder={t('pricingstep.precio_por_hora')}
             />
           </div>
         </FormField>
@@ -119,7 +115,7 @@ export function PricingStep({
           <div className="mb-3 flex items-center justify-end">
             <button type="button" onClick={addPackage} className="btn-ghost py-1 text-xs">
               <Plus className="h-3.5 w-3.5" />
-              Agregar paquete
+              {t('pricingstep.agregar_paquete')}
             </button>
           </div>
 
@@ -135,7 +131,7 @@ export function PricingStep({
                     value={pkg.name}
                     onChange={(e) => updatePackage(pkg.id, 'name', e.target.value)}
                     className="input-field border-0 bg-transparent px-0 font-semibold focus:shadow-none"
-                    placeholder="Nombre del paquete"
+                    placeholder={t('pricingstep.nombre_del_paquete')}
                   />
                   <button
                     type="button"
@@ -150,14 +146,14 @@ export function PricingStep({
                     type="number"
                     value={pkg.minPrice}
                     onChange={(e) => updatePackage(pkg.id, 'minPrice', Number(e.target.value))}
-                    placeholder="Precio mínimo"
+                    placeholder={t('pricingstep.precio_mnimo')}
                     className="input-field"
                   />
                   <input
                     type="number"
                     value={pkg.maxPrice}
                     onChange={(e) => updatePackage(pkg.id, 'maxPrice', Number(e.target.value))}
-                    placeholder="Precio máximo"
+                    placeholder={t('pricingstep.precio_mximo')}
                     className="input-field"
                   />
                 </div>
@@ -165,7 +161,7 @@ export function PricingStep({
                   type="text"
                   value={pkg.description}
                   onChange={(e) => updatePackage(pkg.id, 'description', e.target.value)}
-                  placeholder="Descripción"
+                  placeholder={t('pricingstep.descripcin')}
                   className="input-field mt-2"
                 />
               </div>
@@ -174,7 +170,7 @@ export function PricingStep({
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <FormField label="Política de cancelación" hideLabel={hideLabels}>
+          <FormField label={t('pricingstep.poltica_de_cancelacin')} hideLabel={hideLabels}>
             <div className="grid grid-cols-2 gap-2">
               {(['flexible', 'strict'] as const).map((policy) => (
                 <button
@@ -193,7 +189,11 @@ export function PricingStep({
             </div>
           </FormField>
 
-          <FormField label="Depósito" htmlFor="deposit-percent" hideLabel={hideLabels}>
+          <FormField
+            label={t('pricingstep.depsito')}
+            htmlFor="deposit-percent"
+            hideLabel={hideLabels}
+          >
             <div className="flex items-center gap-2">
               <input
                 id="deposit-percent"
@@ -205,7 +205,7 @@ export function PricingStep({
                 className="input-field w-24"
                 placeholder="%"
               />
-              <span className="text-sm text-slate-500">% seña</span>
+              <span className="text-sm text-slate-500">{t('pricingstep.sea')}</span>
             </div>
           </FormField>
         </div>

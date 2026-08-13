@@ -1,4 +1,5 @@
 import { CalendarDays } from 'lucide-react'
+import tenantConfig from '../../config/tenant.json'
 
 export function Logo({ className = '' }: { className?: string }) {
   return (
@@ -7,7 +8,8 @@ export function Logo({ className = '' }: { className?: string }) {
         <CalendarDays className="h-5 w-5" strokeWidth={2.25} />
       </div>
       <span className="text-xl font-bold tracking-tight text-slate-900">
-        Even<span className="text-primary">Top</span>
+        {tenantConfig.VITE_APP_NAME_PREFIX}
+        <span className="text-primary">{tenantConfig.VITE_APP_NAME_SUFFIX}</span>
       </span>
     </div>
   )

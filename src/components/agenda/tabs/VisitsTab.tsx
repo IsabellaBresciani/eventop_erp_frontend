@@ -2,6 +2,7 @@ import { Plus, Trash2, Users } from 'lucide-react'
 import { WEEKDAY_LABELS } from '../../../data/agenda-defaults'
 import type { AgendaSettings, VisitCapacity, Weekday } from '../../../types/agenda-settings'
 import { SettingsCard, Toggle } from '../SettingsCard'
+import { useTranslation } from 'react-i18next'
 
 interface VisitsTabProps {
   settings: AgendaSettings
@@ -9,6 +10,7 @@ interface VisitsTabProps {
 }
 
 export function VisitsTab({ settings, onChange }: VisitsTabProps) {
+  const { t } = useTranslation()
   const updatePreQual = (key: keyof AgendaSettings['preQualification'], value: boolean) => {
     onChange({ preQualification: { ...settings.preQualification, [key]: value } })
   }
@@ -29,16 +31,14 @@ export function VisitsTab({ settings, onChange }: VisitsTabProps) {
 
   const updateSlot = (id: string, field: string, value: string) => {
     onChange({
-      visitSlots: settings.visitSlots.map((s) =>
-        s.id === id ? { ...s, [field]: value } : s,
-      ),
+      visitSlots: settings.visitSlots.map((s) => (s.id === id ? { ...s, [field]: value } : s)),
     })
   }
 
   return (
     <div className="space-y-6">
       <SettingsCard
-        title="Capacidad de Visitas"
+        title={t('visitstab.capacidad_de_visitas')}
         description="Define cómo se reciben los clientes interesados en conocer el salón."
       >
         <div className="grid gap-3 sm:grid-cols-2">
@@ -59,7 +59,9 @@ export function VisitsTab({ settings, onChange }: VisitsTabProps) {
               }`}
             >
               <div className="flex items-center gap-2">
-                <Users className={`h-4 w-4 ${settings.visitCapacity === opt.value ? 'text-primary' : 'text-slate-400'}`} />
+                <Users
+                  className={`h-4 w-4 ${settings.visitCapacity === opt.value ? 'text-primary' : 'text-slate-400'}`}
+                />
                 <span className="text-sm font-semibold text-slate-900">{opt.label}</span>
               </div>
               <p className="mt-1 text-xs text-slate-500">{opt.desc}</p>
@@ -69,7 +71,7 @@ export function VisitsTab({ settings, onChange }: VisitsTabProps) {
       </SettingsCard>
 
       <SettingsCard
-        title="Agenda de Visitas Técnicas"
+        title={t('visitstab.agenda_de_visitas_tcnicas')}
         description="Franjas horarias donde se reciben clientes para mostrar el salón (RF-004)."
       >
         <div className="space-y-3">
@@ -115,31 +117,31 @@ export function VisitsTab({ settings, onChange }: VisitsTabProps) {
         </div>
         <button type="button" onClick={addSlot} className="btn-secondary mt-3 w-full sm:w-auto">
           <Plus className="h-4 w-4" />
-          Agregar franja horaria
+          {t('visitstab.agregar_franja_horaria')}
         </button>
       </SettingsCard>
 
       <SettingsCard
-        title="Pre-Calificación"
+        title={t('visitstab.precalificacin')}
         description="Datos obligatorios antes de agendar una visita técnica."
       >
         <div className="space-y-3">
           <Toggle
             enabled={settings.preQualification.eventType}
             onChange={(v) => updatePreQual('eventType', v)}
-            label="Tipo de evento"
+            label={t('visitstab.tipo_de_evento')}
             description="El cliente debe indicar qué tipo de evento planea"
           />
           <Toggle
             enabled={settings.preQualification.guests}
             onChange={(v) => updatePreQual('guests', v)}
-            label="Cantidad de invitados"
+            label={t('visitstab.cantidad_de_invitados')}
             description="Estimación de aforo requerido"
           />
           <Toggle
             enabled={settings.preQualification.budget}
             onChange={(v) => updatePreQual('budget', v)}
-            label="Presupuesto estimado"
+            label={t('visitstab.presupuesto_estimado')}
             description="Rango de inversión del cliente"
           />
         </div>

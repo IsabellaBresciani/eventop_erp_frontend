@@ -1,5 +1,6 @@
 import { Search, UserCheck } from 'lucide-react'
 import type { EventGuest } from '../../types/checkin'
+import { useTranslation } from 'react-i18next'
 
 interface ManualSearchProps {
   query: string
@@ -20,17 +21,18 @@ export function ManualSearch({
   onCodeInputChange,
   onCodeSubmit,
 }: ManualSearchProps) {
+  const { t } = useTranslation()
   return (
     <div className="rounded-2xl border border-surface-border bg-white p-4 shadow-card">
       <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-        Búsqueda manual
+        {t('manualsearch.bsqueda_manual')}
       </p>
 
       <div className="relative mb-3">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
         <input
           type="search"
-          placeholder="Buscar por nombre o apellido..."
+          placeholder={t('manualsearch.buscar_por_nombre_o_apellido')}
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           className="input-field py-2.5 pl-10 text-sm"
@@ -55,7 +57,7 @@ export function ManualSearch({
               <div className="flex items-center gap-2">
                 {guest.checkedIn && (
                   <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-600">
-                    Ingresó
+                    {t('manualsearch.ingres')}
                   </span>
                 )}
                 <UserCheck className="h-4 w-4 text-primary" />
@@ -68,14 +70,14 @@ export function ManualSearch({
       <div className="flex gap-2">
         <input
           type="text"
-          placeholder="Código QR manual (EVT-...)"
+          placeholder={t('manualsearch.cdigo_qr_manual_evt')}
           value={codeInput}
           onChange={(e) => onCodeInputChange(e.target.value.toUpperCase())}
           onKeyDown={(e) => e.key === 'Enter' && onCodeSubmit()}
           className="input-field flex-1 py-2.5 font-mono text-sm"
         />
         <button type="button" onClick={onCodeSubmit} className="btn-primary shrink-0 px-4">
-          OK
+          {t('manualsearch.ok')}
         </button>
       </div>
     </div>

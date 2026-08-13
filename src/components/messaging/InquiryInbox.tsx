@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react'
 import { INQUIRY_STATUS_CONFIG } from '../../data/messaging'
 import { INQUIRY_SOURCE_LABELS, type Inquiry, type InquiryStatus } from '../../types/messaging'
+import { useTranslation } from 'react-i18next'
 
 export type InquiryFilter = InquiryStatus | 'all' | 'activas'
 
@@ -33,6 +34,7 @@ export function InquiryInbox({
   search,
   onSearchChange,
 }: InquiryInboxProps) {
+  const { t } = useTranslation()
   const newCount = inquiries.filter((i) => i.status === 'nueva').length
 
   const filtered = inquiries.filter((inq) => {
@@ -53,7 +55,7 @@ export function InquiryInbox({
   return (
     <div className="flex h-full flex-col rounded-card border border-surface-border bg-white shadow-card">
       <div className="border-b border-surface-border p-4">
-        <h2 className="text-sm font-bold text-slate-900">Consultas</h2>
+        <h2 className="text-sm font-bold text-slate-900">{t('inquiryinbox.consultas')}</h2>
         <p className="text-xs text-slate-500">
           {newCount === 0
             ? 'Sin consultas nuevas'
@@ -64,7 +66,7 @@ export function InquiryInbox({
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
             type="search"
-            placeholder="Buscar por cliente, evento..."
+            placeholder={t('inquiryinbox.buscar_por_cliente_evento')}
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
             className="input-field py-2 pl-9 text-sm"
@@ -91,7 +93,9 @@ export function InquiryInbox({
 
       <div className="flex-1 overflow-y-auto">
         {filtered.length === 0 ? (
-          <p className="p-6 text-center text-sm text-slate-400">No hay consultas</p>
+          <p className="p-6 text-center text-sm text-slate-400">
+            {t('inquiryinbox.no_hay_consultas')}
+          </p>
         ) : (
           filtered.map((inq) => {
             const status = INQUIRY_STATUS_CONFIG[inq.status]
@@ -115,12 +119,11 @@ export function InquiryInbox({
                       >
                         {inq.clientName}
                       </span>
-                      {isNew && (
-                        <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />
-                      )}
+                      {isNew && <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />}
                     </div>
                     <p className="mt-0.5 truncate text-xs text-slate-500">
-                      {inq.eventType} · {inq.guests} invitados · {INQUIRY_SOURCE_LABELS[inq.source]}
+                      {inq.eventType} · {inq.guests} {t('inquiryinbox.invitados')}
+                      {INQUIRY_SOURCE_LABELS[inq.source]}
                     </p>
                     <p className="mt-1 truncate text-sm text-slate-600">{inq.preview}</p>
                   </div>

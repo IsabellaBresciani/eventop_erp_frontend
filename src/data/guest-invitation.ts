@@ -16,9 +16,7 @@ export function loadInvitationForGuest(eventId: string): InvitationConfig & {
       const config = JSON.parse(stored) as InvitationConfig
       return { ...config, address: DEFAULT_VENUE_ADDRESS, mapsUrl: DEFAULT_MAPS_URL }
     }
-  } catch {
-    /* fallback */
-  }
+  } catch {}
 
   const event = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
   const config = buildDefaultConfig(

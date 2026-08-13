@@ -13,8 +13,10 @@ import {
 } from '../data/checkin'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { CheckinEvent, EventGuest, ScanResult } from '../types/checkin'
+import { useTranslation } from 'react-i18next'
 
 export default function CheckinPage() {
+  const { t } = useTranslation()
   useAuthGuard()
   const [event, setEvent] = useState<CheckinEvent>(DEFAULT_CHECKIN_EVENT)
   const [feedback, setFeedback] = useState<ScanResult | null>(null)
@@ -22,10 +24,7 @@ export default function CheckinPage() {
   const [codeInput, setCodeInput] = useState('')
 
   const checkedIn = useMemo(() => getCheckedInCount(event), [event])
-  const searchResults = useMemo(
-    () => searchGuests(event, searchQuery),
-    [event, searchQuery],
-  )
+  const searchResults = useMemo(() => searchGuests(event, searchQuery), [event, searchQuery])
 
   const processGuest = useCallback((guest: EventGuest) => {
     if (guest.checkedIn) {
@@ -91,20 +90,23 @@ export default function CheckinPage() {
             className="flex items-center gap-1.5 text-sm text-white/70 hover:text-white"
           >
             <ArrowLeft className="h-4 w-4" />
-            Salir
+            {t('checkinpage.salir')}
           </Link>
           <div className="flex items-center gap-2">
             <QrCode className="h-4 w-4 text-primary" />
-            <span className="text-sm font-bold">Check-in QR</span>
+            <span className="text-sm font-bold">{t('checkinpage.checkin_qr')}</span>
           </div>
-          <span className="text-[10px] text-white/40">RF-214</span>
+          <span className="text-[10px] text-white/40">{t('checkinpage.rf214')}</span>
         </div>
       </header>
 
       <main className="mx-auto max-w-lg px-4 py-4 pb-8">
         <div className="mb-4 text-center">
           <h1 className="text-lg font-bold">{event.name}</h1>
-          <p className="text-xs text-white/50">Anfitrión: {event.clientName}</p>
+          <p className="text-xs text-white/50">
+            {t('checkinpage.anfitrin')}
+            {event.clientName}
+          </p>
         </div>
 
         <motion.div
@@ -114,7 +116,7 @@ export default function CheckinPage() {
         >
           <div className="flex items-center justify-center gap-2">
             <Users className="h-5 w-5 text-primary" />
-            <p className="text-sm text-white/80">Han ingresado</p>
+            <p className="text-sm text-white/80">{t('checkinpage.han_ingresado')}</p>
           </div>
           <p className="mt-1 text-3xl font-black">
             <span className="text-primary">{checkedIn}</span>
@@ -150,7 +152,7 @@ export default function CheckinPage() {
         </div>
 
         <div className="mt-4 rounded-xl bg-white/5 p-3 text-center text-[10px] text-white/40">
-          Códigos de prueba: EVT-M3N4O5P6 (Diego) · EVT-Q7R8S9T0 (María) · EVT-INVALID (error)
+          {t('checkinpage.cdigos_de_prueba_evtm3n4o5p6_diego_evtq7')}
         </div>
       </main>
 

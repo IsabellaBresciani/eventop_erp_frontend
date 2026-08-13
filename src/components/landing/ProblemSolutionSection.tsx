@@ -8,6 +8,7 @@ import {
   XCircle,
 } from 'lucide-react'
 import { FadeIn } from '../ui/FadeIn'
+import { useTranslation } from 'react-i18next'
 
 const beforeItems = [
   { icon: CalendarX, text: 'Calendarios manuales y dobles reservas' },
@@ -22,19 +23,19 @@ const afterItems = [
 ]
 
 export function ProblemSolutionSection() {
+  const { t } = useTranslation()
   return (
     <section id="solucion" className="py-20 lg:py-28">
       <div className="section-container">
         <FadeIn className="mx-auto mb-14 max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-            El cambio que necesitas
+            {t('problemsolutionsection.el_cambio_que_necesitas')}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
-            Del caos operativo al control total
+            {t('problemsolutionsection.del_caos_operativo_al_control_total')}
           </h2>
           <p className="mt-4 text-slate-600">
-            Miles de salones pierden reservas cada semana por desorden administrativo.
-            EvenTop convierte ese caos en un flujo automatizado.
+            {t('problemsolutionsection.miles_de_salones_pierden_reservas_cada_s')}
           </p>
         </FadeIn>
 
@@ -46,8 +47,12 @@ export function ProblemSolutionSection() {
                   <XCircle className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-red-400">Antes</p>
-                  <h3 className="text-xl font-bold text-slate-900">Caos y saturación</h3>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-red-400">
+                    {t('problemsolutionsection.antes')}
+                  </p>
+                  <h3 className="text-xl font-bold text-slate-900">
+                    {t('problemsolutionsection.caos_y_saturacin')}
+                  </h3>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -60,9 +65,11 @@ export function ProblemSolutionSection() {
               </ul>
               <div className="mt-8 rounded-xl bg-red-50 p-4">
                 <p className="text-sm font-medium text-red-600">
-                  "Perdí 3 reservas el mes pasado porque olvidé responder consultas del fin de semana."
+                  {t('problemsolutionsection.perd_3_reservas_el_mes_pasado_porque_olv')}
                 </p>
-                <p className="mt-2 text-xs text-red-400">— Dueño de quinta, Córdoba</p>
+                <p className="mt-2 text-xs text-red-400">
+                  {t('problemsolutionsection.dueo_de_quinta_crdoba')}
+                </p>
               </div>
             </div>
           </FadeIn>
@@ -80,8 +87,12 @@ export function ProblemSolutionSection() {
                   <CheckCircle2 className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">Después</p>
-                  <h3 className="text-xl font-bold text-slate-900">Con EvenTop</h3>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+                    {t('problemsolutionsection.despus')}
+                  </p>
+                  <h3 className="text-xl font-bold text-slate-900">
+                    {t('problemsolutionsection.con_eventop')}
+                  </h3>
                 </div>
               </div>
               <ul className="space-y-4">
@@ -94,9 +105,11 @@ export function ProblemSolutionSection() {
               </ul>
               <div className="mt-8 rounded-xl bg-primary/5 p-4">
                 <p className="text-sm font-medium text-primary">
-                  "Aumentamos nuestras reservas un 30% en el primer trimestre."
+                  {t('problemsolutionsection.aumentamos_nuestras_reservas_un_30_en_el')}
                 </p>
-                <p className="mt-2 text-xs text-primary/60">— Salón Jardines del Sur, Buenos Aires</p>
+                <p className="mt-2 text-xs text-primary/60">
+                  {t('problemsolutionsection.saln_jardines_del_sur_buenos_aires')}
+                </p>
               </div>
             </div>
           </FadeIn>

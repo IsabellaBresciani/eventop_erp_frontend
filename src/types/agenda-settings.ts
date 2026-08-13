@@ -51,9 +51,4 @@ export interface AgendaSettings {
   exceptions: ScheduleException[]
 }
 
-export type AgendaTab =
-  | 'availability'
-  | 'marketplace'
-  | 'visits'
-  | 'templates'
-  | 'visual'
+export type AgendaTab = 'availability' | 'marketplace' | 'visits' | 'templates' | 'visual'

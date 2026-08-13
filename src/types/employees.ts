@@ -8,7 +8,6 @@ export interface Employee {
   active: boolean
   createdAt: string
   invitedAt?: string
-  /** Contraseña temporal para primer acceso (demo) */
   tempPassword: string
 }
 

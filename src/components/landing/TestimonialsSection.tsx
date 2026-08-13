@@ -1,5 +1,6 @@
 import { Quote, Star } from 'lucide-react'
 import { FadeIn } from '../ui/FadeIn'
+import { useTranslation } from 'react-i18next'
 
 const testimonials = [
   {
@@ -35,18 +36,19 @@ const testimonials = [
 ]
 
 export function TestimonialsSection() {
+  const { t } = useTranslation()
   return (
     <section id="testimonios" className="py-20 lg:py-28">
       <div className="section-container">
         <FadeIn className="mx-auto mb-14 max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Confianza
+            {t('testimonialssection.confianza')}
           </span>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
-            Salones que ya recuperaron su tiempo
+            {t('testimonialssection.salones_que_ya_recuperaron_su_tiempo')}
           </h2>
           <p className="mt-4 text-slate-600">
-            Más de 200 salones en Argentina confían en EvenTop para gestionar sus eventos.
+            {t('testimonialssection.ms_de_200_salones_en_argentina_confan_en')}
           </p>
         </FadeIn>
 

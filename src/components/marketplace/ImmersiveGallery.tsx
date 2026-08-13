@@ -2,15 +2,20 @@ import { ChevronLeft, ChevronRight, Users } from 'lucide-react'
 import { useState } from 'react'
 import { formatPrice } from '../../data/salon-profile-defaults'
 import type { SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 interface ImmersiveGalleryProps {
   profile: SalonProfile
 }
 
 export function ImmersiveGallery({ profile }: ImmersiveGalleryProps) {
+  const { t } = useTranslation()
   const photos = profile.photos.length > 0 ? profile.photos : []
   const [activeIndex, setActiveIndex] = useState(
-    Math.max(0, photos.findIndex((p) => p.isCover)),
+    Math.max(
+      0,
+      photos.findIndex((p) => p.isCover),
+    ),
   )
 
   const current = photos[activeIndex] ?? photos[0]
@@ -22,13 +27,13 @@ export function ImmersiveGallery({ profile }: ImmersiveGalleryProps) {
   if (!current) {
     return (
       <div className="flex h-72 items-center justify-center bg-surface sm:h-96">
-        <p className="text-slate-400">Sin fotos disponibles</p>
+        <p className="text-slate-400">{t('immersivegallery.sin_fotos_disponibles')}</p>
       </div>
     )
   }
 
   return (
-    <div className="relative h-[55vh] min-h-[320px] max-h-[520px] w-full overflow-hidden bg-slate-900 sm:h-[60vh]">
+    <div className="relative h-[55vh] max-h-[520px] min-h-[320px] w-full overflow-hidden bg-slate-900 sm:h-[60vh]">
       <img
         src={current.url.replace('w=400', 'w=1200').replace('h=300', 'h=800')}
         alt={profile.name}
@@ -79,11 +84,15 @@ export function ImmersiveGallery({ profile }: ImmersiveGalleryProps) {
 
         <div className="flex gap-2">
           <div className="rounded-xl border border-white/20 bg-white/15 px-3 py-2 backdrop-blur-xl">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">Precio</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">
+              {t('immersivegallery.precio')}
+            </p>
             <p className="text-sm font-bold text-white">{priceLabel}</p>
           </div>
           <div className="rounded-xl border border-white/20 bg-white/15 px-3 py-2 backdrop-blur-xl">
-            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">Capacidad</p>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">
+              {t('immersivegallery.capacidad')}
+            </p>
             <p className="flex items-center gap-1 text-sm font-bold text-white">
               <Users className="h-3.5 w-3.5" />
               {profile.capacityMax}

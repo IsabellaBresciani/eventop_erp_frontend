@@ -109,16 +109,21 @@ export function formatCurrency(amount: number): string {
 const DEMO_TODAY = new Date(2026, 7, 3)
 
 const MONTH_NAMES = [
-  'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  'Enero',
+  'Febrero',
+  'Marzo',
+  'Abril',
+  'Mayo',
+  'Junio',
+  'Julio',
+  'Agosto',
+  'Septiembre',
+  'Octubre',
+  'Noviembre',
+  'Diciembre',
 ]
 
-const OCCUPIED_STATUSES: EventStatus[] = [
-  'presupuestado',
-  'senado',
-  'pagado',
-  'reservado',
-]
+const OCCUPIED_STATUSES: EventStatus[] = ['presupuestado', 'senado', 'pagado', 'reservado']
 
 export interface StatComparison {
   changePercent: number | null
@@ -232,8 +237,7 @@ function getMonthMetrics(events: CalendarEvent[], year: number, month: number): 
   })
 
   const occupiedDays = occupiedDayKeys.size
-  const occupancyRate =
-    days.length > 0 ? Math.round((occupiedDays / days.length) * 100) : 0
+  const occupancyRate = days.length > 0 ? Math.round((occupiedDays / days.length) * 100) : 0
 
   const billing = events
     .filter((event) => isEventInRange(event, start, end) && event.status !== 'suspendido')
@@ -284,8 +288,7 @@ export function getPeriodDashboardStats(
     }
   })
 
-  const occupancyRate =
-    days.length > 0 ? Math.round((occupiedDayKeys.size / days.length) * 100) : 0
+  const occupancyRate = days.length > 0 ? Math.round((occupiedDayKeys.size / days.length) * 100) : 0
 
   const billing = events
     .filter((event) => isEventInRange(event, start, end) && event.status !== 'suspendido')
@@ -336,10 +339,7 @@ export function getPeriodDashboardStats(
         previousMetrics.occupancyRate,
       ),
       billing: getMonthOverMonthChange(currentMetrics.billing, previousMetrics.billing),
-      eventsCount: getMonthOverMonthChange(
-        currentMetrics.eventsCount,
-        previousMetrics.eventsCount,
-      ),
+      eventsCount: getMonthOverMonthChange(currentMetrics.eventsCount, previousMetrics.eventsCount),
       freeDays: getMonthOverMonthChange(currentMetrics.freeDays, previousMetrics.freeDays),
     },
   }

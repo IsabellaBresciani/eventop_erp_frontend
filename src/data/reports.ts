@@ -1,9 +1,5 @@
 export type ReportId =
-  | 'events-by-month'
-  | 'status-funnel'
-  | 'top-services'
-  | 'sales-patterns'
-  | 'pending-payments'
+  'events-by-month' | 'status-funnel' | 'top-services' | 'sales-patterns' | 'pending-payments'
 
 export interface ReportCardMeta {
   id: ReportId
@@ -55,18 +51,102 @@ export interface MonthYearPoint {
 }
 
 export const EVENTS_BY_MONTH: MonthYearPoint[] = [
-  { month: 'Ene', monthKey: '01', eventsCurrent: 4, eventsPrevious: 3, billingCurrent: 980000, billingPrevious: 720000 },
-  { month: 'Feb', monthKey: '02', eventsCurrent: 5, eventsPrevious: 4, billingCurrent: 1120000, billingPrevious: 890000 },
-  { month: 'Mar', monthKey: '03', eventsCurrent: 7, eventsPrevious: 5, billingCurrent: 1580000, billingPrevious: 1100000 },
-  { month: 'Abr', monthKey: '04', eventsCurrent: 6, eventsPrevious: 6, billingCurrent: 1340000, billingPrevious: 1280000 },
-  { month: 'May', monthKey: '05', eventsCurrent: 8, eventsPrevious: 6, billingCurrent: 1760000, billingPrevious: 1310000 },
-  { month: 'Jun', monthKey: '06', eventsCurrent: 9, eventsPrevious: 7, billingCurrent: 1980000, billingPrevious: 1490000 },
-  { month: 'Jul', monthKey: '07', eventsCurrent: 11, eventsPrevious: 8, billingCurrent: 2450000, billingPrevious: 1720000 },
-  { month: 'Ago', monthKey: '08', eventsCurrent: 10, eventsPrevious: 9, billingCurrent: 2280000, billingPrevious: 1950000 },
-  { month: 'Sep', monthKey: '09', eventsCurrent: 8, eventsPrevious: 7, billingCurrent: 1870000, billingPrevious: 1600000 },
-  { month: 'Oct', monthKey: '10', eventsCurrent: 12, eventsPrevious: 9, billingCurrent: 2680000, billingPrevious: 2010000 },
-  { month: 'Nov', monthKey: '11', eventsCurrent: 14, eventsPrevious: 11, billingCurrent: 3120000, billingPrevious: 2450000 },
-  { month: 'Dic', monthKey: '12', eventsCurrent: 16, eventsPrevious: 13, billingCurrent: 3650000, billingPrevious: 2890000 },
+  {
+    month: 'Ene',
+    monthKey: '01',
+    eventsCurrent: 4,
+    eventsPrevious: 3,
+    billingCurrent: 980000,
+    billingPrevious: 720000,
+  },
+  {
+    month: 'Feb',
+    monthKey: '02',
+    eventsCurrent: 5,
+    eventsPrevious: 4,
+    billingCurrent: 1120000,
+    billingPrevious: 890000,
+  },
+  {
+    month: 'Mar',
+    monthKey: '03',
+    eventsCurrent: 7,
+    eventsPrevious: 5,
+    billingCurrent: 1580000,
+    billingPrevious: 1100000,
+  },
+  {
+    month: 'Abr',
+    monthKey: '04',
+    eventsCurrent: 6,
+    eventsPrevious: 6,
+    billingCurrent: 1340000,
+    billingPrevious: 1280000,
+  },
+  {
+    month: 'May',
+    monthKey: '05',
+    eventsCurrent: 8,
+    eventsPrevious: 6,
+    billingCurrent: 1760000,
+    billingPrevious: 1310000,
+  },
+  {
+    month: 'Jun',
+    monthKey: '06',
+    eventsCurrent: 9,
+    eventsPrevious: 7,
+    billingCurrent: 1980000,
+    billingPrevious: 1490000,
+  },
+  {
+    month: 'Jul',
+    monthKey: '07',
+    eventsCurrent: 11,
+    eventsPrevious: 8,
+    billingCurrent: 2450000,
+    billingPrevious: 1720000,
+  },
+  {
+    month: 'Ago',
+    monthKey: '08',
+    eventsCurrent: 10,
+    eventsPrevious: 9,
+    billingCurrent: 2280000,
+    billingPrevious: 1950000,
+  },
+  {
+    month: 'Sep',
+    monthKey: '09',
+    eventsCurrent: 8,
+    eventsPrevious: 7,
+    billingCurrent: 1870000,
+    billingPrevious: 1600000,
+  },
+  {
+    month: 'Oct',
+    monthKey: '10',
+    eventsCurrent: 12,
+    eventsPrevious: 9,
+    billingCurrent: 2680000,
+    billingPrevious: 2010000,
+  },
+  {
+    month: 'Nov',
+    monthKey: '11',
+    eventsCurrent: 14,
+    eventsPrevious: 11,
+    billingCurrent: 3120000,
+    billingPrevious: 2450000,
+  },
+  {
+    month: 'Dic',
+    monthKey: '12',
+    eventsCurrent: 16,
+    eventsPrevious: 13,
+    billingCurrent: 3650000,
+    billingPrevious: 2890000,
+  },
 ]
 
 export interface FunnelStep {

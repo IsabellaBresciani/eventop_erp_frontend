@@ -1,6 +1,7 @@
 import { MapPin, Navigation } from 'lucide-react'
 import type { FieldErrors, SalonProfile } from '../../../types/salon-profile'
 import { FormField, StepCard } from '../FormField'
+import { useTranslation } from 'react-i18next'
 
 interface LocationStepProps {
   profile: SalonProfile
@@ -24,6 +25,7 @@ export function LocationStep({
   embedded,
   hideLabels,
 }: LocationStepProps) {
+  const { t } = useTranslation()
   const movePin = (dx: number, dy: number) => {
     onChange({
       lat: Math.max(-90, Math.min(90, profile.lat + dy)),
@@ -35,10 +37,10 @@ export function LocationStep({
   const pinY = ((profile.lat + 34.7) / 0.4) * 100
 
   return (
-    <StepCard title="Ubicación" embedded={embedded}>
+    <StepCard title={t('locationstep.ubicacin')} embedded={embedded}>
       <div className="space-y-5">
         <FormField
-          label="Dirección"
+          label={t('locationstep.direccin')}
           htmlFor="salon-address"
           required
           error={errors.address}
@@ -52,7 +54,7 @@ export function LocationStep({
               value={profile.address}
               onChange={(e) => onChange({ address: e.target.value })}
               list="address-suggestions"
-              placeholder="Dirección"
+              placeholder={t('locationstep.direccin')}
               className="input-field pl-10"
             />
             <datalist id="address-suggestions">
@@ -64,7 +66,7 @@ export function LocationStep({
         </FormField>
 
         <FormField
-          label="Zona / Barrio"
+          label={t('locationstep.zona_barrio')}
           htmlFor="salon-neighborhood"
           required
           error={errors.neighborhood}
@@ -75,7 +77,7 @@ export function LocationStep({
             type="text"
             value={profile.neighborhood}
             onChange={(e) => onChange({ neighborhood: e.target.value })}
-            placeholder="Zona o barrio"
+            placeholder={t('locationstep.zona_o_barrio')}
             className="input-field"
           />
         </FormField>
@@ -128,7 +130,7 @@ export function LocationStep({
         {!hideLabels && (
           <div className="flex items-center gap-2 rounded-xl bg-primary/5 px-4 py-3 text-sm text-primary">
             <Navigation className="h-4 w-4 shrink-0" />
-            <span>La ubicación se sincroniza con el Marketplace.</span>
+            <span>{t('locationstep.la_ubicacin_se_sincroniza_con_el_marketp')}</span>
           </div>
         )}
       </div>

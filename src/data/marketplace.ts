@@ -15,14 +15,10 @@ export function loadMarketplaceProfile(): SalonProfile {
       return {
         ...DEFAULT_SALON_PROFILE,
         ...rest,
-        services: Array.isArray(rest.services)
-          ? rest.services
-          : DEFAULT_SALON_PROFILE.services,
+        services: Array.isArray(rest.services) ? rest.services : DEFAULT_SALON_PROFILE.services,
       }
     }
-  } catch {
-    /* defaults */
-  }
+  } catch {}
   return DEFAULT_SALON_PROFILE
 }
 
@@ -30,9 +26,7 @@ export function loadMarketplaceAgenda(): AgendaSettings {
   try {
     const stored = localStorage.getItem(AGENDA_KEY)
     if (stored) return { ...DEFAULT_AGENDA_SETTINGS, ...JSON.parse(stored) }
-  } catch {
-    /* defaults */
-  }
+  } catch {}
   return DEFAULT_AGENDA_SETTINGS
 }
 

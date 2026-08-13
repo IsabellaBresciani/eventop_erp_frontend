@@ -3,6 +3,7 @@ import { useCallback, useRef } from 'react'
 import { PHOTO_TAG_OPTIONS } from '../../../data/salon-profile-defaults'
 import type { FieldErrors, PhotoTag, SalonPhoto, SalonProfile } from '../../../types/salon-profile'
 import { FormField, StepCard } from '../FormField'
+import { useTranslation } from 'react-i18next'
 
 interface PhotosStepProps {
   profile: SalonProfile
@@ -12,13 +13,8 @@ interface PhotosStepProps {
   hideLabels?: boolean
 }
 
-export function PhotosStep({
-  profile,
-  errors,
-  onChange,
-  embedded,
-  hideLabels,
-}: PhotosStepProps) {
+export function PhotosStep({ profile, errors, onChange, embedded, hideLabels }: PhotosStepProps) {
+  const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dragItem = useRef<number | null>(null)
   const dragOver = useRef<number | null>(null)
@@ -69,9 +65,9 @@ export function PhotosStep({
   }
 
   return (
-    <StepCard title="Fotos" embedded={embedded}>
+    <StepCard title={t('photosstep.fotos')} embedded={embedded}>
       <div className="space-y-5">
-        <FormField error={errors.photos} hideLabel={hideLabels} label="Fotos">
+        <FormField error={errors.photos} hideLabel={hideLabels} label={t('photosstep.fotos')}>
           <div
             role="button"
             tabIndex={0}
@@ -86,7 +82,7 @@ export function PhotosStep({
           >
             <Upload className="h-8 w-8 text-primary" />
             <p className="mt-3 text-sm font-semibold text-slate-800">
-              Arrastrá imágenes o hacé clic para subir
+              {t('photosstep.arrastr_imgenes_o_hac_clic_para_subir')}
             </p>
             <input
               ref={fileInputRef}
@@ -120,7 +116,7 @@ export function PhotosStep({
                   {photo.isCover && (
                     <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-white">
                       <Star className="h-3 w-3" fill="white" />
-                      Portada
+                      {t('photosstep.portada')}
                     </span>
                   )}
                 </div>
@@ -146,7 +142,7 @@ export function PhotosStep({
                         className="btn-ghost flex-1 py-1 text-[10px]"
                       >
                         <Star className="h-3 w-3" />
-                        Portada
+                        {t('photosstep.portada')}
                       </button>
                     )}
                     <button
@@ -154,7 +150,7 @@ export function PhotosStep({
                       onClick={() => removePhoto(photo.id)}
                       className="btn-ghost flex-1 py-1 text-[10px] text-red-500 hover:bg-red-50"
                     >
-                      Eliminar
+                      {t('photosstep.eliminar')}
                     </button>
                   </div>
                 </div>
@@ -167,7 +163,7 @@ export function PhotosStep({
               className="flex h-full min-h-[200px] flex-col items-center justify-center rounded-xl border-2 border-dashed border-surface-border text-slate-400 transition-colors hover:border-primary/30 hover:text-primary"
             >
               <ImagePlus className="h-6 w-6" />
-              <span className="mt-2 text-xs">Agregar más</span>
+              <span className="mt-2 text-xs">{t('photosstep.agregar_ms')}</span>
             </button>
           </div>
         )}

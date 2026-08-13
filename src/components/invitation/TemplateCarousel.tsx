@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useRef } from 'react'
 import { INVITATION_TEMPLATES } from '../../data/invitation-templates'
 import type { InvitationTemplateId } from '../../types/invitation'
+import { useTranslation } from 'react-i18next'
 
 interface TemplateCarouselProps {
   selected: InvitationTemplateId
@@ -9,6 +10,7 @@ interface TemplateCarouselProps {
 }
 
 export function TemplateCarousel({ selected, onSelect }: TemplateCarouselProps) {
+  const { t } = useTranslation()
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const scroll = (dir: 'left' | 'right') => {
@@ -19,7 +21,7 @@ export function TemplateCarousel({ selected, onSelect }: TemplateCarouselProps) 
     <div className="relative">
       <div className="mb-3 flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-          Plantillas (RF-203)
+          {t('templatecarousel.plantillas_rf203')}
         </p>
         <div className="flex gap-1">
           <button
@@ -43,7 +45,7 @@ export function TemplateCarousel({ selected, onSelect }: TemplateCarouselProps) 
 
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide"
+        className="scrollbar-hide flex gap-3 overflow-x-auto pb-2"
         style={{ scrollbarWidth: 'none' }}
       >
         {INVITATION_TEMPLATES.map((template) => {
@@ -53,9 +55,9 @@ export function TemplateCarousel({ selected, onSelect }: TemplateCarouselProps) 
               key={template.id}
               type="button"
               onClick={() => onSelect(template.id)}
-              className={`group shrink-0 w-44 overflow-hidden rounded-xl border-2 text-left transition-all ${
+              className={`group w-44 shrink-0 overflow-hidden rounded-xl border-2 text-left transition-all ${
                 isSelected
-                  ? 'border-primary shadow-glow scale-[1.02]'
+                  ? 'scale-[1.02] border-primary shadow-glow'
                   : 'border-surface-border hover:border-primary/30'
               }`}
             >

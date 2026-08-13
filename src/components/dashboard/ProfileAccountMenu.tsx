@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getSalonInitials } from '../../data/admin-salons'
 import type { ManagedSalon } from '../../types/auth'
+import { useTranslation } from 'react-i18next'
 
 interface ProfileAccountMenuProps {
   salonName: string
@@ -26,6 +27,7 @@ function SalonAvatar({
   salon: Pick<ManagedSalon, 'name' | 'accent'>
   size?: 'sm' | 'lg'
 }) {
+
   const sizeClass = size === 'lg' ? 'h-16 w-16 text-lg' : 'h-9 w-9 text-xs'
   const accent = salon.accent ?? '#6A24E3'
 
@@ -53,6 +55,7 @@ export function ProfileAccountMenu({
   onSwitchSalon,
   onLogout,
 }: ProfileAccountMenuProps) {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [showAllSalons, setShowAllSalons] = useState(true)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -151,7 +154,8 @@ export function ProfileAccountMenu({
                     size="lg"
                   />
                   <p className="mt-3 text-lg font-normal text-slate-800">
-                    ¡Hola, {firstName}!
+                    {t('profileaccountmenu.hola')}
+                    {firstName}!
                   </p>
                   <Link
                     role="menuitem"
@@ -162,7 +166,7 @@ export function ProfileAccountMenu({
                     }}
                     className="mt-3 inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/[0.06]"
                   >
-                    Administrar tu salón
+                    {t('profileaccountmenu.administrar_tu_saln')}
                   </Link>
                 </div>
               </div>
@@ -227,14 +231,14 @@ export function ProfileAccountMenu({
                   className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
                 >
                   <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                  Cerrar sesión
+                  {t('profileaccountmenu.cerrar_sesin')}
                 </button>
               </div>
             </>
           ) : (
             <>
               <p className="truncate px-3 pb-1.5 pt-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
-                Cuenta
+                {t('profileaccountmenu.cuenta')}
               </p>
               <Link
                 role="menuitem"
@@ -246,7 +250,7 @@ export function ProfileAccountMenu({
                 className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-primary/[0.06] hover:text-primary"
               >
                 <Settings className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                Configuración
+                {t('profileaccountmenu.configuracin')}
               </Link>
               <button
                 role="menuitem"
@@ -258,7 +262,7 @@ export function ProfileAccountMenu({
                 className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left text-sm font-medium text-red-600 transition-colors hover:bg-red-50"
               >
                 <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
-                Cerrar sesión
+                {t('profileaccountmenu.cerrar_sesin')}
               </button>
             </>
           )}

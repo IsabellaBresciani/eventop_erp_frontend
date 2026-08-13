@@ -11,6 +11,7 @@ import { MarketplaceTab } from '../components/agenda/tabs/MarketplaceTab'
 import { VisualTab } from '../components/agenda/tabs/VisualTab'
 import { VisitsTab } from '../components/agenda/tabs/VisitsTab'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
+import { useTranslation } from 'react-i18next'
 
 const STORAGE_KEY = 'eventop_agenda_settings'
 
@@ -18,13 +19,12 @@ function loadSettings(): AgendaSettings {
   try {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored) return { ...DEFAULT_AGENDA_SETTINGS, ...JSON.parse(stored) }
-  } catch {
-    /* use defaults */
-  }
+  } catch {}
   return DEFAULT_AGENDA_SETTINGS
 }
 
 export default function AgendaSettingsPage() {
+  const { t } = useTranslation()
   const { salon } = useAuthGuard()
   const [activeTab, setActiveTab] = useState<AgendaTab>('availability')
   const [settings, setSettings] = useState<AgendaSettings>(loadSettings)
@@ -50,15 +50,11 @@ export default function AgendaSettingsPage() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="min-h-screen pb-24"
-    >
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="min-h-screen pb-24">
       <DashboardLayout
         salonName={salon}
-        title="Configuración Avanzada de Agenda"
-        subtitle="RF-003 · Reglas de negocio para el ERP y el Marketplace"
+        title={t('agendasettingspage.configuracin_avanzada_de_agenda')}
+        subtitle={t('agendasettingspage.rf003_reglas_de_negocio_para_el_erp_y_el')}
       >
         <div className="mb-6 overflow-x-auto">
           <div className="flex gap-1 rounded-xl border border-surface-border bg-white p-1 shadow-card">

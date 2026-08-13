@@ -13,15 +13,12 @@ import {
 import { OperationalCalendar } from '../components/dashboard/OperationalCalendar'
 import { PeriodSummaryCards } from '../components/dashboard/PeriodSummaryCards'
 import { loadCalendarSettings } from '../data/calendar-settings'
-import {
-  filterEvents,
-  getEventTypes,
-  getPeriodDashboardStats,
-} from '../data/dashboard'
+import { filterEvents, getEventTypes, getPeriodDashboardStats } from '../data/dashboard'
 import { loadEvents, saveEvents } from '../data/events-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { CalendarViewMode } from '../data/dashboard'
 import type { CalendarEvent } from '../types/dashboard'
+import { useTranslation } from 'react-i18next'
 
 const DEFAULT_FILTERS: EventListFilters = {
   query: '',
@@ -38,6 +35,7 @@ const VIEW_LABELS: Record<CalendarViewMode, string> = {
 }
 
 export default function DashboardPage() {
+  const { t } = useTranslation()
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
   const [searchParams, setSearchParams] = useSearchParams()
   const [events, setEvents] = useState<CalendarEvent[]>(loadEvents)
@@ -137,7 +135,8 @@ export default function DashboardPage() {
           <header className="space-y-1.5">
             <p className="text-subtle">{formatToday()}</p>
             <h1 className="text-display">
-              Hola, <span className="text-primary">{salon}</span>
+              {t('dashboardpage.hola')}
+              <span className="text-primary">{salon}</span>
             </h1>
           </header>
 

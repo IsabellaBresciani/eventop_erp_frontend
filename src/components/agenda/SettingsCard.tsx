@@ -56,7 +56,10 @@ export function Toggle({
 
 export function Label({ children, htmlFor }: { children: ReactNode; htmlFor?: string }) {
   return (
-    <label htmlFor={htmlFor} className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+    <label
+      htmlFor={htmlFor}
+      className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-400"
+    >
       {children}
     </label>
   )

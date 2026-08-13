@@ -11,9 +11,7 @@ export function QrCodeDisplay({ code, size = 160 }: QrCodeDisplayProps) {
     const row = Math.floor(i / cells)
     const col = i % cells
     const isFinder =
-      (row < 3 && col < 3) ||
-      (row < 3 && col >= cells - 3) ||
-      (row >= cells - 3 && col < 3)
+      (row < 3 && col < 3) || (row < 3 && col >= cells - 3) || (row >= cells - 3 && col < 3)
     const isFinderInner =
       isFinder &&
       row >= 1 &&
@@ -21,7 +19,18 @@ export function QrCodeDisplay({ code, size = 160 }: QrCodeDisplayProps) {
       ((row === 1 && col === 1) ||
         (row === 1 && col === cells - 2) ||
         (row === cells - 2 && col === 1))
-    if (isFinder) return isFinderInner || row === 0 || row === 2 || col === 0 || col === 2 || row === cells - 1 || row === cells - 3 || col === cells - 1 || col === cells - 3
+    if (isFinder)
+      return (
+        isFinderInner ||
+        row === 0 ||
+        row === 2 ||
+        col === 0 ||
+        col === 2 ||
+        row === cells - 1 ||
+        row === cells - 3 ||
+        col === cells - 1 ||
+        col === cells - 3
+      )
     return (hash + i * 7) % 3 !== 0
   })
 

@@ -17,6 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { clearAuthSession } from '../../lib/auth-session'
 import { useAuthSession } from '../../hooks/useAuthSession'
 import { ProfileAccountMenu } from './ProfileAccountMenu'
+import { useTranslation } from 'react-i18next'
 
 interface DashboardLayoutProps {
   salonName: string
@@ -45,9 +46,7 @@ function loadSidebarExpanded(): boolean {
   try {
     const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY)
     if (stored !== null) return stored === 'true'
-  } catch {
-    /* use default */
-  }
+  } catch {}
   return typeof window !== 'undefined' ? window.innerWidth >= 1280 : true
 }
 
@@ -58,6 +57,7 @@ export function DashboardLayout({
   subtitle,
   action,
 }: DashboardLayoutProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   const [sidebarExpanded, setSidebarExpanded] = useState(loadSidebarExpanded)
@@ -124,11 +124,12 @@ export function DashboardLayout({
           onClick={() => setMobileSidebarOpen(false)}
         >
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-sm font-bold text-white shadow-soft">
-            ET
+            {t('dashboardlayout.et')}
           </div>
           {showLabels && (
             <span className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
-              Even<span className="text-primary">Top</span>
+              {t('dashboardlayout.even')}
+              <span className="text-primary">{t('dashboardlayout.top')}</span>
             </span>
           )}
         </Link>
@@ -242,10 +243,11 @@ export function DashboardLayout({
             </button>
             <Link to={homePath} className="flex items-center gap-2.5">
               <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-xs font-bold text-white shadow-soft">
-                ET
+                {t('dashboardlayout.et')}
               </div>
               <span className="text-sm font-semibold text-ink">
-                Even<span className="text-primary">Top</span>
+                {t('dashboardlayout.even')}
+                <span className="text-primary">{t('dashboardlayout.top')}</span>
               </span>
             </Link>
           </div>
@@ -259,11 +261,7 @@ export function DashboardLayout({
               <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
               <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-white" />
             </button>
-            <ProfileAccountMenu
-              {...profileMenuProps}
-              align="right"
-              placement="down"
-            />
+            <ProfileAccountMenu {...profileMenuProps} align="right" placement="down" />
           </div>
         </header>
 

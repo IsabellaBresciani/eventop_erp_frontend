@@ -14,10 +14,12 @@ import { loadEvents } from '../data/events-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import { usePagination } from '../hooks/usePagination'
 import type { CalendarEvent } from '../types/dashboard'
+import { useTranslation } from 'react-i18next'
 
 const DEMO_TODAY = new Date(2026, 7, 3)
 
 export default function EmployeeEventsPage() {
+  const { t } = useTranslation()
   const { salon, session } = useAuthGuard({ allowedRoles: ['employee'] })
   const [query, setQuery] = useState('')
   const [dateFrom, setDateFrom] = useState('')
@@ -28,7 +30,7 @@ export default function EmployeeEventsPage() {
   const employeeId = session?.userId ?? ''
   const employee = useMemo(() => getEmployeeById(employeeId), [employeeId])
 
-  const events = useMemo(() => loadEvents(), [slideoverOpen])
+  const events = useMemo(() => loadEvents(), [])
 
   const stats = useMemo(
     () => getEmployeeEventStats(events, employeeId, DEMO_TODAY),
@@ -36,7 +38,12 @@ export default function EmployeeEventsPage() {
   )
 
   const filteredEvents = useMemo(() => {
-    let list = filterEmployeeEventsByDateRange(events, employeeId, dateFrom || undefined, dateTo || undefined)
+    let list = filterEmployeeEventsByDateRange(
+      events,
+      employeeId,
+      dateFrom || undefined,
+      dateTo || undefined,
+    )
 
     const q = query.trim().toLowerCase()
     if (q) {
@@ -70,18 +77,18 @@ export default function EmployeeEventsPage() {
       <DashboardLayout
         salonName={salon}
         title={`Hola, ${firstName}`}
-        subtitle="Estos son los eventos a los que estás asignado"
+        subtitle={t('employeeeventspage.estos_son_los_eventos_a_los_que_ests_asi')}
       >
         <div className="mb-8 grid gap-4 sm:grid-cols-2">
           <SummaryCard
             icon={CalendarClock}
-            label="Próximos eventos"
+            label={t('employeeeventspage.prximos_eventos')}
             value={String(stats.upcoming)}
             hint="Eventos por realizar"
           />
           <SummaryCard
             icon={Calendar}
-            label="Eventos realizados"
+            label={t('employeeeventspage.eventos_realizados')}
             value={String(stats.completed)}
             hint="Historial de trabajo"
           />
@@ -98,7 +105,7 @@ export default function EmployeeEventsPage() {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar por cliente o tipo de evento..."
+                placeholder={t('employeeeventspage.buscar_por_cliente_o_tipo_de_evento')}
                 className="catalog-search w-full rounded-full py-2.5 pl-10"
               />
             </div>
@@ -106,7 +113,7 @@ export default function EmployeeEventsPage() {
             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
               <label className="block">
                 <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                  Desde
+                  {t('employeeeventspage.desde')}
                 </span>
                 <input
                   type="date"
@@ -117,7 +124,7 @@ export default function EmployeeEventsPage() {
               </label>
               <label className="block">
                 <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                  Hasta
+                  {t('employeeeventspage.hasta')}
                 </span>
                 <input
                   type="date"
@@ -135,7 +142,7 @@ export default function EmployeeEventsPage() {
                   }}
                   className="dash-btn-secondary shrink-0"
                 >
-                  Limpiar fechas
+                  {t('employeeeventspage.limpiar_fechas')}
                 </button>
               )}
             </div>
@@ -145,18 +152,18 @@ export default function EmployeeEventsPage() {
             <table className="w-full min-w-[680px] text-left text-[13px]">
               <thead>
                 <tr className="border-b border-black/[0.05] bg-apple-fill/50 text-[11px] font-semibold uppercase tracking-[0.06em] text-slate-500">
-                  <th className="px-5 py-3.5 sm:px-6">Fecha</th>
-                  <th className="px-4 py-3.5">Cliente</th>
-                  <th className="px-4 py-3.5">Tipo</th>
-                  <th className="px-4 py-3.5">Horario</th>
-                  <th className="px-5 py-3.5 sm:px-6">Estado</th>
+                  <th className="px-5 py-3.5 sm:px-6">{t('employeeeventspage.fecha')}</th>
+                  <th className="px-4 py-3.5">{t('employeeeventspage.cliente')}</th>
+                  <th className="px-4 py-3.5">{t('employeeeventspage.tipo')}</th>
+                  <th className="px-4 py-3.5">{t('employeeeventspage.horario')}</th>
+                  <th className="px-5 py-3.5 sm:px-6">{t('employeeeventspage.estado')}</th>
                 </tr>
               </thead>
               <tbody>
                 {totalItems === 0 ? (
                   <tr>
                     <td colSpan={5} className="px-6 py-14 text-center text-sm text-slate-500">
-                      No hay eventos que coincidan con los filtros seleccionados.
+                      {t('employeeeventspage.no_hay_eventos_que_coincidan_con_los_fil')}
                     </td>
                   </tr>
                 ) : (
@@ -167,7 +174,7 @@ export default function EmployeeEventsPage() {
                       <tr
                         key={event.id}
                         onClick={() => handleSelectEvent(event)}
-                        className="cursor-pointer border-b border-black/[0.04] last:border-0 transition-colors hover:bg-apple-fill/40"
+                        className="cursor-pointer border-b border-black/[0.04] transition-colors last:border-0 hover:bg-apple-fill/40"
                       >
                         <td className="px-5 py-4 text-slate-700 sm:px-6">
                           {new Date(`${event.date}T12:00:00`).toLocaleDateString('es-AR', {
@@ -229,6 +236,7 @@ function SummaryCard({
   value: string
   hint: string
 }) {
+
   return (
     <div className="dash-card p-5">
       <div className="flex items-center gap-2 text-slate-500">

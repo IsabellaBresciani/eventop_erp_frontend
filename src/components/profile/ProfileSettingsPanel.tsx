@@ -1,5 +1,6 @@
 import { Check, Loader2, Pencil, X } from 'lucide-react'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export function ProfileSettingsPanel({
   editing,
@@ -16,6 +17,7 @@ export function ProfileSettingsPanel({
   onSave: () => void
   children: ReactNode
 }) {
+  const { t } = useTranslation()
   return (
     <div className="rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
       <div className="flex items-center justify-end gap-2 border-b border-slate-100 px-4 py-3 sm:px-5">
@@ -28,7 +30,7 @@ export function ProfileSettingsPanel({
               className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-slate-600 transition-colors hover:bg-slate-100 disabled:opacity-50"
             >
               <X className="h-4 w-4" />
-              Cancelar
+              {t('profilesettingspanel.cancelar')}
             </button>
             <button
               type="button"
@@ -41,7 +43,7 @@ export function ProfileSettingsPanel({
               ) : (
                 <Check className="h-4 w-4" />
               )}
-              Guardar
+              {t('profilesettingspanel.guardar')}
             </button>
           </>
         ) : (

@@ -1,11 +1,13 @@
 import { Check, Copy, Link2, MessageCircle, Share2 } from 'lucide-react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface LinkManagerProps {
   url: string
 }
 
 export function LinkManager({ url }: LinkManagerProps) {
+  const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
 
   const copyLink = () => {
@@ -31,7 +33,9 @@ export function LinkManager({ url }: LinkManagerProps) {
     <div className="rounded-card border border-surface-border bg-white p-5 shadow-card">
       <div className="mb-3 flex items-center gap-2">
         <Link2 className="h-4 w-4 text-primary" />
-        <h3 className="text-sm font-bold text-slate-900">Gestor de Enlace (RF-204)</h3>
+        <h3 className="text-sm font-bold text-slate-900">
+          {t('linkmanager.gestor_de_enlace_rf204')}
+        </h3>
       </div>
 
       <div className="flex gap-2">
@@ -58,7 +62,7 @@ export function LinkManager({ url }: LinkManagerProps) {
           className="btn-secondary flex-1 py-2.5 text-xs"
         >
           <MessageCircle className="h-4 w-4 text-emerald-600" />
-          WhatsApp
+          {t('linkmanager.whatsapp')}
         </button>
         <button
           type="button"
@@ -66,7 +70,7 @@ export function LinkManager({ url }: LinkManagerProps) {
           className="btn-secondary flex-1 py-2.5 text-xs"
         >
           <Share2 className="h-4 w-4 text-primary" />
-          Compartir
+          {t('linkmanager.compartir')}
         </button>
       </div>
     </div>

@@ -5,6 +5,7 @@ import { getVisitSlotsForDate } from '../../data/marketplace'
 import { WEEKDAY_LABELS } from '../../data/agenda-defaults'
 import type { AgendaSettings } from '../../types/agenda-settings'
 import type { SalonProfile } from '../../types/salon-profile'
+import { useTranslation } from 'react-i18next'
 
 interface VisitBookingModalProps {
   isOpen: boolean
@@ -14,6 +15,7 @@ interface VisitBookingModalProps {
 }
 
 export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBookingModalProps) {
+  const { t } = useTranslation()
   const [date, setDate] = useState('')
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -48,14 +50,23 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
-            className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-card border border-surface-border bg-white p-6 shadow-2xl sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2"
+            className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-card border border-surface-border bg-white p-6 shadow-2xl sm:inset-x-auto sm:bottom-auto sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2"
           >
             <div className="mb-4 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-bold text-slate-900">Agendar Visita</h3>
-                <p className="text-xs text-slate-500">RF-004 · {profile.name}</p>
+                <h3 className="text-lg font-bold text-slate-900">
+                  {t('visitbookingmodal.agendar_visita')}
+                </h3>
+                <p className="text-xs text-slate-500">
+                  {t('visitbookingmodal.rf004')}
+                  {profile.name}
+                </p>
               </div>
-              <button type="button" onClick={reset} className="rounded-lg p-1.5 text-slate-400 hover:bg-surface">
+              <button
+                type="button"
+                onClick={reset}
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-surface"
+              >
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -65,19 +76,24 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
                 <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
                   <Calendar className="h-6 w-6" />
                 </div>
-                <p className="font-semibold text-slate-900">¡Visita agendada!</p>
+                <p className="font-semibold text-slate-900">
+                  {t('visitbookingmodal.visita_agendada')}
+                </p>
                 <p className="mt-1 text-sm text-slate-500">
-                  Te contactaremos para confirmar tu visita técnica.
+                  {t('visitbookingmodal.te_contactaremos_para_confirmar_tu_visit')}
                 </p>
                 <button type="button" onClick={reset} className="btn-primary mt-4 w-full">
-                  Cerrar
+                  {t('visitbookingmodal.cerrar')}
                 </button>
               </div>
             ) : (
               <>
                 <div className="mb-4">
-                  <label htmlFor="visit-date" className="mb-1.5 block text-xs font-semibold text-slate-500">
-                    Elegí una fecha
+                  <label
+                    htmlFor="visit-date"
+                    className="mb-1.5 block text-xs font-semibold text-slate-500"
+                  >
+                    {t('visitbookingmodal.eleg_una_fecha')}
                   </label>
                   <input
                     id="visit-date"
@@ -95,9 +111,11 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
                 {date && (
                   <div className="mb-4">
                     <p className="mb-2 text-xs font-semibold text-slate-500">
-                      Franjas disponibles
+                      {t('visitbookingmodal.franjas_disponibles')}
                       {agenda.visitCapacity === 'group' && (
-                        <span className="ml-1 text-primary">(Open House)</span>
+                        <span className="ml-1 text-primary">
+                          {t('visitbookingmodal.open_house')}
+                        </span>
                       )}
                     </p>
                     {slots.length > 0 ? (
@@ -124,7 +142,7 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
                       </div>
                     ) : (
                       <p className="rounded-xl bg-amber-50 px-3 py-2 text-xs text-amber-700">
-                        No hay visitas programadas ese día. Elegí otra fecha.
+                        {t('visitbookingmodal.no_hay_visitas_programadas_ese_da_eleg_o')}
                       </p>
                     )}
                   </div>
@@ -133,7 +151,7 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
                 {agenda.preQualification.eventType && (
                   <p className="mb-4 flex items-center gap-1.5 text-[10px] text-slate-400">
                     <Users className="h-3 w-3" />
-                    Se solicitará tipo de evento e invitados al confirmar
+                    {t('visitbookingmodal.se_solicitar_tipo_de_evento_e_invitados_')}
                   </p>
                 )}
 
@@ -143,7 +161,7 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
                   disabled={!date || !selectedSlot}
                   className="btn-primary w-full disabled:opacity-50"
                 >
-                  Confirmar visita
+                  {t('visitbookingmodal.confirmar_visita')}
                 </button>
               </>
             )}

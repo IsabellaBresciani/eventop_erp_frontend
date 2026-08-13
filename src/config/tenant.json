@@ -1,0 +1,6 @@
+{
+  "VITE_APP_NAME": "EvenTop",
+  "VITE_APP_NAME_PREFIX": "Even",
+  "VITE_APP_NAME_SUFFIX": "Top",
+  "VITE_APP_PRIMARY_COLOR": "#6A24E3"
+}

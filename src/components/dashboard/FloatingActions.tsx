@@ -1,12 +1,14 @@
 import { CalendarOff, Plus, QrCode } from 'lucide-react'
 import { type ComponentType, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 interface FloatingActionsProps {
   onNewEvent: () => void
 }
 
 export function FloatingActions({ onNewEvent }: FloatingActionsProps) {
+  const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -18,7 +20,7 @@ export function FloatingActions({ onNewEvent }: FloatingActionsProps) {
       >
         <FloatingShortcut
           icon={Plus}
-          label="Nuevo evento"
+          label={t('floatingactions.nuevo_evento')}
           onClick={() => {
             setExpanded(false)
             onNewEvent()
@@ -27,7 +29,7 @@ export function FloatingActions({ onNewEvent }: FloatingActionsProps) {
         />
         <FloatingShortcut
           icon={CalendarOff}
-          label="Bloquear fecha"
+          label={t('floatingactions.bloquear_fecha')}
           onClick={() => setExpanded(false)}
         />
         <Link
@@ -38,7 +40,9 @@ export function FloatingActions({ onNewEvent }: FloatingActionsProps) {
           <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
             <QrCode className="h-4 w-4" />
           </div>
-          <span className="text-[13px] font-medium text-slate-700">Validar QR</span>
+          <span className="text-[13px] font-medium text-slate-700">
+            {t('floatingactions.validar_qr')}
+          </span>
         </Link>
       </div>
 
@@ -65,6 +69,7 @@ function FloatingShortcut({
   onClick: () => void
   accent?: boolean
 }) {
+
   return (
     <button
       type="button"

@@ -1,5 +1,15 @@
-import { Bell, CalendarDays, Inbox, LayoutGrid, LogOut, Plus, QrCode, UserCircle } from 'lucide-react'
+import {
+  Bell,
+  CalendarDays,
+  Inbox,
+  LayoutGrid,
+  LogOut,
+  Plus,
+  QrCode,
+  UserCircle,
+} from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 interface DashboardHeaderProps {
   salonName: string
@@ -13,6 +23,7 @@ const NAV_ITEMS = [
 ] as const
 
 export function DashboardHeader({ salonName }: DashboardHeaderProps) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -35,7 +46,8 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
             <CalendarDays className="h-[18px] w-[18px]" strokeWidth={1.75} />
           </div>
           <span className="hidden text-[15px] font-semibold tracking-tight text-slate-900 sm:inline">
-            Even<span className="text-primary">Top</span>
+            {t('dashboardheader.even')}
+            <span className="text-primary">{t('dashboardheader.top')}</span>
           </span>
         </Link>
 
@@ -81,7 +93,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
               className="btn-primary hidden px-4 py-2 text-sm sm:inline-flex"
             >
               <Plus className="h-4 w-4" />
-              Nuevo evento
+              {t('dashboardheader.nuevo_evento')}
             </button>
           )}
 

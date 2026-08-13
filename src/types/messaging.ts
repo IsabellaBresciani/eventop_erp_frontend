@@ -12,9 +12,7 @@ export interface Inquiry {
   guests: number
   status: InquiryStatus
   source: InquirySource
-  /** Preview text for the inbox list */
   preview: string
-  /** Full consultation message from the client */
   message: string
   receivedAt: string
   lastActivity: string

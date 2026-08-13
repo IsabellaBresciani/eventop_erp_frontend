@@ -1,6 +1,7 @@
 import { Bell, CalendarX, Plus, Trash2 } from 'lucide-react'
 import type { AgendaSettings } from '../../../types/agenda-settings'
 import { Label, SettingsCard } from '../SettingsCard'
+import { useTranslation } from 'react-i18next'
 
 interface VisualTabProps {
   settings: AgendaSettings
@@ -8,6 +9,7 @@ interface VisualTabProps {
 }
 
 export function VisualTab({ settings, onChange }: VisualTabProps) {
+  const { t } = useTranslation()
   const updateColor = (key: string, color: string) => {
     onChange({
       statusColors: settings.statusColors.map((c) => (c.key === key ? { ...c, color } : c)),
@@ -36,7 +38,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
   return (
     <div className="space-y-6">
       <SettingsCard
-        title="Paleta de Estados (RF-007)"
+        title={t('visualtab.paleta_de_estados_rf007')}
         description="Personaliza los colores asociados a cada estado del calendario."
       >
         <div className="space-y-3">
@@ -68,7 +70,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
       </SettingsCard>
 
       <SettingsCard
-        title="Recordatorios Automáticos"
+        title={t('visualtab.recordatorios_automticos')}
         description="Disparadores de notificación para el administrador."
       >
         <div className="flex items-center gap-3">
@@ -76,7 +78,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
             <Bell className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <Label htmlFor="reminder-days">Avisar antes del evento</Label>
+            <Label htmlFor="reminder-days">{t('visualtab.avisar_antes_del_evento')}</Label>
             <div className="flex items-center gap-2">
               <input
                 id="reminder-days"
@@ -88,7 +90,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
                 className="input-field w-20"
               />
               <span className="text-sm text-slate-500">
-                días antes si falta confirmar depósito
+                {t('visualtab.das_antes_si_falta_confirmar_depsito')}
               </span>
             </div>
           </div>
@@ -96,7 +98,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
       </SettingsCard>
 
       <SettingsCard
-        title="Excepciones Horarias"
+        title={t('visualtab.excepciones_horarias')}
         description="Cierres específicos que anulan la configuración general."
       >
         <div className="space-y-3">
@@ -116,7 +118,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
                 type="text"
                 value={exc.label}
                 onChange={(e) => updateException(exc.id, 'label', e.target.value)}
-                placeholder="Motivo del cierre"
+                placeholder={t('visualtab.motivo_del_cierre')}
                 className="input-field flex-1"
               />
               <button
@@ -132,7 +134,7 @@ export function VisualTab({ settings, onChange }: VisualTabProps) {
         </div>
         <button type="button" onClick={addException} className="btn-secondary mt-3">
           <Plus className="h-4 w-4" />
-          Añadir cierre específico
+          {t('visualtab.aadir_cierre_especfico')}
         </button>
       </SettingsCard>
     </div>

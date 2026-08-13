@@ -16,6 +16,7 @@ import type {
   VenueServiceStatus,
 } from '../../../types/salon-profile'
 import { FormField, StepCard } from '../FormField'
+import { useTranslation } from 'react-i18next'
 
 interface ServicesStepProps {
   profile: SalonProfile
@@ -26,12 +27,8 @@ interface ServicesStepProps {
 
 type ServiceDraft = VenueService
 
-export function ServicesStep({
-  profile,
-  onChange,
-  embedded,
-  hideLabels,
-}: ServicesStepProps) {
+export function ServicesStep({ profile, onChange, embedded, hideLabels }: ServicesStepProps) {
+  const { t } = useTranslation()
   const [draft, setDraft] = useState<ServiceDraft | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -96,13 +93,13 @@ export function ServicesStep({
   }
 
   return (
-    <StepCard title="Servicios" embedded={embedded}>
+    <StepCard title={t('servicesstep.servicios')} embedded={embedded}>
       <div className="space-y-5">
         <div className="flex items-center justify-end gap-3">
           {!draft && (
             <button type="button" onClick={openCreate} className="btn-primary py-2 text-sm">
               <Plus className="h-4 w-4" />
-              Agregar servicio
+              {t('servicesstep.agregar_servicio')}
             </button>
           )}
         </div>
@@ -116,29 +113,37 @@ export function ServicesStep({
                   : 'Nuevo servicio'}
               </h4>
               <button type="button" onClick={closeForm} className="btn-ghost py-1 text-xs">
-                Cancelar
+                {t('servicesstep.cancelar')}
               </button>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Nombre" htmlFor="service-name" required hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.nombre')}
+                htmlFor="service-name"
+                required
+                hideLabel={hideLabels}
+              >
                 <input
                   id="service-name"
                   type="text"
                   value={draft.name}
                   onChange={(e) => updateDraft('name', e.target.value)}
-                  placeholder="Ej: Catering completo"
+                  placeholder={t('servicesstep.ej_catering_completo')}
                   className="input-field"
                 />
               </FormField>
 
-              <FormField label="Categoría" htmlFor="service-category" required hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.categora')}
+                htmlFor="service-category"
+                required
+                hideLabel={hideLabels}
+              >
                 <select
                   id="service-category"
                   value={draft.category}
-                  onChange={(e) =>
-                    updateDraft('category', e.target.value as VenueServiceCategory)
-                  }
+                  onChange={(e) => updateDraft('category', e.target.value as VenueServiceCategory)}
                   className="input-field"
                 >
                   {SERVICE_CATEGORY_OPTIONS.map((opt) => (
@@ -150,30 +155,43 @@ export function ServicesStep({
               </FormField>
             </div>
 
-            <FormField label="Descripción" htmlFor="service-description" hideLabel={hideLabels}>
+            <FormField
+              label={t('servicesstep.descripcin')}
+              htmlFor="service-description"
+              hideLabel={hideLabels}
+            >
               <textarea
                 id="service-description"
                 rows={2}
                 value={draft.description}
                 onChange={(e) => updateDraft('description', e.target.value)}
-                placeholder="Qué incluye el servicio"
+                placeholder={t('servicesstep.qu_incluye_el_servicio')}
                 className="input-field resize-none"
               />
             </FormField>
 
-            <FormField label="Términos y condiciones" htmlFor="service-terms" hideLabel={hideLabels}>
+            <FormField
+              label={t('servicesstep.trminos_y_condiciones')}
+              htmlFor="service-terms"
+              hideLabel={hideLabels}
+            >
               <textarea
                 id="service-terms"
                 rows={2}
                 value={draft.termsAndConditions}
                 onChange={(e) => updateDraft('termsAndConditions', e.target.value)}
-                placeholder="Condiciones de contratación, mínimos, etc."
+                placeholder={t('servicesstep.condiciones_de_contratacin_mnimos_etc')}
                 className="input-field resize-none"
               />
             </FormField>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Modelo de precio" htmlFor="service-pricing" required hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.modelo_de_precio')}
+                htmlFor="service-pricing"
+                required
+                hideLabel={hideLabels}
+              >
                 <select
                   id="service-pricing"
                   value={draft.pricingModel}
@@ -190,7 +208,12 @@ export function ServicesStep({
                 </select>
               </FormField>
 
-              <FormField label="Precio base" htmlFor="service-base-price" required hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.precio_base')}
+                htmlFor="service-base-price"
+                required
+                hideLabel={hideLabels}
+              >
                 <input
                   id="service-base-price"
                   type="number"
@@ -204,7 +227,11 @@ export function ServicesStep({
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              <FormField label="Cantidad mínima" htmlFor="service-min-qty" hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.cantidad_mnima')}
+                htmlFor="service-min-qty"
+                hideLabel={hideLabels}
+              >
                 <input
                   id="service-min-qty"
                   type="number"
@@ -215,7 +242,11 @@ export function ServicesStep({
                 />
               </FormField>
 
-              <FormField label="Cantidad máxima" htmlFor="service-max-qty" hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.cantidad_mxima')}
+                htmlFor="service-max-qty"
+                hideLabel={hideLabels}
+              >
                 <input
                   id="service-max-qty"
                   type="number"
@@ -226,17 +257,19 @@ export function ServicesStep({
                 />
               </FormField>
 
-              <FormField label="Estado" htmlFor="service-status" hideLabel={hideLabels}>
+              <FormField
+                label={t('servicesstep.estado')}
+                htmlFor="service-status"
+                hideLabel={hideLabels}
+              >
                 <select
                   id="service-status"
                   value={draft.status}
-                  onChange={(e) =>
-                    updateDraft('status', e.target.value as VenueServiceStatus)
-                  }
+                  onChange={(e) => updateDraft('status', e.target.value as VenueServiceStatus)}
                   className="input-field"
                 >
-                  <option value="ACTIVE">Activo</option>
-                  <option value="INACTIVE">Inactivo</option>
+                  <option value="ACTIVE">{t('servicesstep.activo')}</option>
+                  <option value="INACTIVE">{t('servicesstep.inactivo')}</option>
                 </select>
               </FormField>
             </div>
@@ -245,10 +278,10 @@ export function ServicesStep({
 
             <div className="flex justify-end gap-2">
               <button type="button" onClick={closeForm} className="btn-secondary py-2 text-sm">
-                Cancelar
+                {t('servicesstep.cancelar')}
               </button>
               <button type="button" onClick={saveDraft} className="btn-primary py-2 text-sm">
-                Guardar servicio
+                {t('servicesstep.guardar_servicio')}
               </button>
             </div>
           </div>
@@ -261,9 +294,7 @@ export function ServicesStep({
               <div
                 key={service.id}
                 className={`rounded-xl border p-4 transition-colors ${
-                  active
-                    ? 'border-slate-200 bg-white'
-                    : 'border-slate-100 bg-slate-50 opacity-80'
+                  active ? 'border-slate-200 bg-white' : 'border-slate-100 bg-slate-50 opacity-80'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -274,9 +305,7 @@ export function ServicesStep({
                       </p>
                       <span
                         className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
-                          active
-                            ? 'bg-emerald-50 text-emerald-700'
-                            : 'bg-slate-200 text-slate-500'
+                          active ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-200 text-slate-500'
                         }`}
                       >
                         {active ? 'Activo' : 'Inactivo'}
@@ -296,7 +325,8 @@ export function ServicesStep({
                         {' '}
                         · {getServicePricingModelLabel(service.pricingModel)}
                         {' · '}
-                        Cant. {service.minQuantity}–{service.maxQuantity}
+                        {t('servicesstep.cant')}
+                        {service.minQuantity}–{service.maxQuantity}
                       </span>
                     </p>
                   </div>
@@ -335,13 +365,15 @@ export function ServicesStep({
 
         {profile.services.length === 0 && !draft && (
           <div className="rounded-xl border border-dashed border-slate-200 bg-slate-50/80 px-4 py-10 text-center">
-            <p className="text-sm font-medium text-slate-700">Sin servicios cargados</p>
+            <p className="text-sm font-medium text-slate-700">
+              {t('servicesstep.sin_servicios_cargados')}
+            </p>
             <p className="mt-1 text-xs text-slate-500">
-              Agregá catering, DJ, decoración u otros servicios de tu salón.
+              {t('servicesstep.agreg_catering_dj_decoracin_u_otros_serv')}
             </p>
             <button type="button" onClick={openCreate} className="btn-primary mt-4 py-2 text-sm">
               <Plus className="h-4 w-4" />
-              Agregar el primero
+              {t('servicesstep.agregar_el_primero')}
             </button>
           </div>
         )}

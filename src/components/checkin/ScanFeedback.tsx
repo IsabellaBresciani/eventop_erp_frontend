@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle2, UserX, XCircle } from 'lucide-react'
 import type { ScanResult } from '../../types/checkin'
+import { useTranslation } from 'react-i18next'
 
 interface ScanFeedbackProps {
   result: ScanResult | null
@@ -26,6 +27,7 @@ const CONFIG = {
 }
 
 export function ScanFeedback({ result, onDismiss }: ScanFeedbackProps) {
+  const { t } = useTranslation()
   return (
     <AnimatePresence>
       {result && (
@@ -57,7 +59,7 @@ export function ScanFeedback({ result, onDismiss }: ScanFeedbackProps) {
               </p>
             )}
             <p className="mt-2 text-sm text-white/80">{result.message}</p>
-            <p className="mt-8 text-xs text-white/50">Tocá para continuar</p>
+            <p className="mt-8 text-xs text-white/50">{t('scanfeedback.toc_para_continuar')}</p>
           </motion.div>
         </motion.div>
       )}

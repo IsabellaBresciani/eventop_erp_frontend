@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Logo } from '../ui/Logo'
+import { useTranslation } from 'react-i18next'
 
 interface NavbarProps {
   onOpenAuth: (mode: 'login' | 'register') => void
 }
 
 export function Navbar({ onOpenAuth }: NavbarProps) {
+  const { t } = useTranslation()
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -52,10 +54,10 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
 
           <div className="hidden items-center gap-3 md:flex">
             <Link to="/login" className="btn-ghost">
-              Login
+              {t('navbar.login')}
             </Link>
             <button type="button" onClick={() => onOpenAuth('register')} className="btn-primary">
-              Comenzar Prueba Gratis
+              {t('navbar.comenzar_prueba_gratis')}
             </button>
           </div>
 
@@ -88,7 +90,7 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
                 onClick={() => setMobileOpen(false)}
                 className="btn-ghost justify-start"
               >
-                Login
+                {t('navbar.login')}
               </Link>
               <button
                 type="button"
@@ -98,7 +100,7 @@ export function Navbar({ onOpenAuth }: NavbarProps) {
                 }}
                 className="btn-primary"
               >
-                Comenzar Prueba Gratis
+                {t('navbar.comenzar_prueba_gratis')}
               </button>
             </nav>
           </div>

@@ -13,6 +13,7 @@ import {
   type PeriodDashboardStats,
   type StatComparison,
 } from '../../data/dashboard'
+import { useTranslation } from 'react-i18next'
 
 interface PeriodSummaryCardsProps {
   stats: PeriodDashboardStats
@@ -20,35 +21,50 @@ interface PeriodSummaryCardsProps {
 }
 
 export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsProps) {
+  const { t } = useTranslation()
   return (
     <section className="space-y-5">
       <div>
-        <p className="dash-section-label">Resumen del periodo</p>
+        <p className="dash-section-label">{t('periodsummarycards.resumen_del_periodo')}</p>
         <p className="mt-1.5 text-[13px] text-slate-500">
-          {stats.periodLabel} · Vista {viewModeLabel.toLowerCase()}
+          {stats.periodLabel} {t('periodsummarycards.vista')}
+          {viewModeLabel.toLowerCase()}
         </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <SummaryCard icon={Percent} label="Ocupación" index={0} comparison={stats.comparisons.occupancy}>
+        <SummaryCard
+          icon={Percent}
+          label={t('periodsummarycards.ocupacin')}
+          index={0}
+          comparison={stats.comparisons.occupancy}
+        >
           <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {stats.occupancyRate}%
           </p>
           <p className="mt-1 text-[13px] text-slate-500">
-            {stats.occupiedDays} de {stats.totalDays} días con evento
+            {stats.occupiedDays} {t('periodsummarycards.de')}
+            {stats.totalDays} {t('periodsummarycards.das_con_evento')}
           </p>
         </SummaryCard>
 
-        <SummaryCard icon={CalendarCheck} label="Facturación" index={1} comparison={stats.comparisons.billing}>
+        <SummaryCard
+          icon={CalendarCheck}
+          label={t('periodsummarycards.facturacin')}
+          index={1}
+          comparison={stats.comparisons.billing}
+        >
           <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {formatCurrency(stats.billing)}
           </p>
-          <p className="mt-1 text-[13px] text-slate-500">Señas cobradas en el periodo</p>
+          <p className="mt-1 text-[13px] text-slate-500">
+            {t('periodsummarycards.seas_cobradas_en_el_periodo')}
+          </p>
         </SummaryCard>
 
         <SummaryCard
           icon={CalendarClock}
-          label="Próximo evento"
+          label={t('periodsummarycards.prximo_evento')}
           index={2}
           comparison={stats.comparisons.eventsCount}
         >
@@ -62,13 +78,15 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
               </p>
             </>
           ) : (
-            <p className="text-[13px] text-slate-500">No hay eventos próximos</p>
+            <p className="text-[13px] text-slate-500">
+              {t('periodsummarycards.no_hay_eventos_prximos')}
+            </p>
           )}
         </SummaryCard>
 
         <SummaryCard
           icon={CalendarPlus}
-          label="Próxima fecha libre"
+          label={t('periodsummarycards.prxima_fecha_libre')}
           index={3}
           comparison={stats.comparisons.freeDays}
         >
@@ -77,10 +95,14 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
               <p className="text-base font-semibold capitalize tracking-[-0.01em] text-slate-900">
                 {formatAvailableDate(stats.nextAvailableDate)}
               </p>
-              <p className="mt-1 text-[13px] text-slate-500">Disponible para reservar</p>
+              <p className="mt-1 text-[13px] text-slate-500">
+                {t('periodsummarycards.disponible_para_reservar')}
+              </p>
             </>
           ) : (
-            <p className="text-[13px] text-slate-500">Sin fechas libres próximas</p>
+            <p className="text-[13px] text-slate-500">
+              {t('periodsummarycards.sin_fechas_libres_prximas')}
+            </p>
           )}
         </SummaryCard>
       </div>
@@ -101,6 +123,7 @@ function SummaryCard({
   comparison: StatComparison
   children: ReactNode
 }) {
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -124,6 +147,7 @@ function SummaryCard({
 }
 
 function MonthComparison({ comparison }: { comparison: StatComparison }) {
+  const { t } = useTranslation()
   const { changePercent } = comparison
 
   if (changePercent === null) return null
@@ -147,7 +171,9 @@ function MonthComparison({ comparison }: { comparison: StatComparison }) {
         {isPositive && '+'}
         {changePercent}%
       </span>
-      <span className="font-normal text-apple-label">vs mes anterior</span>
+      <span className="font-normal text-apple-label">
+        {t('periodsummarycards.vs_mes_anterior')}
+      </span>
     </p>
   )
 }

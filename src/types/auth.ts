@@ -4,7 +4,6 @@ export interface ManagedSalon {
   id: string
   name: string
   location?: string
-  /** Hex for avatar fallback */
   accent?: string
 }
 

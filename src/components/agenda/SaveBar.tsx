@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Check, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface SaveBarProps {
   isDirty: boolean
@@ -9,6 +10,7 @@ interface SaveBarProps {
 }
 
 export function SaveBar({ isDirty, isSaving, showSuccess, onSave }: SaveBarProps) {
+  const { t } = useTranslation()
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-surface-border bg-white/90 backdrop-blur-xl">
       <div className="section-container flex items-center justify-between gap-4 py-4">
@@ -23,7 +25,7 @@ export function SaveBar({ isDirty, isSaving, showSuccess, onSave }: SaveBarProps
                 className="flex items-center gap-1.5 font-medium text-emerald-600"
               >
                 <Check className="h-4 w-4" />
-                Cambios guardados correctamente
+                {t('savebar.cambios_guardados_correctamente')}
               </motion.span>
             ) : isDirty ? (
               <motion.span
@@ -32,11 +34,11 @@ export function SaveBar({ isDirty, isSaving, showSuccess, onSave }: SaveBarProps
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                Tenés cambios sin guardar
+                {t('savebar.tens_cambios_sin_guardar')}
               </motion.span>
             ) : (
               <motion.span key="clean" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                Configuración sincronizada con ERP y Marketplace
+                {t('savebar.configuracin_sincronizada_con_erp_y_mark')}
               </motion.span>
             )}
           </AnimatePresence>
@@ -51,7 +53,7 @@ export function SaveBar({ isDirty, isSaving, showSuccess, onSave }: SaveBarProps
           {isSaving ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
-              Guardando...
+              {t('savebar.guardando')}
             </>
           ) : (
             'Guardar Cambios'
