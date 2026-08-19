@@ -28,6 +28,13 @@ import MarketplaceSalonPage from './pages/MarketplaceSalonPage'
 import MessagingPage from './pages/MessagingPage'
 import ReportsPage from './pages/ReportsPage'
 import SalonProfilePage from './pages/SalonProfilePage'
+import HostAgendaPage from './pages/host-account/HostAgendaPage'
+import HostInquiriesPage from './pages/host-account/HostInquiriesPage'
+import HostAccountSettingsPage from './pages/host-account/HostAccountSettingsPage'
+import HostInvitationsPage from './pages/host-account/HostInvitationsPage'
+import HostInvitationEditorPage from './pages/host-account/HostInvitationEditorPage'
+import HostGuestCapacityRequestPage from './pages/host-account/HostGuestCapacityRequestPage'
+import HostInvitationEmailPreviewPage from './pages/host-account/HostInvitationEmailPreviewPage'
 
 export default function App() {
   const location = useLocation()
@@ -92,6 +99,70 @@ export default function App() {
           }
         />
         <Route
+          path="/marketplace/cuenta/favoritos"
+          element={
+            <PageTransition>
+              <FavoriteVenuesPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/agenda"
+          element={
+            <PageTransition>
+              <HostAgendaPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/consultas"
+          element={
+            <PageTransition>
+              <HostInquiriesPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/ajustes"
+          element={
+            <PageTransition>
+              <HostAccountSettingsPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/invitaciones"
+          element={
+            <PageTransition>
+              <HostInvitationsPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/invitaciones/editor"
+          element={
+            <PageTransition>
+              <HostInvitationEditorPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/invitaciones/ampliar-cupo"
+          element={
+            <PageTransition>
+              <HostGuestCapacityRequestPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta/invitaciones/email-preview"
+          element={
+            <PageTransition>
+              <HostInvitationEmailPreviewPage />
+            </PageTransition>
+          }
+        />
+        <Route
           path="/inv/:eventId"
           element={
             <PageTransition>
@@ -136,14 +207,6 @@ export default function App() {
           element={
             <PageTransition>
               <InvitationEmailPreviewPage />
-            </PageTransition>
-          }
-        />
-        <Route
-          path="/dashboard/salones-favoritos"
-          element={
-            <PageTransition>
-              <FavoriteVenuesPage />
             </PageTransition>
           }
         />

@@ -48,7 +48,7 @@ export function QrCodeDisplay({ code, size = 160 }: QrCodeDisplayProps) {
           )
         })}
       </svg>
-      <p className="mt-2 text-center font-mono text-[10px] text-slate-500">{code}</p>
+      <p className="mt-2 text-center font-mono text-[10px] text-ink-muted">{code}</p>
     </div>
   )
 }

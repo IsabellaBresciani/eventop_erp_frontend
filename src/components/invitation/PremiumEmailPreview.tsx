@@ -26,8 +26,8 @@ export function PremiumEmailPreview({ config, address }: PremiumEmailPreviewProp
   return (
     <div className="mx-auto w-full max-w-[600px] overflow-hidden rounded-2xl border border-surface-border bg-white shadow-card">
       {/* Preheader / client chrome */}
-      <div className="border-b border-surface-border bg-slate-50 px-5 py-2.5">
-        <p className="text-[11px] font-semibold text-slate-500">EvenTop Invitaciones</p>
+      <div className="border-b border-surface-border bg-surface-muted px-5 py-2.5">
+        <p className="text-[11px] font-semibold text-ink-muted">EvenTop Invitaciones</p>
         <p className="truncate text-[11px] text-slate-400">
           Estás invitado a {config.eventTitle} — confirmá tu asistencia
         </p>
@@ -54,13 +54,13 @@ export function PremiumEmailPreview({ config, address }: PremiumEmailPreviewProp
       {/* Body */}
       <div className="px-6 py-8 sm:px-10">
         {config.hostNames && (
-          <p className={`text-center text-sm text-slate-500 ${fontClass}`}>
+          <p className={`text-center text-sm text-ink-muted ${fontClass}`}>
             {config.hostNames}
           </p>
         )}
 
         {config.invitationMessage && (
-          <p className="mx-auto mt-4 max-w-md text-center text-sm leading-relaxed text-slate-600">
+          <p className="mx-auto mt-4 max-w-md text-center text-sm leading-relaxed text-ink-muted">
             {config.invitationMessage}
           </p>
         )}
@@ -76,14 +76,14 @@ export function PremiumEmailPreview({ config, address }: PremiumEmailPreviewProp
           >
             Fecha del evento
           </p>
-          <p className="mt-1 text-lg font-bold text-slate-900">{formatDate(config.eventDate)}</p>
-          <p className="text-sm text-slate-500">{config.eventTime}</p>
+          <p className="mt-1 text-lg font-bold text-ink">{formatDate(config.eventDate)}</p>
+          <p className="text-sm text-ink-muted">{config.eventTime}</p>
         </div>
 
         {/* Venue */}
         <div className="mx-auto mt-5 max-w-xs text-center">
-          <p className="text-sm font-semibold text-slate-800">{config.venue}</p>
-          <p className="mt-0.5 text-xs text-slate-500">
+          <p className="text-sm font-semibold text-ink">{config.venue}</p>
+          <p className="mt-0.5 text-xs text-ink-muted">
             {address ?? config.venueAddress ?? 'Ubicación a confirmar'}
           </p>
         </div>
@@ -109,7 +109,7 @@ export function PremiumEmailPreview({ config, address }: PremiumEmailPreviewProp
       </div>
 
       {/* Footer */}
-      <div className="border-t border-surface-border bg-slate-50 px-6 py-5 text-center">
+      <div className="border-t border-surface-border bg-surface-muted px-6 py-5 text-center">
         <p className="text-xs font-semibold text-primary">EvenTop</p>
         <p className="mt-1 text-[10px] text-slate-400">
           Este correo fue enviado en nombre de {config.hostNames || 'el anfitrión'}. Si tenés

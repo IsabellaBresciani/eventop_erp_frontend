@@ -31,7 +31,7 @@ export function LinkManager({ url }: LinkManagerProps) {
     <div className="rounded-card border border-surface-border bg-white p-5 shadow-card">
       <div className="mb-3 flex items-center gap-2">
         <Link2 className="h-4 w-4 text-primary" />
-        <h3 className="text-sm font-bold text-slate-900">Gestor de Enlace (RF-204)</h3>
+        <h3 className="text-sm font-bold text-ink">Gestor de Enlace (RF-204)</h3>
       </div>
 
       <div className="flex gap-2">
@@ -39,7 +39,7 @@ export function LinkManager({ url }: LinkManagerProps) {
           type="text"
           readOnly
           value={url}
-          className="input-field flex-1 font-mono text-xs text-slate-600"
+          className="input-field flex-1 font-mono text-xs text-ink-muted"
         />
         <button
           type="button"

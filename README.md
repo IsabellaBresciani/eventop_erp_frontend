@@ -17,6 +17,10 @@ npm install
 npm run dev
 ```
 
+# Para probar la sección de marketplace, debe de ingresar al siguiente link:
+
+https://isabellabresciani.github.io/eventop_erp_frontend/marketplace
+
 ## GitHub Pages
 
 El sitio se publica en:
@@ -37,6 +41,7 @@ npm run preview:pages
 
 Para desarrollo local sin prefijo de repo, usá `npm run dev` (base `/`).
 
+
 ## Pantallas
 
 - **Pantalla 1** — Landing Page pública (`/`)
@@ -53,22 +58,22 @@ Para desarrollo local sin prefijo de repo, usá `npm run dev` (base `/`).
 
 ### Credenciales demo (Login)
 
-| Campo | Valor |
-|-------|-------|
-| Email | `admin@eventop.com` |
-| Contraseña | `eventop2024` |
+| Campo      | Valor               |
+| ---------- | ------------------- |
+| Email      | `admin@eventop.com` |
+| Contraseña | `eventop2024`       |
 
 ## Design System
 
-| Token | Valor |
-|-------|-------|
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `primary` | `#6A24E3` | CTA, links, foco |
-| `primary-800` | `#4C1D95` | Gradientes / contraste |
-| `gold` | `#F5C518` | Acentos / estados en proceso |
-| `secondary` | `#EDE9FE` | Fondos lavanda |
-| Sidebar | `#F5F3FF` → `#EDE9FE` | Navegación |
-| Fondo | `#FFFFFF` | Área de trabajo |
-| Radio tarjetas | `24px` |
-| Tipografía | Inter |
+| Token          | Valor                 |
+| -------------- | --------------------- |
+| Token          | Hex                   | Uso                          |
+| -------        | -----                 | -----                        |
+| `primary`      | `#6A24E3`             | CTA, links, foco             |
+| `primary-800`  | `#4C1D95`             | Gradientes / contraste       |
+| `gold`         | `#F5C518`             | Acentos / estados en proceso |
+| `secondary`    | `#EDE9FE`             | Fondos lavanda               |
+| Sidebar        | `#F5F3FF` → `#EDE9FE` | Navegación                   |
+| Fondo          | `#FFFFFF`             | Área de trabajo              |
+| Radio tarjetas | `24px`                |
+| Tipografía     | Inter                 |
