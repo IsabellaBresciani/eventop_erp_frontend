@@ -17,6 +17,26 @@ npm install
 npm run dev
 ```
 
+## GitHub Pages
+
+El sitio se publica en:
+
+**https://isabellabresciani.github.io/eventop_erp_frontend/**
+
+### Deploy automático
+
+1. En GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**
+2. Hacé push a `main` — el workflow `.github/workflows/deploy-pages.yml` construye y publica.
+
+### Build local (mismo base path que Pages)
+
+```bash
+npm run build:pages
+npm run preview:pages
+```
+
+Para desarrollo local sin prefijo de repo, usá `npm run dev` (base `/`).
+
 ## Pantallas
 
 - **Pantalla 1** — Landing Page pública (`/`)

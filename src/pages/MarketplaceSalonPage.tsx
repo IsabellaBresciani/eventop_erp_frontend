@@ -1,6 +1,6 @@
 import { BadgeCheck, MapPin, Star } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { InquiryModal } from '../components/marketplace/InquiryModal'
 import { ReviewsSection } from '../components/marketplace/ReviewsSection'
 import { SalonAmenities } from '../components/marketplace/SalonAmenities'
@@ -24,6 +24,7 @@ import { SALON_TYPE_OPTIONS } from '../data/salon-profile-defaults'
 import { useHostSession } from '../hooks/useHostSession'
 
 export default function MarketplaceSalonPage() {
+  const navigate = useNavigate()
   const { salonId } = useParams<{ salonId: string }>()
   const { session } = useHostSession()
   const [visitOpen, setVisitOpen] = useState(false)
@@ -72,7 +73,7 @@ export default function MarketplaceSalonPage() {
 
   const handleReview = (rating: number, comment: string, eventType: string) => {
     if (!session) {
-      window.location.href = '/marketplace/registro'
+      navigate('/marketplace/registro')
       return
     }
     const review = addSalonReview({

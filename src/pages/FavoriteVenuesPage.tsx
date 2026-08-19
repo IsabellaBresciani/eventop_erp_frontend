@@ -25,6 +25,7 @@ import {
   getVenueProfile,
 } from '../data/marketplace-venues'
 import { useHostSession } from '../hooks/useHostSession'
+import { absoluteAppUrl } from '../lib/app-url'
 import type { SalonProfile } from '../types/salon-profile'
 
 const NAV_ITEMS = [
@@ -385,7 +386,7 @@ function ShareComparisonModal({
   const shareUrl = useMemo(() => {
     const token = Math.random().toString(36).slice(2, 10)
     const ids = favorites.map((f) => f.id).join(',')
-    return `${window.location.origin}/marketplace/comparativa/${token}?salones=${ids}`
+    return absoluteAppUrl(`/marketplace/comparativa/${token}?salones=${ids}`)
   }, [favorites])
 
   const [copied, setCopied] = useState(false)

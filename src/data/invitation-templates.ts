@@ -1,4 +1,5 @@
 import type { InvitationConfig, InvitationTemplate, InvitationTexture } from '../types/invitation'
+import { absoluteAppUrl } from '../lib/app-url'
 
 export interface FontOption {
   id: string
@@ -139,7 +140,7 @@ export function buildDefaultConfig(
     venueAddress: '',
     musicTrack: 'none',
     countdownEnabled: true,
-    publicUrl: `${typeof window !== 'undefined' ? window.location.origin : ''}/inv/${eventId}`,
+    publicUrl: absoluteAppUrl(`/inv/${eventId}`),
     fontFamily: 'Libre Caslon Text',
     textAlign: 'center',
     textBold: false,

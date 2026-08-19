@@ -26,6 +26,7 @@ import {
   loadRsvps,
 } from '../data/invitations-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
+import { absoluteAppUrl } from '../lib/app-url'
 import type { GuestConfirmation } from '../types/guest-invitation'
 
 type TabKey = 'active' | 'drafts'
@@ -102,8 +103,7 @@ export default function InvitationsPage() {
   }
 
   const publicUrl = (item: InvitationListItem) =>
-    item.config?.publicUrl ||
-    `${typeof window !== 'undefined' ? window.location.origin : ''}/inv/${item.event.id}`
+    item.config?.publicUrl || absoluteAppUrl(`/inv/${item.event.id}`)
 
   const copyLink = async (item: InvitationListItem) => {
     ensureAndRefresh(item)

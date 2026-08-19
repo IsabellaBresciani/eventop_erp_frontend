@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "build": "tsc -b && vite build && cp dist/index.html dist/404.html",
+    "build:pages": "BASE_PATH=/eventop_erp_frontend/ npm run build",
+    "preview": "vite preview",
+    "preview:pages": "BASE_PATH=/eventop_erp_frontend/ vite preview"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",

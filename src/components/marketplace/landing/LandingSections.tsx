@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { EVENT_TYPE_OPTIONS } from '../../../data/marketplace-venues'
 import { FadeIn } from '../../ui/FadeIn'
+import { publicAsset } from '../../../lib/app-url'
 
-const MARKETPLACE_HERO_VIDEO = '/videos/marketplace-hero.mp4'
+const MARKETPLACE_HERO_VIDEO = publicAsset('videos/marketplace-hero.mp4')
 
 const QUICK_CHIPS = ['La Plata', 'Palermo', 'Casamiento', 'Infantil'] as const
 

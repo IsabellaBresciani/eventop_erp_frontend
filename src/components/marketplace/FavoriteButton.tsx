@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { isFavoriteSalon, toggleFavoriteSalon } from '../../data/marketplace-venues'
 import { useHostSession } from '../../hooks/useHostSession'
 
@@ -10,6 +11,7 @@ interface FavoriteButtonProps {
 }
 
 export function FavoriteButton({ salonId, className = '', onChange }: FavoriteButtonProps) {
+  const navigate = useNavigate()
   const { isAuthenticated } = useHostSession()
   const [active, setActive] = useState(() => isFavoriteSalon(salonId))
 
@@ -17,7 +19,7 @@ export function FavoriteButton({ salonId, className = '', onChange }: FavoriteBu
     e.preventDefault()
     e.stopPropagation()
     if (!isAuthenticated) {
-      window.location.href = '/marketplace/registro'
+      navigate('/marketplace/registro')
       return
     }
     const next = toggleFavoriteSalon(salonId)
