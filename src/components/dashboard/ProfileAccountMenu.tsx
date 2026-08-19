@@ -1,4 +1,4 @@
-import { Check, ChevronDown, ChevronUp, LogOut, Settings, X } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, LogOut, Settings, User, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getSalonInitials } from '../../data/admin-salons'
@@ -153,17 +153,31 @@ export function ProfileAccountMenu({
                   <p className="mt-3 text-lg font-normal text-ink">
                     ¡Hola, {firstName}!
                   </p>
-                  <Link
-                    role="menuitem"
-                    to={settingsPath}
-                    onClick={() => {
-                      setOpen(false)
-                      onNavigate?.()
-                    }}
-                    className="mt-3 inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/[0.06]"
-                  >
-                    Administrar tu salón
-                  </Link>
+                  <div className="mt-3 flex items-center gap-2">
+                    <Link
+                      role="menuitem"
+                      to={settingsPath}
+                      onClick={() => {
+                        setOpen(false)
+                        onNavigate?.()
+                      }}
+                      className="inline-flex items-center rounded-full border border-primary/25 px-4 py-1.5 text-sm font-medium text-primary transition-colors hover:bg-primary/[0.06]"
+                    >
+                      Administrar tu salón
+                    </Link>
+                    <Link
+                      role="menuitem"
+                      to="/dashboard/ajustes-cuenta"
+                      onClick={() => {
+                        setOpen(false)
+                        onNavigate?.()
+                      }}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] px-4 py-1.5 text-sm font-medium text-ink-muted transition-colors hover:bg-apple-fill"
+                    >
+                      <Settings className="h-3.5 w-3.5" strokeWidth={1.75} />
+                      Ajustes de cuenta
+                    </Link>
+                  </div>
                 </div>
               </div>
 
@@ -247,6 +261,18 @@ export function ProfileAccountMenu({
               >
                 <Settings className="h-4 w-4 shrink-0" strokeWidth={1.75} />
                 Configuración
+              </Link>
+              <Link
+                role="menuitem"
+                to="/dashboard/ajustes-cuenta"
+                onClick={() => {
+                  setOpen(false)
+                  onNavigate?.()
+                }}
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-primary/[0.06] hover:text-primary"
+              >
+                <User className="h-4 w-4 shrink-0" strokeWidth={1.75} />
+                Ajustes de cuenta
               </Link>
               <button
                 role="menuitem"

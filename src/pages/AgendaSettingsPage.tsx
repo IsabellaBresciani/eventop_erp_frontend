@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
+import { CalendarDays } from 'lucide-react'
 import { useCallback, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { AGENDA_TABS, DEFAULT_AGENDA_SETTINGS } from '../data/agenda-defaults'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { AgendaSettings, AgendaTab } from '../types/agenda-settings'
@@ -59,6 +61,15 @@ export default function AgendaSettingsPage() {
         salonName={salon}
         title="Configuración Avanzada de Agenda"
         subtitle="RF-003 · Reglas de negocio para el ERP y el Marketplace"
+        action={
+          <Link
+            to="/dashboard/agenda/vista"
+            className="inline-flex items-center gap-2 rounded-apple border border-black/[0.06] bg-white px-4 py-2.5 text-sm font-semibold text-ink-muted shadow-soft transition-colors hover:bg-black/[0.03] hover:text-ink"
+          >
+            <CalendarDays className="h-4 w-4" />
+            Ver agenda
+          </Link>
+        }
       >
         <div className="mb-6 overflow-x-auto">
           <div className="flex gap-1 rounded-xl border border-surface-border bg-white p-1 shadow-card">

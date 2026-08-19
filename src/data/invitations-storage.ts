@@ -45,10 +45,7 @@ export function ensureInvitationConfig(
   event: CalendarEvent,
   venue = 'Quinta Los Olivos',
 ): InvitationConfig {
-  const existing = loadInvitationConfig(event.id)
-  if (existing) return existing
-
-  const config = buildDefaultConfig(
+  const defaults = buildDefaultConfig(
     event.id,
     `${event.clientName} — ${event.eventType}`,
     event.date,
@@ -56,8 +53,15 @@ export function ensureInvitationConfig(
     venue,
     mapEventTypeToTemplate(event.eventType),
   )
-  saveInvitationConfig(config)
-  return config
+
+  const existing = loadInvitationConfig(event.id)
+  if (existing) {
+    // Merge to backfill any fields added after this config was first saved.
+    return { ...defaults, ...existing }
+  }
+
+  saveInvitationConfig(defaults)
+  return defaults
 }
 
 const SEED_RSVPS: Record<string, GuestConfirmation[]> = {

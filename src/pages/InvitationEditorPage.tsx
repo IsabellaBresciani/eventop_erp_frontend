@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
-import { ArrowLeft, ImagePlus, Upload } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowLeft, Eye, Save, Send, X } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MOCK_EVENTS } from '../data/dashboard'
 import { getTemplate } from '../data/invitation-templates'
@@ -10,17 +10,25 @@ import {
 } from '../data/invitations-storage'
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { InvitationConfig, InvitationTemplateId } from '../types/invitation'
-import { MUSIC_TRACKS } from '../types/invitation'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
+import { AjustesPanel } from '../components/invitation/AjustesPanel'
+import { DatosPanel } from '../components/invitation/DatosPanel'
+import { DesignPanel } from '../components/invitation/DesignPanel'
 import { InvitationPreview } from '../components/invitation/InvitationPreview'
 import { LinkManager } from '../components/invitation/LinkManager'
 import { TemplateCarousel } from '../components/invitation/TemplateCarousel'
-import { Toggle } from '../components/agenda/SettingsCard'
+
+type EditorTab = 'diseno' | 'datos' | 'ajustes'
+
+const TABS: { id: EditorTab; label: string }[] = [
+  { id: 'diseno', label: 'Diseño' },
+  { id: 'datos', label: 'Datos' },
+  { id: 'ajustes', label: 'Ajustes' },
+]
 
 export default function InvitationEditorPage() {
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
   const { eventId = 'evt-001' } = useParams<{ eventId: string }>()
-  const fileRef = useRef<HTMLInputElement>(null)
 
   const event = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
 
@@ -28,16 +36,21 @@ export default function InvitationEditorPage() {
     ensureInvitationConfig(event, salon),
   )
   const [saved, setSaved] = useState(false)
+  const [dirty, setDirty] = useState(false)
+  const [tab, setTab] = useState<EditorTab>('diseno')
+  const [sent, setSent] = useState(false)
 
   useEffect(() => {
     const nextEvent = MOCK_EVENTS.find((e) => e.id === eventId) ?? MOCK_EVENTS[0]
     setConfig(ensureInvitationConfig(nextEvent, salon))
     setSaved(false)
+    setDirty(false)
   }, [eventId, salon])
 
   const updateConfig = useCallback((patch: Partial<InvitationConfig>) => {
     setConfig((prev) => ({ ...prev, ...patch }))
     setSaved(false)
+    setDirty(true)
   }, [])
 
   const selectTemplate = (templateId: InvitationTemplateId) => {
@@ -51,15 +64,18 @@ export default function InvitationEditorPage() {
     })
   }
 
-  const handleCoverUpload = (files: FileList | null) => {
-    if (!files?.[0]) return
-    updateConfig({ coverUrl: URL.createObjectURL(files[0]) })
-  }
-
   const handleSave = () => {
     saveInvitationConfig(config)
     setSaved(true)
+    setDirty(false)
     setTimeout(() => setSaved(false), 3000)
+  }
+
+  const handleSend = () => {
+    saveInvitationConfig(config)
+    setDirty(false)
+    setSent(true)
+    setTimeout(() => setSent(false), 3000)
   }
 
   return (
@@ -70,7 +86,7 @@ export default function InvitationEditorPage() {
     >
       <DashboardLayout
         salonName={salon}
-        title="Editar invitación"
+        title="Editor de Invitación"
         subtitle={config.eventTitle}
         action={
           <div className="flex flex-wrap items-center gap-2">
@@ -78,181 +94,125 @@ export default function InvitationEditorPage() {
               <ArrowLeft className="h-4 w-4" />
               Volver
             </Link>
+
+            <span
+              className={`hidden items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold sm:inline-flex ${
+                dirty
+                  ? 'bg-amber-100 text-amber-700'
+                  : 'bg-emerald-100 text-emerald-700'
+              }`}
+            >
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${dirty ? 'bg-amber-500' : 'bg-emerald-500'}`}
+              />
+              {dirty ? 'Borrador Autoguardado' : 'Todo guardado'}
+            </span>
+
+            <a
+              href={`/inv/${event.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="dash-btn-secondary py-2 text-sm"
+            >
+              <Eye className="h-4 w-4" />
+              Previsualizar
+            </a>
+
+            <Link
+              to={`/dashboard/invitaciones/${event.id}/email-preview`}
+              className="dash-btn-secondary py-2 text-sm"
+            >
+              Vista previa de email
+            </Link>
+
             <button
               type="button"
               onClick={handleSave}
-              className={`dash-btn-primary ${saved ? 'bg-emerald-600 hover:bg-emerald-600' : ''}`}
+              className={`dash-btn-secondary py-2 text-sm ${saved ? 'text-emerald-600' : ''}`}
             >
-              {saved ? 'Guardado ✓' : 'Guardar cambios'}
+              <Save className="h-4 w-4" />
+              {saved ? 'Guardado ✓' : 'Guardar'}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleSend}
+              className="inline-flex items-center gap-2 rounded-xl bg-ink px-4 py-2 text-sm font-semibold text-white shadow-soft transition-colors hover:bg-ink/90"
+            >
+              <Send className="h-4 w-4" />
+              {sent ? 'Enviado ✓' : 'Enviar a Invitados'}
             </button>
           </div>
         }
       >
+        <div className="mb-4 flex items-center gap-2 sm:hidden">
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold ${
+              dirty ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'
+            }`}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${dirty ? 'bg-amber-500' : 'bg-emerald-500'}`} />
+            {dirty ? 'Borrador Autoguardado' : 'Todo guardado'}
+          </span>
+        </div>
+
         <div className="grid gap-8 lg:grid-cols-12">
-          <div className="space-y-6 lg:col-span-7">
+          <div className="space-y-6 lg:col-span-4">
             <div className="rounded-card border border-surface-border bg-white p-6 shadow-card">
-              <TemplateCarousel
-                selected={config.templateId}
-                onSelect={selectTemplate}
-              />
-            </div>
-
-            <div className="rounded-card border border-surface-border bg-white p-6 shadow-card">
-              <div className="space-y-5">
-                <div>
-                  <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                    Foto de portada
-                  </label>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => fileRef.current?.click()}
-                    onKeyDown={(e) => e.key === 'Enter' && fileRef.current?.click()}
-                    className="flex cursor-pointer items-center gap-4 rounded-xl border border-dashed border-primary/30 bg-primary/5 p-4 transition-colors hover:bg-primary/10"
-                  >
-                    <div className="h-16 w-24 overflow-hidden rounded-lg bg-slate-100">
-                      <img src={config.coverUrl} alt="" className="h-full w-full object-cover" />
-                    </div>
-                    <div>
-                      <p className="flex items-center gap-1.5 text-sm font-semibold text-slate-800">
-                        <Upload className="h-4 w-4 text-primary" />
-                        Cambiar portada
-                      </p>
-                      <p className="mt-0.5 text-xs text-slate-500">JPG o PNG</p>
-                    </div>
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => handleCoverUpload(e.target.files)}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="inv-title"
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
-                  >
-                    Título del evento
-                  </label>
-                  <input
-                    id="inv-title"
-                    type="text"
-                    value={config.eventTitle}
-                    onChange={(e) => updateConfig({ eventTitle: e.target.value })}
-                    className="input-field"
-                  />
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label
-                      htmlFor="inv-date"
-                      className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
-                    >
-                      Fecha
-                    </label>
-                    <input
-                      id="inv-date"
-                      type="date"
-                      value={config.eventDate}
-                      onChange={(e) => updateConfig({ eventDate: e.target.value })}
-                      className="input-field"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="inv-time"
-                      className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
-                    >
-                      Horario
-                    </label>
-                    <input
-                      id="inv-time"
-                      type="text"
-                      value={config.eventTime}
-                      onChange={(e) => updateConfig({ eventTime: e.target.value })}
-                      className="input-field"
-                      placeholder="20:00 hs"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="inv-venue"
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
-                  >
-                    Lugar
-                  </label>
-                  <input
-                    id="inv-venue"
-                    type="text"
-                    value={config.venue}
-                    onChange={(e) => updateConfig({ venue: e.target.value })}
-                    className="input-field"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="inv-music"
-                    className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400"
-                  >
-                    Música de fondo
-                  </label>
-                  <select
-                    id="inv-music"
-                    value={config.musicTrack}
-                    onChange={(e) => updateConfig({ musicTrack: e.target.value })}
-                    className="input-field"
-                  >
-                    {MUSIC_TRACKS.map((track) => (
-                      <option key={track.id} value={track.id}>
-                        {track.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <Toggle
-                  enabled={config.countdownEnabled}
-                  onChange={(countdownEnabled) => updateConfig({ countdownEnabled })}
-                  label="Cuenta regresiva"
-                  description="Muestra los días restantes hasta el evento"
-                />
-              </div>
+              <TemplateCarousel selected={config.templateId} onSelect={selectTemplate} />
             </div>
 
             <LinkManager url={config.publicUrl} />
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="flex justify-center lg:col-span-4">
             <InvitationPreview config={config} />
+          </div>
 
-            <div className="mt-6 rounded-card border border-surface-border bg-white p-4 shadow-card">
-              <div className="flex items-center justify-between gap-2 text-xs text-slate-500">
-                <div className="flex items-center gap-2">
-                  <ImagePlus className="h-4 w-4 text-primary" />
-                  <span>
-                    Evento: <strong className="text-slate-700">{event.clientName}</strong>
-                  </span>
-                </div>
-                <a
-                  href={`/inv/${event.id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-semibold text-primary hover:underline"
-                >
-                  Vista invitado →
-                </a>
+          <div className="lg:col-span-4">
+            <div className="rounded-card border border-surface-border bg-white shadow-card">
+              <div className="flex border-b border-surface-border px-2 pt-2">
+                {TABS.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    onClick={() => setTab(t.id)}
+                    className={`relative flex-1 rounded-t-lg px-3 py-2.5 text-sm font-semibold transition-colors ${
+                      tab === t.id ? 'text-primary' : 'text-slate-400 hover:text-slate-600'
+                    }`}
+                  >
+                    {t.label}
+                    {tab === t.id && (
+                      <span className="absolute inset-x-2 -bottom-[1px] h-0.5 rounded-full bg-primary" />
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              <div className="p-5">
+                {tab === 'diseno' && <DesignPanel config={config} onChange={updateConfig} />}
+                {tab === 'datos' && <DatosPanel config={config} onChange={updateConfig} />}
+                {tab === 'ajustes' && <AjustesPanel config={config} onChange={updateConfig} />}
               </div>
             </div>
           </div>
         </div>
       </DashboardLayout>
+
+      {sent && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-xl bg-ink px-4 py-3 text-sm text-white shadow-elevated">
+          <Send className="h-4 w-4 text-gold" />
+          Invitación enviada a la lista de invitados
+          <button
+            type="button"
+            onClick={() => setSent(false)}
+            className="text-white/60 hover:text-white"
+            aria-label="Cerrar"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
     </motion.div>
   )
 }

@@ -1,9 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Calendar,
+  CalendarCheck2,
+  CheckCircle2,
+  Clock,
   Copy,
   ExternalLink,
   Pencil,
+  Plus,
   Search,
   Users,
   X,
@@ -12,6 +16,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
 import { GuestListEditor } from '../components/invitation/GuestListEditor'
+import { InvitationWizard } from '../components/invitation/InvitationWizard'
 import { loadEvents } from '../data/events-storage'
 import {
   ensureInvitationConfig,
@@ -23,12 +28,16 @@ import {
 import { useAuthGuard } from '../hooks/useAuthGuard'
 import type { GuestConfirmation } from '../types/guest-invitation'
 
+type TabKey = 'active' | 'drafts'
+
 export default function InvitationsPage() {
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [tick, setTick] = useState(0)
+  const [tab, setTab] = useState<TabKey>('active')
+  const [wizardOpen, setWizardOpen] = useState(false)
 
   useEffect(() => {
     const fromStorage = sessionStorage.getItem('eventop_invitations_select')
@@ -43,22 +52,38 @@ export default function InvitationsPage() {
     return getInvitationListItems(loadEvents())
   }, [tick])
 
+  const activeItems = useMemo(() => items.filter((i) => i.hasInvitation), [items])
+  const draftItems = useMemo(() => items.filter((i) => !i.hasInvitation), [items])
+
   useEffect(() => {
-    if (!selectedId && items.length > 0) {
-      setSelectedId(items[0].event.id)
+    if (!selectedId && activeItems.length > 0) {
+      setSelectedId(activeItems[0].event.id)
     }
-  }, [items, selectedId])
+  }, [activeItems, selectedId])
+
+  const kpis = useMemo(() => {
+    const totalConfirmed = activeItems.reduce((sum, i) => sum + i.guestCount, 0)
+    const totalExpected = activeItems.reduce((sum, i) => sum + i.event.maxCapacity, 0)
+    const pending = Math.max(0, totalExpected - totalConfirmed)
+    return {
+      totalEvents: activeItems.length,
+      totalConfirmed,
+      pending,
+    }
+  }, [activeItems])
+
+  const scopedItems = tab === 'active' ? activeItems : draftItems
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    if (!q) return items
-    return items.filter(
+    if (!q) return scopedItems
+    return scopedItems.filter(
       (item) =>
         item.event.clientName.toLowerCase().includes(q) ||
         item.event.eventType.toLowerCase().includes(q) ||
         item.config?.eventTitle.toLowerCase().includes(q),
     )
-  }, [items, search])
+  }, [scopedItems, search])
 
   const selected =
     filtered.find((i) => i.event.id === selectedId) ??
@@ -98,6 +123,51 @@ export default function InvitationsPage() {
         title="Invitaciones virtuales"
         subtitle="Editá invitaciones y revisá las listas de invitados confirmados"
       >
+        <div className="mb-5 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+            <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+              <CalendarCheck2 className="h-3.5 w-3.5 text-primary" />
+              Eventos con invitación
+            </p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{kpis.totalEvents}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+            <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+              Invitados confirmados
+            </p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{kpis.totalConfirmed}</p>
+          </div>
+          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+            <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+              <Clock className="h-3.5 w-3.5 text-amber-600" />
+              RSVP pendientes
+            </p>
+            <p className="mt-1 text-2xl font-bold text-slate-900">{kpis.pending}</p>
+          </div>
+        </div>
+
+        <div className="mb-5 flex flex-wrap items-center gap-2 rounded-full bg-slate-100 p-1">
+          <button
+            type="button"
+            onClick={() => setTab('active')}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+              tab === 'active' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            Enviadas &amp; Activas
+          </button>
+          <button
+            type="button"
+            onClick={() => setTab('drafts')}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-all ${
+              tab === 'drafts' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
+            }`}
+          >
+            Borradores &amp; Listas
+          </button>
+        </div>
+
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative max-w-md flex-1">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -109,16 +179,29 @@ export default function InvitationsPage() {
               className="input-field pl-10"
             />
           </div>
-          <p className="text-sm text-slate-500">
-            {filtered.length} evento{filtered.length === 1 ? '' : 's'}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-sm text-slate-500">
+              {filtered.length} evento{filtered.length === 1 ? '' : 's'}
+            </p>
+            <button
+              type="button"
+              onClick={() => setWizardOpen(true)}
+              className="dash-btn-primary py-2 text-sm"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Crear invitación
+            </button>
+          </div>
         </div>
 
+        {tab === 'active' ? (
         <div className="grid gap-5 lg:grid-cols-12">
           <div className="space-y-3 lg:col-span-5 xl:col-span-4">
             {filtered.map((item) => {
               const active = selected?.event.id === item.event.id
               const totalPeople = item.guestCount + item.companionCount
+              const expected = Math.max(item.event.maxCapacity, totalPeople, 1)
+              const progressPct = Math.min(100, Math.round((totalPeople / expected) * 100))
               return (
                 <button
                   key={item.event.id}
@@ -163,6 +246,17 @@ export default function InvitationsPage() {
                         <Users className="h-3 w-3 text-primary" />
                         {item.guestCount} conf. · {totalPeople} pers.
                       </span>
+                    </div>
+                    <div className="mt-2">
+                      <p className="text-[11px] font-medium text-slate-500">
+                        {totalPeople} de {expected} confirmados
+                      </p>
+                      <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+                        <div
+                          className="h-full rounded-full bg-primary transition-all"
+                          style={{ width: `${progressPct}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -267,6 +361,55 @@ export default function InvitationsPage() {
             </AnimatePresence>
           </div>
         </div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((item) => (
+              <div
+                key={item.event.id}
+                className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+              >
+                <div className="h-28 w-full overflow-hidden bg-slate-100">
+                  <img src={item.coverUrl} alt="" className="h-full w-full object-cover" />
+                </div>
+                <div className="flex flex-1 flex-col p-4">
+                  <p className="truncate text-sm font-semibold text-slate-900">
+                    {item.event.clientName} — {item.event.eventType}
+                  </p>
+                  <p className="mt-1 flex items-center gap-1 text-xs text-slate-400">
+                    <Calendar className="h-3 w-3" />
+                    {formatInvitationDate(item.event.date)} · {item.event.startTime}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setWizardOpen(true)}
+                    className="dash-btn-primary mt-4 py-2 text-sm"
+                  >
+                    <Plus className="h-3.5 w-3.5" />
+                    Crear invitación
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {filtered.length === 0 && (
+              <div className="col-span-full rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-12 text-center text-sm text-slate-500">
+                No hay eventos pendientes de invitación.
+              </div>
+            )}
+          </div>
+        )}
+
+        <InvitationWizard
+          open={wizardOpen}
+          onClose={() => setWizardOpen(false)}
+          eligibleEvents={draftItems.map((i) => i.event)}
+          onFinish={(eventId) => {
+            const item = items.find((i) => i.event.id === eventId)
+            if (item) ensureAndRefresh(item)
+            setSelectedId(eventId)
+            setTab('active')
+          }}
+        />
       </DashboardLayout>
     </motion.div>
   )

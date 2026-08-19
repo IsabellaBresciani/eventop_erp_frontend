@@ -12,4 +12,8 @@ export interface GuestConfirmation {
   companions: GuestCompanion[]
   qrCode: string
   confirmedAt: string
+  group?: string
+  ageType?: 'Adulto' | 'Niño'
+  menuType?: 'Vegetariano' | 'General' | 'Celíaco' | 'Menú Infantil'
+  rsvpStatus?: 'Pendiente' | 'Confirmado'
 }

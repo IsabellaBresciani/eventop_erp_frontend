@@ -53,6 +53,8 @@ export default {
           'system-ui',
           'sans-serif',
         ],
+        serif: ["'Libre Caslon Text'", "'Playfair Display'", 'Georgia', 'serif'],
+        script: ["'Great Vibes'", 'cursive'],
       },
       borderRadius: {
         card: '16px',

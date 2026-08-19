@@ -6,9 +6,10 @@ import { useHostSession } from '../../hooks/useHostSession'
 interface FavoriteButtonProps {
   salonId: string
   className?: string
+  onChange?: (active: boolean) => void
 }
 
-export function FavoriteButton({ salonId, className = '' }: FavoriteButtonProps) {
+export function FavoriteButton({ salonId, className = '', onChange }: FavoriteButtonProps) {
   const { isAuthenticated } = useHostSession()
   const [active, setActive] = useState(() => isFavoriteSalon(salonId))
 
@@ -19,7 +20,9 @@ export function FavoriteButton({ salonId, className = '' }: FavoriteButtonProps)
       window.location.href = '/marketplace/registro'
       return
     }
-    setActive(toggleFavoriteSalon(salonId))
+    const next = toggleFavoriteSalon(salonId)
+    setActive(next)
+    onChange?.(next)
   }
 
   return (

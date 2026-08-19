@@ -1,8 +1,13 @@
 import { AnimatePresence } from 'framer-motion'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { PageTransition } from './components/layout/PageTransition'
+import AccountSettingsPage from './pages/AccountSettingsPage'
+import AgendaCalendarPage from './pages/AgendaCalendarPage'
 import AgendaSettingsPage from './pages/AgendaSettingsPage'
 import CheckinPage from './pages/CheckinPage'
+import FavoriteVenuesPage from './pages/FavoriteVenuesPage'
+import GuestCapacityRequestPage from './pages/GuestCapacityRequestPage'
+import InvitationEmailPreviewPage from './pages/InvitationEmailPreviewPage'
 import EmployeesPage from './pages/EmployeesPage'
 import EmployeeDetailPage from './pages/EmployeeDetailPage'
 import EmployeeEventsPage from './pages/EmployeeEventsPage'
@@ -115,6 +120,46 @@ export default function App() {
           element={
             <PageTransition>
               <InvitationEditorPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/invitaciones/:eventId/ampliar-cupo"
+          element={
+            <PageTransition>
+              <GuestCapacityRequestPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/invitaciones/:eventId/email-preview"
+          element={
+            <PageTransition>
+              <InvitationEmailPreviewPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/salones-favoritos"
+          element={
+            <PageTransition>
+              <FavoriteVenuesPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/ajustes-cuenta"
+          element={
+            <PageTransition>
+              <AccountSettingsPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/agenda/vista"
+          element={
+            <PageTransition>
+              <AgendaCalendarPage />
             </PageTransition>
           }
         />
