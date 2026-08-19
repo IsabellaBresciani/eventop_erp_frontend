@@ -2,4 +2,7 @@ node_modules
 dist
 .DS_Store
 *.local
+
+# Videos fuente grandes (usar public/videos/ para assets del sitio)
 15432220-uhd_3840_2160_50fps.mp4
+14865931_3840_2160_60fps.mp4

@@ -17,6 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { clearAuthSession } from '../../lib/auth-session'
 import { useAuthSession } from '../../hooks/useAuthSession'
 import { ProfileAccountMenu } from './ProfileAccountMenu'
+import { DashboardLogo } from './DashboardLogo'
 
 interface DashboardLayoutProps {
   salonName: string
@@ -118,26 +119,18 @@ export function DashboardLayout({
           showLabels ? 'justify-between px-4' : 'justify-center px-2'
         }`}
       >
-        <Link
+        <DashboardLogo
           to={homePath}
-          className={`flex items-center gap-3 ${showLabels ? '' : 'justify-center'}`}
-          onClick={() => setMobileSidebarOpen(false)}
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-sm font-bold text-white shadow-soft">
-            ET
-          </div>
-          {showLabels && (
-            <span className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
-              Even<span className="text-primary">Top</span>
-            </span>
-          )}
-        </Link>
+          compact={!showLabels}
+          className={showLabels ? '' : 'justify-center'}
+          onNavigate={() => setMobileSidebarOpen(false)}
+        />
 
         {mobileSidebarOpen && (
           <button
             type="button"
             onClick={() => setMobileSidebarOpen(false)}
-            className="rounded-xl p-2 text-ink/40 transition-colors hover:bg-white/80 hover:text-ink lg:hidden"
+            className="dash-icon-btn lg:hidden"
             aria-label="Cerrar menú"
           >
             <X className="h-5 w-5" strokeWidth={1.75} />
@@ -166,18 +159,19 @@ export function DashboardLayout({
       </nav>
 
       <div
-        className={`flex flex-col gap-2 border-t border-black/[0.05] p-3 ${
+        className={`flex flex-col gap-2 border-t p-3 ${
           showLabels ? '' : 'items-center'
         }`}
+        style={{ borderColor: 'var(--mk-border)' }}
       >
         {showLabels && (
           <button
             type="button"
-            className="relative flex rounded-xl p-2.5 text-ink/45 transition-colors hover:bg-white/80 hover:text-ink"
+            className="dash-icon-btn relative"
             aria-label="Notificaciones"
           >
             <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
-            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-gold ring-2 ring-white" />
+            <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-primary ring-2 ring-white" />
           </button>
         )}
 
@@ -190,7 +184,7 @@ export function DashboardLayout({
         <button
           type="button"
           onClick={toggleSidebar}
-          className={`dash-nav-item hidden text-ink/40 hover:bg-white/80 hover:text-ink lg:flex ${
+          className={`dash-nav-item hidden lg:flex ${
             showLabels ? '' : 'justify-center px-2'
           }`}
           aria-label={sidebarExpanded ? 'Contraer menú' : 'Expandir menú'}
@@ -235,25 +229,18 @@ export function DashboardLayout({
             <button
               type="button"
               onClick={() => setMobileSidebarOpen(true)}
-              className="rounded-xl p-2.5 text-[#6e6e73] transition-colors hover:bg-black/[0.04]"
+              className="dash-icon-btn"
               aria-label="Abrir menú"
             >
               <Menu className="h-5 w-5" strokeWidth={1.75} />
             </button>
-            <Link to={homePath} className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-xs font-bold text-white shadow-soft">
-                ET
-              </div>
-              <span className="text-sm font-semibold text-ink">
-                Even<span className="text-primary">Top</span>
-              </span>
-            </Link>
+            <DashboardLogo to={homePath} />
           </div>
 
           <div className="flex items-center gap-1">
             <button
               type="button"
-              className="relative rounded-xl p-2.5 text-slate-500 hover:bg-white/60"
+              className="dash-icon-btn relative"
               aria-label="Notificaciones"
             >
               <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
@@ -271,12 +258,8 @@ export function DashboardLayout({
           {(title || action) && (
             <header className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="space-y-1">
-                {title && (
-                  <h1 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-                    {title}
-                  </h1>
-                )}
-                {subtitle && <p className="text-sm text-slate-500">{subtitle}</p>}
+                {title && <h1 className="dash-title">{title}</h1>}
+                {subtitle && <p className="dash-caption">{subtitle}</p>}
               </div>
               {action && <div className="shrink-0">{action}</div>}
             </header>

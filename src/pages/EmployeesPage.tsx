@@ -140,7 +140,7 @@ export default function EmployeesPage() {
       case 'CONFIRMED':
         return 'bg-primary-600 text-white'
       case 'CLOSED':
-        return 'bg-slate-500 text-white'
+        return 'bg-black/[0.35] text-white'
       case 'CANCELLED':
         return 'bg-rose-500 text-white'
       default:
@@ -171,14 +171,11 @@ export default function EmployeesPage() {
                   placeholder="Buscar..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full rounded-2xl border border-primary-100 bg-white/80 backdrop-blur-md py-2.5 pl-9 pr-4 text-[13px] text-slate-800 placeholder:text-slate-400 outline-none transition-all focus:border-primary-500 focus:bg-white focus:ring-4 focus:ring-primary-500/10 shadow-sm"
+                  className="dash-input pl-9"
                 />
               </div>
 
-              <button
-                type="button"
-                className="inline-flex items-center justify-center gap-1.5 rounded-2xl bg-primary px-4 py-2.5 text-[13px] font-semibold text-white shadow-md shadow-primary/25 transition-all hover:bg-primary-400 active:scale-[0.98]"
-              >
+              <button type="button" className="dash-btn-primary shrink-0">
                 <Plus className="h-4 w-4" />
                 <span>Nuevo</span>
               </button>
@@ -192,10 +189,10 @@ export default function EmployeesPage() {
                     key={emp.id}
                     type="button"
                     onClick={() => setSelectedEmployeeId(emp.id)}
-                    className={`w-full flex items-center gap-3.5 p-3 rounded-2xl text-left transition-all duration-200 ${
+                    className={`w-full flex items-center gap-3.5 p-3 rounded-apple-lg text-left transition-all duration-200 border ${
                       isSelected
-                        ? 'bg-primary-500/10 border border-primary-200/80 shadow-sm backdrop-blur-md'
-                        : 'bg-white/70 border border-slate-100 hover:bg-slate-50/80'
+                        ? 'border-primary/20 bg-primary/10 shadow-apple'
+                        : 'border-black/[0.06] bg-white hover:bg-apple-fill'
                     }`}
                   >
                     <div className="relative">
@@ -205,12 +202,12 @@ export default function EmployeesPage() {
                         className={`h-11 w-11 rounded-full object-cover transition-all ${
                           isSelected
                             ? 'ring-2 ring-primary-500 ring-offset-2'
-                            : 'border border-slate-200'
+                            : 'border border-black/[0.06]'
                         }`}
                       />
                       <span
                         className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
-                          emp.active ? 'bg-emerald-500' : 'bg-slate-300'
+                          emp.active ? 'bg-emerald-500' : 'bg-black/[0.12]'
                         }`}
                       />
                     </div>
@@ -219,7 +216,7 @@ export default function EmployeesPage() {
                         className={`text-[14px] truncate ${
                           isSelected
                             ? 'font-bold text-primary-900'
-                            : 'font-semibold text-slate-700'
+                            : 'font-semibold text-ink'
                         }`}
                       >
                         {emp.name}
@@ -227,7 +224,7 @@ export default function EmployeesPage() {
                       <p className="text-[12px] text-primary-600/80 font-medium truncate">
                         {emp.role}
                       </p>
-                      <p className="text-[11px] text-slate-400 truncate">
+                      <p className="text-[11px] text-apple-label truncate">
                         DNI {emp.dni}
                       </p>
                     </div>
@@ -254,14 +251,14 @@ export default function EmployeesPage() {
                     />
                     <span
                       className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white ${
-                        selectedEmployee.active ? 'bg-emerald-500' : 'bg-slate-400'
+                        selectedEmployee.active ? 'bg-emerald-500' : 'bg-black/[0.2]'
                       }`}
                     />
                   </div>
 
                   <div className="space-y-1">
                     <div className="flex items-center justify-center gap-2 sm:justify-start">
-                      <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                      <h1 className="text-2xl font-bold tracking-tight text-ink">
                         {selectedEmployee.name}
                       </h1>
                       <CheckCircle2 className="h-5 w-5 text-primary-600 fill-primary-100" />
@@ -269,7 +266,7 @@ export default function EmployeesPage() {
                         className={`rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
                           selectedEmployee.active
                             ? 'bg-emerald-100 text-emerald-700'
-                            : 'bg-slate-100 text-slate-500'
+                            : 'bg-black/[0.04] text-ink-muted'
                         }`}
                       >
                         {selectedEmployee.active ? 'Activo' : 'Inactivo'}
@@ -280,14 +277,14 @@ export default function EmployeesPage() {
                       {selectedEmployee.role}
                     </p>
 
-                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[13px] text-slate-500 pt-1 sm:justify-start">
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[13px] text-ink-muted pt-1 sm:justify-start">
                       <span>DNI {selectedEmployee.dni}</span>
-                      <span className="text-slate-300">•</span>
+                      <span className="text-apple-label/60">•</span>
                       <div className="flex items-center gap-1.5">
                         <Mail className="h-3.5 w-3.5 text-primary-500" />
                         <span>{selectedEmployee.email}</span>
                       </div>
-                      <span className="text-slate-300">•</span>
+                      <span className="text-apple-label/60">•</span>
                       <div className="flex items-center gap-1.5">
                         <Phone className="h-3.5 w-3.5 text-primary-500" />
                         <span>{selectedEmployee.phone}</span>
@@ -300,9 +297,9 @@ export default function EmployeesPage() {
                 <div className="flex items-center justify-center gap-2 pt-2 md:pt-0 sm:justify-end">
                   <button
                     type="button"
-                    className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3.5 text-[13px] font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98]"
+                    className="inline-flex h-9 items-center gap-1.5 rounded-xl border border-black/[0.06] bg-white px-3.5 text-[13px] font-medium text-ink shadow-sm transition hover:bg-apple-fill hover:text-ink active:scale-[0.98]"
                   >
-                    <Edit2 className="h-4 w-4 text-slate-500" />
+                    <Edit2 className="h-4 w-4 text-ink-muted" />
                     <span>Editar</span>
                   </button>
 
@@ -342,46 +339,46 @@ export default function EmployeesPage() {
               <div className="space-y-4 pt-2">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <h2 className="text-[16px] font-bold text-slate-900">
+                    <h2 className="text-[16px] font-bold text-ink">
                       Historial de Eventos
                     </h2>
-                    <p className="text-[12px] text-slate-400">
+                    <p className="text-[12px] text-apple-label">
                       Listado de participación en el salón
                     </p>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col">
-                      <span className="mb-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                      <span className="mb-1 text-[9px] font-bold uppercase tracking-wider text-apple-label">
                         DESDE
                       </span>
                       <input
                         type="date"
                         value={fromDate}
                         onChange={(e) => setFromDate(e.target.value)}
-                        className="rounded-xl border border-primary-100 bg-slate-50 px-3 py-1 text-[12px] text-slate-700 outline-none focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/10 transition-all"
+                        className="rounded-xl border border-primary-100 bg-apple-fill px-3 py-1 text-[12px] text-ink outline-none focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/10 transition-all"
                       />
                     </div>
 
                     <div className="flex flex-col">
-                      <span className="mb-1 text-[9px] font-bold uppercase tracking-wider text-slate-400">
+                      <span className="mb-1 text-[9px] font-bold uppercase tracking-wider text-apple-label">
                         HASTA
                       </span>
                       <input
                         type="date"
                         value={toDate}
                         onChange={(e) => setToDate(e.target.value)}
-                        className="rounded-xl border border-primary-100 bg-slate-50 px-3 py-1 text-[12px] text-slate-700 outline-none focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/10 transition-all"
+                        className="rounded-xl border border-primary-100 bg-apple-fill px-3 py-1 text-[12px] text-ink outline-none focus:border-primary-500 focus:bg-white focus:ring-2 focus:ring-primary-500/10 transition-all"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* Tabla de Eventos */}
-                <div className="overflow-x-auto rounded-2xl border border-slate-100">
+                <div className="overflow-x-auto rounded-2xl border border-black/[0.06]">
                   <table className="w-full text-left text-[13px]">
                     <thead>
-                      <tr className="border-b border-slate-100 bg-slate-50/80 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      <tr className="border-b border-black/[0.06] bg-apple-fill text-[10px] font-bold uppercase tracking-wider text-apple-label">
                         <th className="px-4 py-3">FECHA</th>
                         <th className="px-4 py-3">CLIENTE</th>
                         <th className="px-4 py-3">TIPO</th>
@@ -389,7 +386,7 @@ export default function EmployeesPage() {
                         <th className="px-4 py-3">ESTADO</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-100 bg-white">
+                    <tbody className="divide-y divide-black/[0.06] bg-white">
                       {employeeEvents.length > 0 ? (
                         employeeEvents.map((event) => (
                           <tr
@@ -397,19 +394,19 @@ export default function EmployeesPage() {
                             onClick={() => handleSelectEvent(event)}
                             className="cursor-pointer transition-colors hover:bg-primary-50/50 active:bg-primary-100/40"
                           >
-                            <td className="px-4 py-3.5 font-medium text-slate-700">
+                            <td className="px-4 py-3.5 font-medium text-ink">
                               <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4 text-primary-400" />
                                 <span>{event.date}</span>
                               </div>
                             </td>
-                            <td className="px-4 py-3.5 font-bold text-slate-900">
+                            <td className="px-4 py-3.5 font-bold text-ink">
                               {event.clientName}
                             </td>
-                            <td className="px-4 py-3.5 text-slate-600">
+                            <td className="px-4 py-3.5 text-ink-muted">
                               {event.eventType}
                             </td>
-                            <td className="px-4 py-3.5 text-slate-600">
+                            <td className="px-4 py-3.5 text-ink-muted">
                               {event.startTime} – {event.endTime}
                             </td>
                             <td className="px-4 py-3.5">
@@ -425,7 +422,7 @@ export default function EmployeesPage() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={5} className="px-4 py-8 text-center text-slate-400">
+                          <td colSpan={5} className="px-4 py-8 text-center text-apple-label">
                             No hay eventos registrados para este empleado.
                           </td>
                         </tr>

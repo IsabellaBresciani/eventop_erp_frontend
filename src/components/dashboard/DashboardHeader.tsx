@@ -34,7 +34,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-800 text-white shadow-soft">
             <CalendarDays className="h-[18px] w-[18px]" strokeWidth={1.75} />
           </div>
-          <span className="hidden text-[15px] font-semibold tracking-tight text-slate-900 sm:inline">
+          <span className="hidden text-[15px] font-semibold tracking-tight text-ink sm:inline">
             Even<span className="text-primary">Top</span>
           </span>
         </Link>
@@ -87,7 +87,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
 
           <button
             type="button"
-            className="relative rounded-full p-2.5 text-slate-600 transition-all hover:bg-white/70 hover:text-slate-900"
+            className="relative rounded-full p-2.5 text-ink-muted transition-all hover:bg-white/70 hover:text-ink"
             aria-label="Notificaciones"
           >
             <Bell className="h-[18px] w-[18px]" strokeWidth={1.75} />
@@ -101,7 +101,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-800 text-[11px] font-bold text-white">
               {salonName.slice(0, 2).toUpperCase()}
             </div>
-            <span className="max-w-[6.5rem] truncate text-sm font-medium text-slate-800">
+            <span className="max-w-[6.5rem] truncate text-sm font-medium text-ink">
               {salonName}
             </span>
           </Link>
@@ -109,7 +109,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded-full p-2.5 text-slate-500 transition-all hover:bg-red-500/10 hover:text-red-600"
+            className="rounded-full p-2.5 text-ink-muted transition-all hover:bg-red-500/10 hover:text-red-600"
             aria-label="Cerrar sesión"
           >
             <LogOut className="h-[18px] w-[18px]" strokeWidth={1.75} />

@@ -24,7 +24,7 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
     <section className="space-y-5">
       <div>
         <p className="dash-section-label">Resumen del periodo</p>
-        <p className="mt-1.5 text-[13px] text-slate-500">
+        <p className="mt-1.5 dash-caption">
           {stats.periodLabel} · Vista {viewModeLabel.toLowerCase()}
         </p>
       </div>
@@ -34,7 +34,7 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
           <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {stats.occupancyRate}%
           </p>
-          <p className="mt-1 text-[13px] text-slate-500">
+          <p className="mt-1 dash-caption">
             {stats.occupiedDays} de {stats.totalDays} días con evento
           </p>
         </SummaryCard>
@@ -43,7 +43,7 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
           <p className="text-[1.75rem] font-semibold tracking-[-0.02em] text-primary">
             {formatCurrency(stats.billing)}
           </p>
-          <p className="mt-1 text-[13px] text-slate-500">Señas cobradas en el periodo</p>
+          <p className="mt-1 dash-caption">Señas cobradas en el periodo</p>
         </SummaryCard>
 
         <SummaryCard
@@ -54,15 +54,15 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
         >
           {stats.nextEvent ? (
             <>
-              <p className="text-base font-semibold tracking-[-0.01em] text-slate-900">
+              <p className="text-base font-semibold tracking-[-0.01em] text-ink">
                 {stats.nextEvent.clientName}
               </p>
-              <p className="mt-1 text-[13px] text-slate-500">
+              <p className="mt-1 dash-caption">
                 {stats.nextEvent.eventType} · {formatShortDate(stats.nextEvent.date)}
               </p>
             </>
           ) : (
-            <p className="text-[13px] text-slate-500">No hay eventos próximos</p>
+            <p className="text-[13px] dash-caption">No hay eventos próximos</p>
           )}
         </SummaryCard>
 
@@ -74,13 +74,13 @@ export function PeriodSummaryCards({ stats, viewModeLabel }: PeriodSummaryCardsP
         >
           {stats.nextAvailableDate ? (
             <>
-              <p className="text-base font-semibold capitalize tracking-[-0.01em] text-slate-900">
+              <p className="text-base font-semibold capitalize tracking-[-0.01em] text-ink">
                 {formatAvailableDate(stats.nextAvailableDate)}
               </p>
-              <p className="mt-1 text-[13px] text-slate-500">Disponible para reservar</p>
+              <p className="mt-1 dash-caption">Disponible para reservar</p>
             </>
           ) : (
-            <p className="text-[13px] text-slate-500">Sin fechas libres próximas</p>
+            <p className="text-[13px] dash-caption">Sin fechas libres próximas</p>
           )}
         </SummaryCard>
       </div>
@@ -110,7 +110,7 @@ function SummaryCard({
       className="catalog-stat-card"
     >
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">
+        <span className="dash-section-label">
           {label}
         </span>
         <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-secondary text-primary">

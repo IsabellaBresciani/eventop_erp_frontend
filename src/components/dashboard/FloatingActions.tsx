@@ -33,12 +33,16 @@ export function FloatingActions({ onNewEvent }: FloatingActionsProps) {
         <Link
           to="/dashboard/checkin"
           onClick={() => setExpanded(false)}
-          className="flex items-center gap-3 rounded-apple-lg border border-black/[0.04] bg-white/85 py-2.5 pl-3 pr-5 shadow-apple backdrop-blur-2xl transition-all hover:bg-white"
+          className="flex items-center gap-3 rounded-apple-lg border py-2.5 pl-3 pr-5 shadow-apple backdrop-blur-2xl transition-all hover:-translate-y-0.5"
+          style={{
+            borderColor: 'var(--mk-border)',
+            background: 'rgba(255, 255, 255, 0.92)',
+          }}
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
             <QrCode className="h-4 w-4" />
           </div>
-          <span className="text-[13px] font-medium text-slate-700">Validar QR</span>
+          <span className="text-[13px] font-medium text-ink">Validar QR</span>
         </Link>
       </div>
 
@@ -69,16 +73,20 @@ function FloatingShortcut({
     <button
       type="button"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-apple-lg border border-black/[0.04] bg-white/85 py-2.5 pl-3 pr-5 shadow-apple backdrop-blur-2xl transition-all hover:bg-white"
+      className="flex items-center gap-3 rounded-apple-lg border py-2.5 pl-3 pr-5 shadow-apple backdrop-blur-2xl transition-all hover:-translate-y-0.5"
+      style={{
+        borderColor: 'var(--mk-border)',
+        background: 'rgba(255, 255, 255, 0.92)',
+      }}
     >
       <div
         className={`flex h-8 w-8 items-center justify-center rounded-[10px] ${
-          accent ? 'bg-primary text-white' : 'bg-black/[0.05] text-slate-600'
+          accent ? 'bg-primary text-white' : 'bg-black/[0.05] text-ink-muted'
         }`}
       >
         <Icon className="h-4 w-4" />
       </div>
-      <span className="text-[13px] font-medium text-slate-700">{label}</span>
+      <span className="text-[13px] font-medium text-ink">{label}</span>
     </button>
   )
 }

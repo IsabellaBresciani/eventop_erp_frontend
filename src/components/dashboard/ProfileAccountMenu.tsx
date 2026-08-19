@@ -123,7 +123,7 @@ export function ProfileAccountMenu({
       {open && (
         <div
           role="menu"
-          className={`absolute z-50 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_48px_rgba(15,23,42,0.14)] ${
+          className={`absolute z-50 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-[0_16px_48px_rgba(15,23,42,0.14)] ${
             align === 'right' ? 'right-0' : 'left-0'
           } ${placement === 'down' ? 'top-full mt-2' : 'bottom-full mb-2'} ${
             showLabel ? 'lg:w-[min(20rem,calc(100vw-1.5rem))]' : ''
@@ -131,18 +131,18 @@ export function ProfileAccountMenu({
         >
           {canSwitchSalons ? (
             <>
-              <div className="relative border-b border-slate-100 px-4 pb-4 pt-3">
+              <div className="relative border-b border-black/[0.06] px-4 pb-4 pt-3">
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="absolute right-2 top-2 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                  className="absolute right-2 top-2 rounded-lg p-1.5 text-apple-label transition-colors hover:bg-black/[0.04] hover:text-ink-muted"
                   aria-label="Cerrar menú"
                 >
                   <X className="h-4 w-4" strokeWidth={1.75} />
                 </button>
 
                 {userEmail && (
-                  <p className="truncate pr-8 text-center text-sm text-slate-600">{userEmail}</p>
+                  <p className="truncate pr-8 text-center text-sm text-ink-muted">{userEmail}</p>
                 )}
 
                 <div className="mt-4 flex flex-col items-center text-center">
@@ -150,7 +150,7 @@ export function ProfileAccountMenu({
                     salon={activeSalon ?? { name: salonName, accent: triggerAccent }}
                     size="lg"
                   />
-                  <p className="mt-3 text-lg font-normal text-slate-800">
+                  <p className="mt-3 text-lg font-normal text-ink">
                     ¡Hola, {firstName}!
                   </p>
                   <Link
@@ -171,7 +171,7 @@ export function ProfileAccountMenu({
                 <button
                   type="button"
                   onClick={() => setShowAllSalons((prev) => !prev)}
-                  className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-slate-600 transition-colors hover:bg-slate-50"
+                  className="flex w-full items-center justify-between px-4 py-2.5 text-left text-sm text-ink-muted transition-colors hover:bg-apple-fill"
                 >
                   <span>{showAllSalons ? 'Ocultar más salones' : 'Mostrar más salones'}</span>
                   {showAllSalons ? (
@@ -182,7 +182,7 @@ export function ProfileAccountMenu({
                 </button>
 
                 {showAllSalons && (
-                  <div className="border-t border-slate-100 py-1">
+                  <div className="border-t border-black/[0.06] py-1">
                     {salons.map((salon) => {
                       const isActive = salon.id === activeSalonId
                       return (
@@ -191,17 +191,17 @@ export function ProfileAccountMenu({
                           role="menuitem"
                           type="button"
                           onClick={() => handleSwitchSalon(salon.id)}
-                          className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-slate-50 ${
+                          className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-apple-fill ${
                             isActive ? 'bg-primary/[0.04]' : ''
                           }`}
                         >
                           <SalonAvatar salon={salon} />
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-sm font-semibold text-slate-800">
+                            <span className="block truncate text-sm font-semibold text-ink">
                               {salon.name}
                             </span>
                             {salon.location && (
-                              <span className="block truncate text-xs text-slate-500">
+                              <span className="block truncate text-xs text-ink-muted">
                                 {salon.location}
                               </span>
                             )}
@@ -216,7 +216,7 @@ export function ProfileAccountMenu({
                 )}
               </div>
 
-              <div className="border-t border-slate-100 py-1">
+              <div className="border-t border-black/[0.06] py-1">
                 <button
                   role="menuitem"
                   type="button"
@@ -224,7 +224,7 @@ export function ProfileAccountMenu({
                     setOpen(false)
                     onLogout()
                   }}
-                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-red-50 hover:text-red-600"
+                  className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm font-medium text-ink transition-colors hover:bg-red-50 hover:text-red-600"
                 >
                   <LogOut className="h-4 w-4 shrink-0" strokeWidth={1.75} />
                   Cerrar sesión
@@ -233,7 +233,7 @@ export function ProfileAccountMenu({
             </>
           ) : (
             <>
-              <p className="truncate px-3 pb-1.5 pt-3 text-[11px] font-medium uppercase tracking-wider text-slate-400">
+              <p className="truncate px-3 pb-1.5 pt-3 text-[11px] font-medium uppercase tracking-wider text-apple-label">
                 Cuenta
               </p>
               <Link
@@ -243,7 +243,7 @@ export function ProfileAccountMenu({
                   setOpen(false)
                   onNavigate?.()
                 }}
-                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-primary/[0.06] hover:text-primary"
+                className="flex items-center gap-2.5 px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-primary/[0.06] hover:text-primary"
               >
                 <Settings className="h-4 w-4 shrink-0" strokeWidth={1.75} />
                 Configuración

@@ -9,11 +9,7 @@ interface KpiCardsProps {
   pendingQueries: number
 }
 
-const CARD_THEMES = [
-  'from-primary-50 to-white border-primary/10',
-  'from-secondary/80 to-white border-primary/10',
-  'from-gold-50 to-white border-gold/20',
-] as const
+const CARD_THEMES = ['', '', ''] as const
 
 export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
   const [weekendAvailable, setWeekendAvailable] = useState(true)
@@ -24,10 +20,10 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
       <KpiCard icon={CalendarClock} title="Próximo evento" theme={CARD_THEMES[0]} onClick={() => {}}>
         {nextEvent ? (
           <>
-            <p className="text-xl font-semibold tracking-tight text-slate-900">
+            <p className="text-xl font-semibold tracking-tight text-ink">
               {nextEvent.clientName}
             </p>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-ink-muted">
               {nextEvent.eventType} · {formatEventDate(nextEvent.date)}
             </p>
             {countdown && (
@@ -39,7 +35,7 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
             )}
           </>
         ) : (
-          <p className="text-sm text-slate-500">No hay eventos próximos</p>
+          <p className="text-sm text-ink-muted">No hay eventos próximos</p>
         )}
       </KpiCard>
 
@@ -50,8 +46,8 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
         badge={pendingQueries > 0 ? pendingQueries : undefined}
         to="/dashboard/mensajeria"
       >
-        <p className="text-3xl font-semibold tracking-tight text-slate-900">{pendingQueries}</p>
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="text-3xl font-semibold tracking-tight text-ink">{pendingQueries}</p>
+        <p className="mt-1 text-sm text-ink-muted">
           {pendingQueries === 1 ? 'nueva consulta' : 'nuevas consultas'} · 3 presupuestos por enviar
         </p>
       </KpiCard>
@@ -65,7 +61,7 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
       >
         <div className="flex items-center justify-between gap-4">
           <div>
-            <p className="text-lg font-semibold text-slate-900">Este fin de semana</p>
+            <p className="text-lg font-semibold text-ink">Este fin de semana</p>
             <span
               className={`mt-2 inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
                 weekendAvailable
@@ -83,7 +79,7 @@ export function KpiCards({ nextEvent, pendingQueries }: KpiCardsProps) {
               setWeekendAvailable(!weekendAvailable)
             }}
             className={`relative h-8 w-[3.25rem] shrink-0 rounded-full transition-colors duration-300 ${
-              weekendAvailable ? 'bg-primary' : 'bg-slate-200'
+              weekendAvailable ? 'bg-primary' : 'bg-black/[0.08]'
             }`}
             aria-label="Toggle disponibilidad fin de semana"
           >
@@ -105,7 +101,7 @@ function KpiCard({
   children,
   badge,
   className = '',
-  theme,
+  theme: _theme,
   onClick,
   to,
 }: {
@@ -118,16 +114,16 @@ function KpiCard({
   onClick?: () => void
   to?: string
 }) {
-  const cardClass = `group w-full rounded-bento border bg-gradient-to-br p-6 text-left shadow-soft transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-elevated ${theme} ${className}`
+  const cardClass = `catalog-stat-card group w-full text-left ${className}`
 
   const content = (
     <>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/80 text-primary shadow-soft">
+          <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
             <Icon className="h-[18px] w-[18px]" />
           </div>
-          <span className="text-xs font-medium uppercase tracking-widest text-slate-400">
+          <span className="dash-section-label normal-case tracking-[0.08em]">
             {title}
           </span>
         </div>
@@ -160,7 +156,7 @@ function CountdownUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center rounded-2xl bg-white/70 px-3.5 py-2 shadow-soft">
       <span className="text-lg font-semibold text-primary">{value}</span>
-      <span className="text-[10px] font-medium text-slate-400">{label}</span>
+      <span className="text-[10px] font-medium text-apple-label">{label}</span>
     </div>
   )
 }

@@ -96,7 +96,7 @@ export function EventAuditSlideover({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm"
+            className="dash-overlay"
             onClick={onClose}
           />
 
@@ -105,10 +105,14 @@ export function EventAuditSlideover({
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col border-l border-surface-border bg-white shadow-2xl"
+            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-lg flex-col border-l shadow-card"
+            style={{
+              borderColor: 'var(--mk-border)',
+              background: 'var(--mk-bg-elevated)',
+            }}
           >
             {/* Header de Estado */}
-            <div className="border-b border-surface-border px-6 py-5">
+            <div className="border-b px-6 py-5" style={{ borderColor: 'var(--mk-border)' }}>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <span
@@ -117,15 +121,15 @@ export function EventAuditSlideover({
                   >
                     {status.label}
                   </span>
-                  <p className="mt-2 font-mono text-xs text-slate-400">
+                  <p className="mt-2 font-mono text-xs text-apple-label">
                     {current.id.toUpperCase()} · {formatEventDate(current.date)}
                   </p>
-                  <h2 className="mt-1 text-xl font-bold text-slate-900">{current.clientName}</h2>
+                  <h2 className="mt-1 text-xl font-bold text-ink">{current.clientName}</h2>
                 </div>
                 <button
                   type="button"
                   onClick={onClose}
-                  className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                  className="rounded-lg p-1.5 text-apple-label transition-colors hover:bg-black/[0.04] hover:text-ink-muted"
                   aria-label="Cerrar"
                 >
                   <X className="h-5 w-5" />
@@ -160,17 +164,17 @@ export function EventAuditSlideover({
               <Section title="Detalles Logísticos y de Servicio">
                 <div className="mb-4 inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-2">
                   <span className="text-lg">{getEventEmoji(current.eventType)}</span>
-                  <span className="text-sm font-semibold text-slate-800">{current.eventType}</span>
+                  <span className="text-sm font-semibold text-ink">{current.eventType}</span>
                 </div>
 
                 <div className="rounded-xl border border-surface-border bg-surface/40 p-4">
-                  <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <div className="flex items-center gap-2 text-sm text-ink-muted">
                     <Calendar className="h-4 w-4 text-primary" />
                     <span>
                       {current.startTime} – {current.endTime}
                     </span>
                   </div>
-                  <p className="mt-2 text-xs text-slate-400">
+                  <p className="mt-2 text-xs text-apple-label">
                     + {current.bufferHours}h buffer de limpieza aplicado automáticamente
                   </p>
                 </div>
@@ -184,7 +188,7 @@ export function EventAuditSlideover({
                           key={service.name}
                           className="flex items-center justify-between rounded-lg border border-surface-border px-3 py-2.5"
                         >
-                          <span className="text-sm text-slate-700">{service.name}</span>
+                          <span className="text-sm text-ink">{service.name}</span>
                           <span
                             className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
                             style={{ backgroundColor: svcStatus.color }}
@@ -195,7 +199,7 @@ export function EventAuditSlideover({
                       )
                     })
                   ) : (
-                    <p className="text-sm text-slate-400">Sin servicios adicionales</p>
+                    <p className="text-sm text-apple-label">Sin servicios adicionales</p>
                   )}
                 </div>
               </Section>
@@ -216,7 +220,7 @@ export function EventAuditSlideover({
                                 : 'border-surface-border hover:bg-surface/40'
                             }`}
                           >
-                            <span className="text-sm font-medium text-slate-700">
+                            <span className="text-sm font-medium text-ink">
                               {getEmployeeFullName(employee)}
                             </span>
                             <input
@@ -246,14 +250,14 @@ export function EventAuditSlideover({
                                 setLocalEvent(updated)
                                 onEventUpdate?.(updated)
                               }}
-                              className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary/20"
+                              className="h-4 w-4 rounded border-black/[0.08] text-primary focus:ring-primary/20"
                             />
                           </label>
                         )
                       })}
                   </div>
                   {loadEmployees().filter((e) => e.active).length === 0 && (
-                    <p className="text-sm text-slate-400">
+                    <p className="text-sm text-apple-label">
                       No hay empleados activos. Agregalos en la sección Empleados.
                     </p>
                   )}
@@ -281,7 +285,7 @@ export function EventAuditSlideover({
 
                 {current.payments.length > 0 && (
                   <div className="mt-4">
-                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                    <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-apple-label">
                       Historial de pagos
                     </p>
                     <div className="space-y-2">
@@ -291,10 +295,10 @@ export function EventAuditSlideover({
                           className="flex items-center justify-between rounded-lg border border-surface-border px-3 py-2"
                         >
                           <div>
-                            <p className="text-sm font-medium text-slate-800">
+                            <p className="text-sm font-medium text-ink">
                               {formatCurrency(payment.amount)}
                             </p>
-                            <p className="text-[10px] text-slate-400">
+                            <p className="text-[10px] text-apple-label">
                               {formatShortDate(payment.date)} · {payment.method}
                               {payment.note && ` · ${payment.note}`}
                             </p>
@@ -312,11 +316,11 @@ export function EventAuditSlideover({
               <Section title="Ecosistema de Invitados">
                 <div className="rounded-xl border border-surface-border p-4">
                   <div className="mb-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-slate-700">
+                    <div className="flex items-center gap-2 text-sm text-ink">
                       <Users className="h-4 w-4 text-primary" />
                       <span>Confirmados vs. capacidad</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">
+                    <span className="text-sm font-bold text-ink">
                       {current.confirmedGuests}/{current.maxCapacity}
                     </span>
                   </div>
@@ -326,7 +330,7 @@ export function EventAuditSlideover({
                       style={{ width: `${attendancePct}%` }}
                     />
                   </div>
-                  <p className="mt-1.5 text-right text-xs text-slate-400">{attendancePct}% confirmado</p>
+                  <p className="mt-1.5 text-right text-xs text-apple-label">{attendancePct}% confirmado</p>
                 </div>
 
                 <div className="mt-4 grid grid-cols-2 gap-2">
@@ -336,8 +340,8 @@ export function EventAuditSlideover({
                     className="flex flex-col items-center gap-1 rounded-xl border border-surface-border bg-white px-3 py-3 transition-all hover:border-primary/30 hover:bg-primary/5"
                   >
                     <ExternalLink className="h-5 w-5 text-primary" />
-                    <span className="text-[11px] font-semibold text-slate-800">Editar Invitación</span>
-                    <span className="text-[9px] text-slate-400">RF-201</span>
+                    <span className="text-[11px] font-semibold text-ink">Editar Invitación</span>
+                    <span className="text-[9px] text-apple-label">RF-201</span>
                   </Link>
                 </div>
 
@@ -359,13 +363,13 @@ export function EventAuditSlideover({
                   onClick={() => setAuditExpanded(!auditExpanded)}
                   className="flex w-full items-center justify-between rounded-xl border border-surface-border bg-surface/30 px-4 py-3 text-left transition-colors hover:bg-surface/60"
                 >
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-ink-muted">
                     Log de Auditoría ({current.auditLog.length})
                   </span>
                   {auditExpanded ? (
-                    <ChevronUp className="h-4 w-4 text-slate-400" />
+                    <ChevronUp className="h-4 w-4 text-apple-label" />
                   ) : (
-                    <ChevronDown className="h-4 w-4 text-slate-400" />
+                    <ChevronDown className="h-4 w-4 text-apple-label" />
                   )}
                 </button>
 
@@ -385,14 +389,14 @@ export function EventAuditSlideover({
                             className={`px-4 py-3 ${i < current.auditLog.length - 1 ? 'border-b border-surface-border' : ''}`}
                           >
                             <div className="flex items-start justify-between gap-2">
-                              <p className="text-sm font-medium text-slate-800">{entry.action}</p>
-                              <span className="shrink-0 text-[10px] text-slate-400">
+                              <p className="text-sm font-medium text-ink">{entry.action}</p>
+                              <span className="shrink-0 text-[10px] text-apple-label">
                                 {formatTimestamp(entry.timestamp)}
                               </span>
                             </div>
-                            <p className="mt-0.5 text-xs text-slate-500">{entry.user}</p>
+                            <p className="mt-0.5 text-xs text-ink-muted">{entry.user}</p>
                             {entry.detail && (
-                              <p className="mt-1 text-xs text-slate-400">{entry.detail}</p>
+                              <p className="mt-1 text-xs text-apple-label">{entry.detail}</p>
                             )}
                           </div>
                         ))}
@@ -420,7 +424,7 @@ export function EventAuditSlideover({
                   Editar Invitación Virtual
                 </Link>
               )}
-              <p className="mt-3 text-center text-[11px] text-slate-400">
+              <p className="mt-3 text-center text-[11px] text-apple-label">
                 Ficha de Auditoría · RF-005 · RF-007 · RF-012
               </p>
             </div>
@@ -435,7 +439,7 @@ export function EventAuditSlideover({
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="mt-6 first:mt-0">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-apple-label">
         {title}
       </h3>
       {children}
@@ -456,15 +460,15 @@ function ContactRow({
 }) {
   return (
     <div className="flex items-center justify-between rounded-lg py-1.5">
-      <div className="flex items-center gap-2 text-sm text-slate-700">
-        <Icon className="h-3.5 w-3.5 text-slate-400" />
+      <div className="flex items-center gap-2 text-sm text-ink">
+        <Icon className="h-3.5 w-3.5 text-apple-label" />
         {value}
       </div>
       <button
         type="button"
         onClick={onCopy}
         className={`rounded p-1 transition-colors ${
-          copied ? 'text-emerald-500' : 'text-slate-400 hover:bg-primary/5 hover:text-primary'
+          copied ? 'text-emerald-500' : 'text-apple-label hover:bg-primary/5 hover:text-primary'
         }`}
         aria-label="Copiar"
       >
@@ -490,11 +494,11 @@ function FinancialRow({
   return (
     <div className="flex items-center justify-between text-sm">
       <div>
-        <span className="text-slate-500">{label}</span>
-        {sub && <p className="text-[10px] text-slate-400">{sub}</p>}
+        <span className="text-ink-muted">{label}</span>
+        {sub && <p className="text-[10px] text-apple-label">{sub}</p>}
       </div>
       <span
-        className={`${bold ? 'text-base font-bold text-slate-900' : 'text-slate-700'} ${
+        className={`${bold ? 'text-base font-bold text-ink' : 'text-ink'} ${
           highlight ? 'font-semibold text-red-500' : ''
         }`}
       >
@@ -522,9 +526,9 @@ function DocButton({
       className="flex flex-col items-center gap-1 rounded-xl border border-surface-border bg-white px-3 py-3 transition-all hover:border-primary/30 hover:bg-primary/5 disabled:opacity-40"
     >
       <Icon className="h-5 w-5 text-primary" />
-      <span className="text-[11px] font-semibold text-slate-800">{label}</span>
-      <span className="text-[9px] text-slate-400">{sub}</span>
-      <Download className="h-3 w-3 text-slate-300" />
+      <span className="text-[11px] font-semibold text-ink">{label}</span>
+      <span className="text-[9px] text-apple-label">{sub}</span>
+      <Download className="h-3 w-3 text-apple-label/60" />
     </button>
   )
 }

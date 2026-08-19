@@ -7,11 +7,7 @@ interface BusinessHealthProps {
   metrics: DashboardMetrics
 }
 
-const THEMES = [
-  'from-primary-50/80 to-white',
-  'from-secondary/50 to-white',
-  'from-primary-50/60 to-white',
-] as const
+const THEMES = ['', '', ''] as const
 
 export function BusinessHealth({ metrics }: BusinessHealthProps) {
   return (
@@ -22,7 +18,7 @@ export function BusinessHealth({ metrics }: BusinessHealthProps) {
         subtitle="Eventos señados y por cobrar"
         theme={THEMES[0]}
       >
-        <p className="text-2xl font-semibold tracking-tight text-slate-900">
+        <p className="text-2xl font-semibold tracking-tight text-ink">
           {formatCurrency(metrics.projectedIncome)}
         </p>
         <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-emerald-600">
@@ -40,10 +36,10 @@ export function BusinessHealth({ metrics }: BusinessHealthProps) {
         <div className="flex items-center gap-4">
           <CircularProgress value={metrics.conversionRate} />
           <div>
-            <p className="text-2xl font-semibold tracking-tight text-slate-900">
+            <p className="text-2xl font-semibold tracking-tight text-ink">
               {metrics.conversionRate}%
             </p>
-            <p className="text-xs text-slate-500">de presupuestos convertidos</p>
+            <p className="text-xs text-ink-muted">de presupuestos convertidos</p>
           </div>
         </div>
       </HealthCard>
@@ -56,14 +52,14 @@ export function BusinessHealth({ metrics }: BusinessHealthProps) {
       >
         <div className="mt-1">
           <div className="mb-3 flex items-baseline justify-between">
-            <p className="text-2xl font-semibold tracking-tight text-slate-900">
+            <p className="text-2xl font-semibold tracking-tight text-ink">
               {metrics.occupancyRate}%
             </p>
-            <p className="text-xs text-slate-400">Mes actual</p>
+            <p className="text-xs text-apple-label">Mes actual</p>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-white/80">
+          <div className="h-2 overflow-hidden rounded-full bg-black/[0.06]">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-primary to-primary-800 text-primary transition-all duration-700"
+              className="h-full rounded-full bg-primary transition-all duration-700"
               style={{ width: `${metrics.occupancyRate}%` }}
             />
           </div>
@@ -78,7 +74,7 @@ function HealthCard({
   title,
   subtitle,
   children,
-  theme,
+  theme: _theme,
 }: {
   icon: ComponentType<{ className?: string }>
   title: string
@@ -87,16 +83,14 @@ function HealthCard({
   theme: string
 }) {
   return (
-    <div
-      className={`group rounded-bento border border-white/70 bg-gradient-to-br p-6 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-elevated ${theme}`}
-    >
+    <div className="catalog-stat-card group">
       <div className="mb-5 flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/80 text-primary shadow-soft">
+        <div className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-primary/10 text-primary">
           <Icon className="h-[18px] w-[18px]" />
         </div>
         <div>
-          <h3 className="text-sm font-semibold text-slate-900">{title}</h3>
-          <p className="text-[11px] text-slate-500">{subtitle}</p>
+          <h3 className="text-sm font-semibold text-ink">{title}</h3>
+          <p className="text-[11px] text-ink-muted">{subtitle}</p>
         </div>
       </div>
       {children}

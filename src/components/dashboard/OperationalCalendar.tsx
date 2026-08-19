@@ -85,14 +85,14 @@ export function OperationalCalendar({
 
   return (
     <section className="dash-card overflow-hidden">
-      <div className="border-b border-black/[0.05] px-6 py-5 sm:px-8">
+      <div className="border-b px-6 py-5 sm:px-8" style={{ borderColor: 'var(--mk-border)' }}>
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="dash-section-label">Calendario</p>
-            <h2 className="mt-1 text-xl font-semibold tracking-[-0.02em] text-slate-900">
+            <h2 className="dash-heading mt-1">
               {periodLabel}
             </h2>
-            <p className="mt-0.5 text-[13px] text-slate-500">{viewSubtitle}</p>
+            <p className="mt-0.5 dash-caption">{viewSubtitle}</p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
@@ -109,7 +109,7 @@ export function OperationalCalendar({
               <button
                 type="button"
                 onClick={() => navigate(-1)}
-                className="rounded-[10px] p-2 text-slate-500 transition-colors hover:bg-white hover:text-slate-800"
+                className="rounded-[10px] p-2 text-ink-muted transition-colors hover:bg-white hover:text-ink"
                 aria-label="Periodo anterior"
               >
                 <ChevronLeft className="h-4 w-4" strokeWidth={2} />
@@ -117,7 +117,7 @@ export function OperationalCalendar({
               <button
                 type="button"
                 onClick={() => navigate(1)}
-                className="rounded-[10px] p-2 text-slate-500 transition-colors hover:bg-white hover:text-slate-800"
+                className="rounded-[10px] p-2 text-ink-muted transition-colors hover:bg-white hover:text-ink"
                 aria-label="Periodo siguiente"
               >
                 <ChevronRight className="h-4 w-4" strokeWidth={2} />
@@ -126,7 +126,7 @@ export function OperationalCalendar({
 
             <Link
               to="/dashboard/agenda"
-              className="rounded-apple bg-black/[0.04] p-2.5 text-slate-600 transition-colors hover:bg-black/[0.06] hover:text-slate-800"
+              className="rounded-apple bg-black/[0.04] p-2.5 text-ink-muted transition-colors hover:bg-black/[0.06] hover:text-ink"
               aria-label="Configuración avanzada de agenda"
               title="Configuración avanzada de agenda"
             >
@@ -151,8 +151,8 @@ export function OperationalCalendar({
                     aria-pressed={active}
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
                       active
-                        ? 'text-slate-900'
-                        : 'bg-black/[0.04] font-medium text-slate-600 hover:bg-black/[0.07]'
+                        ? 'text-ink'
+                        : 'bg-black/[0.04] font-medium text-ink-muted hover:bg-black/[0.07]'
                     }`}
                     style={
                       active
@@ -177,17 +177,17 @@ export function OperationalCalendar({
             </div>
 
             {statusFilter !== 'all' && (
-              <div className="flex items-center gap-2 text-xs text-slate-500">
+              <div className="flex items-center gap-2 text-xs text-ink-muted">
                 <span>
                   Mostrando solo:{' '}
-                  <strong className="text-slate-800">
+                  <strong className="text-ink">
                     {EVENT_STATUS_CONFIG[statusFilter].label}
                   </strong>
                 </span>
                 <button
                   type="button"
                   onClick={() => onStatusFilterChange?.('all')}
-                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-1 font-semibold text-slate-600 transition-colors hover:bg-slate-200"
+                  className="inline-flex items-center gap-1 rounded-full bg-black/[0.04] px-2 py-1 font-semibold text-ink-muted transition-colors hover:bg-black/[0.06]"
                 >
                   <X className="h-3 w-3" />
                   Limpiar
@@ -285,7 +285,7 @@ function MonthView({
       {WEEKDAYS.map((d) => (
         <div
           key={d}
-          className={`pb-1 text-center text-[11px] font-semibold uppercase tracking-wider text-slate-400 ${
+          className={`pb-1 text-center text-[11px] font-semibold uppercase tracking-wider text-apple-label ${
             largeCells ? 'text-xs' : ''
           }`}
         >
@@ -328,7 +328,7 @@ function MonthView({
               <span
                 className={`flex items-center justify-center rounded-full font-semibold ${
                   largeCells ? 'h-7 w-7 text-sm' : 'h-6 w-6 text-xs'
-                } ${isToday ? 'bg-primary text-white shadow-soft' : 'text-slate-700'}`}
+                } ${isToday ? 'bg-primary text-white shadow-soft' : 'text-ink'}`}
               >
                 {day}
               </span>
@@ -409,10 +409,10 @@ function WeekView({
               className="mb-2 flex items-center justify-between rounded-[10px] px-1 py-1 text-left hover:bg-black/[0.04]"
             >
               <div>
-                <p className="text-[10px] font-semibold uppercase text-slate-400">
+                <p className="text-[10px] font-semibold uppercase text-apple-label">
                   {WEEKDAYS[(day.getDay() + 6) % 7]}
                 </p>
-                <p className={`text-lg font-bold ${isToday ? 'text-primary' : 'text-slate-800'}`}>
+                <p className={`text-lg font-bold ${isToday ? 'text-primary' : 'text-ink'}`}>
                   {day.getDate()}
                 </p>
               </div>
@@ -425,7 +425,7 @@ function WeekView({
 
             <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto">
               {dayEvents.length === 0 ? (
-                <p className="px-1 text-[10px] text-slate-400">Sin eventos</p>
+                <p className="px-1 text-[10px] text-apple-label">Sin eventos</p>
               ) : (
                 dayEvents.map((event) => {
                   const status = EVENT_STATUS_CONFIG[event.status]
@@ -436,10 +436,10 @@ function WeekView({
                       onClick={() => onSelectEvent(event)}
                       className="rounded-apple border border-black/[0.04] bg-white p-2.5 text-left shadow-apple transition-all hover:shadow-card-hover"
                     >
-                      <p className="truncate text-[11px] font-semibold text-slate-800">
+                      <p className="truncate text-[11px] font-semibold text-ink">
                         {event.clientName}
                       </p>
-                      <p className="mt-0.5 text-[10px] text-slate-500">
+                      <p className="mt-0.5 text-[10px] text-ink-muted">
                         {event.startTime} · {event.eventType}
                       </p>
                       <span
@@ -477,7 +477,7 @@ function DayView({
   return (
     <div className="space-y-3">
       <div className="rounded-apple-lg border border-black/[0.05] bg-black/[0.02] px-5 py-4">
-        <p className="text-sm font-semibold capitalize text-slate-800">
+        <p className="text-sm font-semibold capitalize text-ink">
           {currentDate.toLocaleDateString('es-AR', {
             weekday: 'long',
             day: 'numeric',
@@ -485,7 +485,7 @@ function DayView({
             year: 'numeric',
           })}
         </p>
-        <p className="mt-0.5 text-xs text-slate-500">
+        <p className="mt-0.5 text-xs text-ink-muted">
           {dayEvents.length === 1
             ? '1 evento programado'
             : `${dayEvents.length} eventos programados`}
@@ -494,8 +494,8 @@ function DayView({
 
       {dayEvents.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-apple-lg border border-dashed border-black/[0.08] bg-black/[0.02] py-16 text-center">
-          <p className="text-sm font-medium text-slate-600">No hay eventos este día</p>
-          <p className="mt-1 text-xs text-slate-400">Navegá a otra fecha o cambiá los filtros</p>
+          <p className="text-sm font-medium text-ink-muted">No hay eventos este día</p>
+          <p className="mt-1 text-xs text-apple-label">Navegá a otra fecha o cambiá los filtros</p>
         </div>
       ) : (
         dayEvents.map((event) => {
@@ -515,8 +515,8 @@ function DayView({
                 <span className="text-[9px] opacity-80">{event.endTime}</span>
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-base font-semibold text-slate-900">{event.clientName}</p>
-                <p className="mt-0.5 text-sm text-slate-500">
+                <p className="text-base font-semibold text-ink">{event.clientName}</p>
+                <p className="mt-0.5 text-sm text-ink-muted">
                   {event.eventType} · {event.guests} invitados
                 </p>
                 <span
