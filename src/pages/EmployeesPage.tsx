@@ -1,9 +1,7 @@
 import { motion } from 'framer-motion'
 import {
-  Award,
   Calendar,
   CheckCircle2,
-  Clock,
   Edit2,
   Mail,
   Phone,

@@ -22,7 +22,7 @@ export function BudgetCalculator({ profile, agenda }: BudgetCalculatorProps) {
   const maxDate = new Date('2027-08-04').toISOString().split('T')[0]
 
   return (
-    <div className="rounded-card border border-surface-border bg-white p-5 shadow-card lg:sticky lg:top-24">
+    <div className="mk-surface-panel p-5 lg:sticky lg:top-24">
       <div className="mb-4 flex items-center gap-2">
         <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
           <Calculator className="h-4 w-4" />

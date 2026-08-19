@@ -13,6 +13,12 @@ import InvitationGuestPage from './pages/InvitationGuestPage'
 import InvitationsPage from './pages/InvitationsPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
+import MarketplaceCatalogPage from './pages/MarketplaceCatalogPage'
+import MarketplaceLandingPage from './pages/MarketplaceLandingPage'
+import MarketplaceHostRegisterPage, {
+  MarketplaceHostDashboardPage,
+  MarketplaceHostLoginPage,
+} from './pages/MarketplaceHostPages'
 import MarketplaceSalonPage from './pages/MarketplaceSalonPage'
 import MessagingPage from './pages/MessagingPage'
 import ReportsPage from './pages/ReportsPage'
@@ -36,7 +42,47 @@ export default function App() {
           path="/marketplace"
           element={
             <PageTransition>
+              <MarketplaceLandingPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/salones"
+          element={
+            <PageTransition>
+              <MarketplaceCatalogPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/salones/:salonId"
+          element={
+            <PageTransition>
               <MarketplaceSalonPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/registro"
+          element={
+            <PageTransition>
+              <MarketplaceHostRegisterPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/ingresar"
+          element={
+            <PageTransition>
+              <MarketplaceHostLoginPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/marketplace/cuenta"
+          element={
+            <PageTransition>
+              <MarketplaceHostDashboardPage />
             </PageTransition>
           }
         />

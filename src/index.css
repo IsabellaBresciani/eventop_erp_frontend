@@ -295,4 +295,266 @@
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary;
   }
+
+  /* ── Marketplace (light theme, purple accent) ── */
+  .marketplace-shell {
+    --mk-bg: #fbfbfd;
+    --mk-bg-alt: #f5f5f7;
+    --mk-bg-elevated: #ffffff;
+    --mk-bg-input: #f5f5f7;
+    --mk-border: rgba(0, 0, 0, 0.06);
+    --mk-border-strong: rgba(0, 0, 0, 0.1);
+    --mk-text: #111827;
+    --mk-text-muted: #6b7280;
+    --mk-text-subtle: #9ca3af;
+
+    @apply min-h-screen antialiased;
+    background: var(--mk-bg);
+    color: var(--mk-text);
+  }
+
+  .mk-container {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .mk-section {
+    @apply relative py-20 lg:py-28;
+  }
+
+  .mk-section-alt {
+    background: var(--mk-bg-alt);
+  }
+
+  .mk-section-dark {
+    background: var(--mk-bg-elevated);
+  }
+
+  .mk-eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.08em];
+    color: var(--mk-text-muted);
+  }
+
+  .mk-eyebrow-light {
+    color: var(--mk-text-muted);
+  }
+
+  .mk-title {
+    @apply text-[2rem] font-semibold leading-[1.1] tracking-[-0.025em] sm:text-[2.5rem] lg:text-[3rem];
+    color: var(--mk-text);
+  }
+
+  .mk-title-light {
+    color: var(--mk-text);
+  }
+
+  .mk-subtitle {
+    @apply mt-3 max-w-2xl text-[17px] leading-[1.5] sm:text-lg;
+    color: var(--mk-text-muted);
+  }
+
+  .mk-lead {
+    @apply text-[17px] leading-[1.55] sm:text-xl;
+    color: var(--mk-text-muted);
+  }
+
+  .mk-card {
+    @apply overflow-hidden rounded-apple-lg shadow-apple transition-all duration-300;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-elevated);
+  }
+
+  .mk-card-hover {
+    @apply hover:-translate-y-0.5 hover:shadow-card;
+  }
+
+  .mk-card-hover:hover {
+    border-color: var(--mk-border-strong);
+  }
+
+  .mk-card-glass {
+    @apply rounded-apple-lg shadow-apple;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-elevated);
+  }
+
+  .mk-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[15px] font-medium transition-all duration-200 active:scale-[0.98];
+  }
+
+  .mk-btn-primary {
+    @apply mk-btn bg-primary text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-primary/20;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .mk-btn-soft {
+    @apply mk-btn;
+    background: var(--mk-bg-input);
+    color: var(--mk-text);
+    border: 1px solid var(--mk-border);
+  }
+
+  .mk-btn-soft:hover {
+    background: #ebebef;
+    border-color: var(--mk-border-strong);
+  }
+
+  .mk-btn-ghost-light {
+    @apply mk-btn border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white/20;
+  }
+
+  .mk-input {
+    @apply w-full rounded-xl px-4 py-3 text-[15px] outline-none transition-all focus:ring-4 focus:ring-primary/10;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-input);
+    color: var(--mk-text);
+  }
+
+  .mk-input::placeholder {
+    color: var(--mk-text-subtle);
+  }
+
+  .mk-input:focus {
+    border-color: rgba(106, 36, 227, 0.4);
+    background: var(--mk-bg-elevated);
+  }
+
+  .mk-input-glass {
+    border-color: var(--mk-border);
+    background: var(--mk-bg-input);
+  }
+
+  .mk-input-glass:focus {
+    background: var(--mk-bg-elevated);
+  }
+
+  .mk-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-all;
+    background: var(--mk-bg-input);
+    color: var(--mk-text-muted);
+    border: 1px solid var(--mk-border);
+  }
+
+  .mk-pill:hover {
+    background: #ebebef;
+    color: var(--mk-text);
+  }
+
+  .mk-pill-active {
+    @apply bg-primary text-white hover:bg-primary;
+    border-color: transparent;
+  }
+
+  .mk-nav-link {
+    @apply rounded-full px-3.5 py-2 text-[13px] font-medium transition-colors;
+    color: var(--mk-text-muted);
+  }
+
+  .mk-nav-link:hover {
+    color: var(--mk-text);
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .mk-nav-link-active {
+    @apply font-semibold;
+    color: var(--mk-text);
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .mk-subnav {
+    @apply border-b backdrop-blur-xl;
+    border-color: var(--mk-border);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .mk-breadcrumb {
+    @apply flex flex-wrap items-center gap-2 text-sm;
+    color: var(--mk-text-muted);
+  }
+
+  .mk-breadcrumb a {
+    @apply transition-colors;
+    color: var(--mk-text-muted);
+  }
+
+  .mk-breadcrumb a:hover {
+    color: var(--mk-text);
+  }
+
+  .mk-breadcrumb-sep {
+    color: rgba(0, 0, 0, 0.2);
+  }
+
+  .mk-search-bar {
+    @apply rounded-3xl p-6 sm:p-7;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-elevated);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .mk-search-bar-hero {
+    @apply rounded-3xl p-6 sm:p-7;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-elevated);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  .mk-stat-strip {
+    background: var(--mk-bg-alt);
+    @apply pb-10 pt-2;
+  }
+
+  .mk-stat-grid {
+    @apply grid gap-8 sm:grid-cols-3 sm:gap-0;
+  }
+
+  .mk-stat-item {
+    @apply text-center sm:px-8 last:sm:border-r-0;
+    border-color: var(--mk-border);
+  }
+
+  @media (min-width: 640px) {
+    .mk-stat-item {
+      border-right: 1px solid var(--mk-border);
+    }
+  }
+
+  .mk-stat-value {
+    @apply text-[2rem] font-semibold tracking-[-0.02em] sm:text-[2.25rem];
+    color: var(--mk-text);
+  }
+
+  .mk-stat-label {
+    @apply mt-1.5 text-[15px];
+    color: var(--mk-text-muted);
+  }
+
+  .mk-chip-row {
+    @apply mt-8 flex flex-wrap justify-center gap-2;
+  }
+
+  .mk-chip {
+    @apply rounded-full px-4 py-2 text-sm font-medium transition-colors;
+    background: var(--mk-bg-elevated);
+    color: var(--mk-text-muted);
+    border: 1px solid var(--mk-border);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .mk-chip:hover {
+    background: var(--mk-bg-input);
+    color: var(--mk-text);
+    border-color: var(--mk-border-strong);
+  }
+
+  .mk-mobile-nav {
+    @apply fixed inset-x-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden;
+    border-top: 1px solid var(--mk-border);
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  .mk-surface-panel {
+    @apply rounded-apple-lg;
+    border: 1px solid var(--mk-border);
+    background: var(--mk-bg-elevated);
+  }
 }

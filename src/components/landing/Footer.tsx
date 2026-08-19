@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { ArrowRight, Headphones, Instagram, Linkedin, Mail } from 'lucide-react'
 import { FadeIn } from '../ui/FadeIn'
 import { Logo } from '../ui/Logo'
@@ -90,9 +91,9 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-primary">
+                <Link to="/marketplace" className="hover:text-primary">
                   Marketplace
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-primary">

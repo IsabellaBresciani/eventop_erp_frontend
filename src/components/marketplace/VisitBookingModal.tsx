@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Calendar, Clock, Users, X } from 'lucide-react'
 import { useState } from 'react'
+import { addHostVisit } from '../../data/marketplace-venues'
 import { getVisitSlotsForDate } from '../../data/marketplace'
 import { WEEKDAY_LABELS } from '../../data/agenda-defaults'
 import type { AgendaSettings } from '../../types/agenda-settings'
@@ -11,9 +12,16 @@ interface VisitBookingModalProps {
   onClose: () => void
   profile: SalonProfile
   agenda: AgendaSettings
+  salonId?: string
 }
 
-export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBookingModalProps) {
+export function VisitBookingModal({
+  isOpen,
+  onClose,
+  profile,
+  agenda,
+  salonId,
+}: VisitBookingModalProps) {
   const [date, setDate] = useState('')
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -23,6 +31,15 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
 
   const handleSubmit = () => {
     if (!date || !selectedSlot) return
+    const slot = slots.find((s) => s.id === selectedSlot)
+    if (salonId && slot) {
+      addHostVisit({
+        salonId,
+        salonName: profile.name,
+        date,
+        slot: `${slot.startTime} – ${slot.endTime}`,
+      })
+    }
     setSubmitted(true)
   }
 
@@ -48,7 +65,7 @@ export function VisitBookingModal({ isOpen, onClose, profile, agenda }: VisitBoo
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 40 }}
-            className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-card border border-surface-border bg-white p-6 shadow-2xl sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2"
+            className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-md rounded-card border border-[var(--mk-border)] bg-[var(--mk-bg-elevated)] p-6 shadow-2xl sm:inset-x-auto sm:left-1/2 sm:top-1/2 sm:bottom-auto sm:-translate-x-1/2 sm:-translate-y-1/2"
           >
             <div className="mb-4 flex items-center justify-between">
               <div>

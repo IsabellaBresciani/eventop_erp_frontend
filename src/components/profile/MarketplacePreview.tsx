@@ -32,7 +32,7 @@ export function MarketplacePreview({ profile, progress }: MarketplacePreviewProp
             Perfil al {progress}%
           </span>
           <Link
-            to="/marketplace"
+            to="/marketplace/salones/salon-olivos"
             target="_blank"
             className="rounded-lg p-1.5 text-slate-400 hover:bg-primary/5 hover:text-primary"
             title="Ver vitrina pública"

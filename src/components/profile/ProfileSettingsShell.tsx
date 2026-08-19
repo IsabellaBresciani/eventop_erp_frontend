@@ -103,7 +103,7 @@ export function ProfileCoverHeader({
                 {progress}%
               </span>
               <Link
-                to="/marketplace"
+                to="/marketplace/salones/salon-olivos"
                 target="_blank"
                 className="text-xs font-semibold text-primary hover:underline"
               >

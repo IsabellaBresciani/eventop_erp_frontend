@@ -18,6 +18,28 @@
   </head>
   <body>
     <div id="root"></div>
+    <script>
+      (function () {
+        if (window.location.hash.includes('figma-autologin')) {
+          sessionStorage.setItem(
+            'eventop_auth',
+            JSON.stringify({
+              email: 'admin@eventop.com',
+              salon: 'Quinta Los Olivos',
+              salonId: 'salon-olivos',
+              salons: [
+                { id: 'salon-olivos', name: 'Quinta Los Olivos', location: 'Vicente López', accent: '#6A24E3' },
+                { id: 'salon-palermo', name: 'Salón Palermo Norte', location: 'Palermo', accent: '#EA580C' },
+                { id: 'salon-pilar', name: 'Espacio Pilar Garden', location: 'Pilar', accent: '#0F766E' },
+              ],
+              role: 'admin',
+              name: 'Administrador',
+            }),
+          )
+        }
+      })()
+    </script>
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
