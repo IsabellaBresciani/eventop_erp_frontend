@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { MarketplaceBreadcrumbs } from '../components/marketplace/layout/MarketplaceBreadcrumbs'
 import { MarketplaceLayout } from '../components/marketplace/layout/MarketplaceLayout'
+import { HostAccountLayout } from '../components/marketplace/host-account/HostAccountLayout'
 import {
   getFavoriteSalonIds,
   getHostBudgets,
@@ -11,7 +12,7 @@ import {
   getVenueProfile,
 } from '../data/marketplace-venues'
 import { useHostSession } from '../hooks/useHostSession'
-import { clearHostSession, loginHost, registerHost } from '../lib/host-session'
+import { loginHost, registerHost } from '../lib/host-session'
 
 export default function MarketplaceHostRegisterPage() {
   const navigate = useNavigate()
@@ -151,7 +152,6 @@ export function MarketplaceHostLoginPage() {
 }
 
 export function MarketplaceHostDashboardPage() {
-  const navigate = useNavigate()
   const { session } = useHostSession()
 
   if (!session) {
@@ -164,76 +164,56 @@ export function MarketplaceHostDashboardPage() {
   const budgets = getHostBudgets()
 
   return (
-    <MarketplaceLayout>
-      <div className="mk-container py-8 lg:py-10">
-        <MarketplaceBreadcrumbs items={[{ label: 'Mi cuenta' }]} />
-        <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="mk-eyebrow">Panel del anfitrión</p>
-            <h1 className="mk-title mt-1 text-2xl">Hola, {session.name}</h1>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              clearHostSession()
-              navigate('/marketplace/ingresar')
-            }}
-            className="mk-btn-soft"
-          >
-            Cerrar sesión
-          </button>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <DashboardPanel title="Invitaciones virtuales" count={0} empty="No tenés invitaciones activas." />
-          <DashboardPanel title="Mis eventos" count={0} empty="Todavía no organizaste eventos." />
-          <DashboardPanel
-            title="Consultas enviadas"
-            count={inquiries.length}
-            empty="No enviaste consultas aún."
-          >
-            {inquiries.slice(0, 3).map((inq) => (
-              <li key={inq.id} className="text-sm text-ink-muted">
-                <span className="font-medium text-ink">{inq.salonName}</span> — {inq.subject} (
-                {inq.status})
+    <HostAccountLayout title={`Hola, ${session.name}`} subtitle="Panel del anfitrión">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <DashboardPanel title="Invitaciones virtuales" count={0} empty="No tenés invitaciones activas." />
+        <DashboardPanel title="Mis eventos" count={0} empty="Todavía no organizaste eventos." />
+        <DashboardPanel
+          title="Consultas enviadas"
+          count={inquiries.length}
+          empty="No enviaste consultas aún."
+        >
+          {inquiries.slice(0, 3).map((inq) => (
+            <li key={inq.id} className="text-sm text-ink-muted">
+              <span className="font-medium text-ink">{inq.salonName}</span> — {inq.subject} (
+              {inq.status})
+            </li>
+          ))}
+        </DashboardPanel>
+        <DashboardPanel title="Visitas agendadas" count={visits.length} empty="No tenés visitas pendientes.">
+          {visits.slice(0, 3).map((visit) => (
+            <li key={visit.id} className="text-sm text-ink-muted">
+              <span className="font-medium text-ink">{visit.salonName}</span> — {visit.date} {visit.slot} (
+              {visit.status})
+            </li>
+          ))}
+        </DashboardPanel>
+        <DashboardPanel title="Presupuestos guardados" count={budgets.length} empty="No guardaste presupuestos.">
+          {budgets.slice(0, 3).map((budget) => (
+            <li key={budget.id} className="text-sm text-ink-muted">
+              <span className="font-medium text-ink">{budget.salonName}</span> —{' '}
+              {budget.total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}
+            </li>
+          ))}
+        </DashboardPanel>
+        <DashboardPanel id="favoritos" title="Favoritos" count={favorites.length} empty="No destacaste salones aún.">
+          {favorites.map((id) => {
+            const profile = getVenueProfile(id)
+            if (!profile) return null
+            return (
+              <li key={id}>
+                <Link
+                  to={`/marketplace/salones/${id}`}
+                  className="text-sm font-medium text-primary hover:underline"
+                >
+                  {profile.name}
+                </Link>
               </li>
-            ))}
-          </DashboardPanel>
-          <DashboardPanel title="Visitas agendadas" count={visits.length} empty="No tenés visitas pendientes.">
-            {visits.slice(0, 3).map((visit) => (
-              <li key={visit.id} className="text-sm text-ink-muted">
-                <span className="font-medium text-ink">{visit.salonName}</span> — {visit.date} {visit.slot} (
-                {visit.status})
-              </li>
-            ))}
-          </DashboardPanel>
-          <DashboardPanel title="Presupuestos guardados" count={budgets.length} empty="No guardaste presupuestos.">
-            {budgets.slice(0, 3).map((budget) => (
-              <li key={budget.id} className="text-sm text-ink-muted">
-                <span className="font-medium text-ink">{budget.salonName}</span> —{' '}
-                {budget.total.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' })}
-              </li>
-            ))}
-          </DashboardPanel>
-          <DashboardPanel id="favoritos" title="Favoritos" count={favorites.length} empty="No destacaste salones aún.">
-            {favorites.map((id) => {
-              const profile = getVenueProfile(id)
-              if (!profile) return null
-              return (
-                <li key={id}>
-                  <Link
-                    to={`/marketplace/salones/${id}`}
-                    className="text-sm font-medium text-primary hover:underline"
-                  >
-                    {profile.name}
-                  </Link>
-                </li>
-              )
-            })}
-          </DashboardPanel>
-        </div>
+            )
+          })}
+        </DashboardPanel>
       </div>
-    </MarketplaceLayout>
+    </HostAccountLayout>
   )
 }
 

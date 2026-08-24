@@ -94,10 +94,10 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
           onClick={(e) => e.stopPropagation()}
           className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-elevated"
         >
-          <div className="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-surface-border px-6 py-4">
             <div>
-              <p className="text-base font-semibold text-slate-900">Crear invitación</p>
-              <p className="text-xs text-slate-500">
+              <p className="text-base font-semibold text-ink">Crear invitación</p>
+              <p className="text-xs text-ink-muted">
                 {hasEligibleEvents
                   ? step === 'select'
                     ? 'Paso 1 de 2 · Selecciona un evento'
@@ -108,7 +108,7 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
             <button
               type="button"
               onClick={handleClose}
-              className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"
+              className="rounded-lg p-1.5 text-slate-400 hover:bg-surface-muted"
               aria-label="Cerrar"
             >
               <X className="h-4 w-4" />
@@ -120,7 +120,7 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
               <BlockedState onClose={handleClose} />
             ) : step === 'select' ? (
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-slate-900">Selecciona un Evento</h3>
+                <h3 className="text-sm font-semibold text-ink">Selecciona un Evento</h3>
                 <div className="space-y-2">
                   {eligibleEvents.map((event) => {
                     const active = selectedEventId === event.id
@@ -130,7 +130,7 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
                         className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 transition-all ${
                           active
                             ? 'border-primary/50 bg-primary/[0.04] ring-2 ring-primary/15'
-                            : 'border-slate-200 hover:border-primary/25'
+                            : 'border-surface-border hover:border-primary/25'
                         }`}
                       >
                         <input
@@ -141,10 +141,10 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
                           className="h-4 w-4 accent-primary"
                         />
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-slate-900">
+                          <p className="truncate text-sm font-semibold text-ink">
                             {event.clientName} — {event.eventType}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-ink-muted">
                             {formatInvitationDate(event.date)} · {event.startTime} hs
                           </p>
                         </div>
@@ -169,13 +169,13 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
               </div>
             ) : (
               <div className="space-y-4">
-                <h3 className="text-sm font-semibold text-slate-900">
+                <h3 className="text-sm font-semibold text-ink">
                   Importación masiva de invitados vía Excel
                 </h3>
                 {selectedEvent && (
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-ink-muted">
                     Evento seleccionado:{' '}
-                    <span className="font-semibold text-slate-700">
+                    <span className="font-semibold text-ink">
                       {selectedEvent.clientName} — {selectedEvent.eventType}
                     </span>
                   </p>
@@ -185,10 +185,10 @@ export function InvitationWizard({ open, onClose, eligibleEvents, onFinish }: In
                   <label
                     onDrop={handleDrop}
                     onDragOver={(e) => e.preventDefault()}
-                    className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center transition-colors hover:border-primary/40 hover:bg-primary/[0.02]"
+                    className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-surface-muted px-6 py-12 text-center transition-colors hover:border-primary/40 hover:bg-primary/[0.02]"
                   >
                     <Upload className="h-8 w-8 text-slate-400" />
-                    <p className="mt-3 text-sm font-medium text-slate-700">
+                    <p className="mt-3 text-sm font-medium text-ink">
                       Arrastrá tu archivo Excel aquí o hacé clic para seleccionar
                     </p>
                     <p className="mt-1 text-xs text-slate-400">Formatos aceptados: .xlsx, .xls, .csv</p>
@@ -312,7 +312,7 @@ function BlockedState({ onClose }: { onClose: () => void }) {
             {index < stages.length - 1 && (
               <div
                 className={`mx-2 h-0.5 flex-1 rounded-full ${
-                  stage.done ? 'bg-emerald-400' : 'bg-slate-200'
+                  stage.done ? 'bg-emerald-400' : 'bg-surface-muted'
                 }`}
               />
             )}
@@ -320,12 +320,12 @@ function BlockedState({ onClose }: { onClose: () => void }) {
         ))}
       </div>
 
-      <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-8 text-center">
+      <div className="rounded-2xl border border-dashed border-surface-border bg-surface-muted px-6 py-8 text-center">
         <Compass className="mx-auto h-8 w-8 text-slate-300" />
-        <p className="mt-3 text-sm font-semibold text-slate-800">
+        <p className="mt-3 text-sm font-semibold text-ink">
           Todavía no tenés eventos reservados
         </p>
-        <p className="mx-auto mt-1.5 max-w-sm text-xs text-slate-500">
+        <p className="mx-auto mt-1.5 max-w-sm text-xs text-ink-muted">
           Para crear una invitación primero necesitás explorar salones disponibles y reservar tu
           evento. Una vez confirmada la reserva, vas a poder generar la invitación digital.
         </p>

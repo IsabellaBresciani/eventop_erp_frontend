@@ -86,23 +86,23 @@ export function GuestListTable({
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-          <p className="text-xs font-medium text-slate-500">Total Invitados</p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{totalGuestsCount}</p>
+        <div className="rounded-2xl border border-surface-border bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <p className="text-xs font-medium text-ink-muted">Total Invitados</p>
+          <p className="mt-1 text-2xl font-bold text-ink">{totalGuestsCount}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-          <p className="text-xs font-medium text-slate-500">Capacidad del Salón</p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{capacityPct}%</p>
-          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+        <div className="rounded-2xl border border-surface-border bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <p className="text-xs font-medium text-ink-muted">Capacidad del Salón</p>
+          <p className="mt-1 text-2xl font-bold text-ink">{capacityPct}%</p>
+          <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-surface-muted">
             <div
               className="h-full rounded-full bg-primary transition-all"
               style={{ width: `${capacityPct}%` }}
             />
           </div>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
-          <p className="text-xs font-medium text-slate-500">RSVP Pendiente</p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{pendingCount}</p>
+        <div className="rounded-2xl border border-surface-border bg-white p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+          <p className="text-xs font-medium text-ink-muted">RSVP Pendiente</p>
+          <p className="mt-1 text-2xl font-bold text-ink">{pendingCount}</p>
           <p className="mt-1 text-[11px] text-slate-400">Se enviarán recordatorios en 2 días</p>
         </div>
       </div>
@@ -137,10 +137,10 @@ export function GuestListTable({
         </button>
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200">
+      <div className="overflow-hidden rounded-2xl border border-surface-border">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-sm">
-            <thead className="bg-slate-50 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            <thead className="bg-surface-muted text-[11px] font-semibold uppercase tracking-wider text-slate-400">
               <tr>
                 <th className="w-10 px-4 py-3" />
                 <th className="px-4 py-3">Nombre Completo</th>
@@ -173,13 +173,13 @@ export function GuestListTable({
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
                           {initials(guest)}
                         </div>
-                        <span className="font-semibold text-slate-900">
+                        <span className="font-semibold text-ink">
                           {guest.firstName} {guest.lastName}
                         </span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">{guest.group ?? '—'}</td>
-                    <td className="px-4 py-3 text-slate-600">{guest.ageType ?? 'Adulto'}</td>
+                    <td className="px-4 py-3 text-ink-muted">{guest.group ?? '—'}</td>
+                    <td className="px-4 py-3 text-ink-muted">{guest.ageType ?? 'Adulto'}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
@@ -205,7 +205,7 @@ export function GuestListTable({
               })}
               {pageItems.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-10 text-center text-sm text-slate-500">
+                  <td colSpan={6} className="px-4 py-10 text-center text-sm text-ink-muted">
                     No hay invitados que coincidan con la búsqueda.
                   </td>
                 </tr>
@@ -233,11 +233,11 @@ export function GuestListTable({
             className="w-full max-w-md rounded-2xl bg-white p-5 shadow-elevated"
           >
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-semibold text-slate-900">Editar Invitado</p>
+              <p className="text-sm font-semibold text-ink">Editar Invitado</p>
               <button
                 type="button"
                 onClick={() => setEditing(null)}
-                className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100"
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-surface-muted"
               >
                 <X className="h-4 w-4" />
               </button>

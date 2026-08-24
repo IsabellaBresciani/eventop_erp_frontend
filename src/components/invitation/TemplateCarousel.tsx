@@ -73,7 +73,7 @@ export function TemplateCarousel({ selected, onSelect }: TemplateCarouselProps) 
                 </div>
               </div>
               <div className="bg-white p-2.5">
-                <p className="text-xs font-semibold text-slate-800">{template.name}</p>
+                <p className="text-xs font-semibold text-ink">{template.name}</p>
                 <p className="text-[10px] text-slate-400">{template.description}</p>
               </div>
             </button>
