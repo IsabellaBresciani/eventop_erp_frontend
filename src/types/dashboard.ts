@@ -11,6 +11,14 @@ export type ServicePrepStatus = 'pendiente' | 'en_proceso' | 'listo'
 export interface EventService {
   name: string
   status: ServicePrepStatus
+  unitPrice?: number
+  quantity?: number
+  provider?: string
+}
+
+export interface StaffAssignment {
+  type: string
+  quantity: number
 }
 
 export interface PaymentRecord {
@@ -33,7 +41,9 @@ export interface AuditLogEntry {
 export interface CalendarEvent {
   id: string
   date: string
+  endDate?: string
   clientName: string
+  eventName?: string
   eventType: string
   status: EventStatus
   startTime: string
@@ -48,8 +58,13 @@ export interface CalendarEvent {
   maxCapacity: number
   phone: string
   email: string
+  venueSpace?: string
+  internalNotes?: string
+  publicDescription?: string
+  clientInvitePending?: boolean
   isRecurring?: boolean
   services: EventService[]
+  staffAssignments?: StaffAssignment[]
   payments: PaymentRecord[]
   auditLog: AuditLogEntry[]
   invitationUrl?: string

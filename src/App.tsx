@@ -28,6 +28,7 @@ import MarketplaceSalonPage from './pages/MarketplaceSalonPage'
 import MessagingPage from './pages/MessagingPage'
 import ReportsPage from './pages/ReportsPage'
 import SalonProfilePage from './pages/SalonProfilePage'
+import CreateEventPage from './pages/CreateEventPage'
 
 export default function App() {
   const location = useLocation()
@@ -232,6 +233,14 @@ export default function App() {
           element={
             <PageTransition>
               <EmployeeEventsPage />
+            </PageTransition>
+          }
+        />
+        <Route
+          path="/dashboard/eventos/nuevo"
+          element={
+            <PageTransition>
+              <CreateEventPage />
             </PageTransition>
           }
         />

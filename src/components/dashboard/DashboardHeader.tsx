@@ -77,7 +77,7 @@ export function DashboardHeader({ salonName }: DashboardHeaderProps) {
           {location.pathname.startsWith('/dashboard') && (
             <button
               type="button"
-              onClick={() => navigate('/dashboard?nuevo=1')}
+              onClick={() => navigate('/dashboard/eventos/nuevo')}
               className="btn-primary hidden px-4 py-2 text-sm sm:inline-flex"
             >
               <Plus className="h-4 w-4" />

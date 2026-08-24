@@ -1,15 +1,10 @@
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { DashboardLayout } from '../components/dashboard/DashboardLayout'
 import { EventAuditSlideover } from '../components/dashboard/EventAuditSlideover'
 import { EventListPanel, type EventListFilters } from '../components/dashboard/EventListPanel'
 import { FloatingActions } from '../components/dashboard/FloatingActions'
-import {
-  buildCalendarEventFromForm,
-  NewEventModal,
-  type NewEventFormData,
-} from '../components/dashboard/NewEventModal'
 import { OperationalCalendar } from '../components/dashboard/OperationalCalendar'
 import { PeriodSummaryCards } from '../components/dashboard/PeriodSummaryCards'
 import { loadCalendarSettings } from '../data/calendar-settings'
@@ -39,11 +34,12 @@ const VIEW_LABELS: Record<CalendarViewMode, string> = {
 
 export default function DashboardPage() {
   const { salon } = useAuthGuard({ allowedRoles: ['admin'] })
-  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
   const [events, setEvents] = useState<CalendarEvent[]>(loadEvents)
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
   const [slideoverOpen, setSlideoverOpen] = useState(false)
-  const [newEventOpen, setNewEventOpen] = useState(false)
   const [filters, setFilters] = useState<EventListFilters>(DEFAULT_FILTERS)
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
@@ -54,10 +50,23 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (searchParams.get('nuevo') === '1') {
-      setNewEventOpen(true)
-      setSearchParams({}, { replace: true })
+      const fecha = selectedDate ? `?fecha=${selectedDate}` : ''
+      navigate(`/dashboard/eventos/nuevo${fecha}`, { replace: true })
     }
-  }, [searchParams, setSearchParams])
+  }, [searchParams, selectedDate, navigate])
+
+  useEffect(() => {
+    const createdId = (location.state as { createdEventId?: string } | null)?.createdEventId
+    if (!createdId) return
+    const created = events.find((event) => event.id === createdId)
+    if (!created) return
+    setSelectedEvent(created)
+    setSlideoverOpen(true)
+    setSelectedDate(created.date)
+    setSelectedEventId(created.id)
+    setCurrentDate(new Date(`${created.date}T12:00:00`))
+    navigate('/dashboard', { replace: true, state: {} })
+  }, [events, location.state, navigate])
 
   const filteredEvents = useMemo(
     () => filterEvents(events, filters, selectedDate, selectedEventId),
@@ -110,21 +119,10 @@ export default function DashboardPage() {
     setSelectedEvent(updated)
   }
 
-  const handleCreateEvent = (data: NewEventFormData) => {
-    const newEvent = buildCalendarEventFromForm(data)
-    setEvents((current) => {
-      const next = [...current, newEvent]
-      saveEvents(next)
-      return next
-    })
-    setSelectedDate(data.date)
-    setSelectedEventId(newEvent.id)
-    setCurrentDate(new Date(`${data.date}T12:00:00`))
-    setSelectedEvent(newEvent)
-    setSlideoverOpen(true)
+  const openNewEvent = () => {
+    const fecha = selectedDate ? `?fecha=${selectedDate}` : ''
+    navigate(`/dashboard/eventos/nuevo${fecha}`)
   }
-
-  const openNewEvent = () => setNewEventOpen(true)
 
   return (
     <motion.div
@@ -171,13 +169,6 @@ export default function DashboardPage() {
       </DashboardLayout>
 
       <FloatingActions onNewEvent={openNewEvent} />
-
-      <NewEventModal
-        isOpen={newEventOpen}
-        onClose={() => setNewEventOpen(false)}
-        onCreate={handleCreateEvent}
-        defaultDate={selectedDate}
-      />
 
       <EventAuditSlideover
         event={selectedEvent}
