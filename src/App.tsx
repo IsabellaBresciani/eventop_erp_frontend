@@ -28,9 +28,7 @@ import MarketplaceSalonPage from './pages/MarketplaceSalonPage'
 import MessagingPage from './pages/MessagingPage'
 import ReportsPage from './pages/ReportsPage'
 import SalonProfilePage from './pages/SalonProfilePage'
-<<<<<<< HEAD
 import CreateEventPage from './pages/CreateEventPage'
-=======
 import HostAgendaPage from './pages/host-account/HostAgendaPage'
 import HostInquiriesPage from './pages/host-account/HostInquiriesPage'
 import HostAccountSettingsPage from './pages/host-account/HostAccountSettingsPage'
@@ -38,7 +36,6 @@ import HostInvitationsPage from './pages/host-account/HostInvitationsPage'
 import HostInvitationEditorPage from './pages/host-account/HostInvitationEditorPage'
 import HostGuestCapacityRequestPage from './pages/host-account/HostGuestCapacityRequestPage'
 import HostInvitationEmailPreviewPage from './pages/host-account/HostInvitationEmailPreviewPage'
->>>>>>> 418044aab55582545b44a471f4ea3b7fd99c58ad
 
 export default function App() {
   const location = useLocation()
