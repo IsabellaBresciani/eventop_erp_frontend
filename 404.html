@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/eventop_erp_frontend/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="EvenTop — Automatiza tu salón de eventos con ERP, Marketplace e invitaciones inteligentes."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+    <title>EvenTop — Automatiza tu salón, recupera tu tiempo</title>
+    <script type="module" crossorigin src="/eventop_erp_frontend/assets/index-rP88yh5h.js"></script>
+    <link rel="stylesheet" crossorigin href="/eventop_erp_frontend/assets/index-CWV6fFe4.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      (function () {
+        if (window.location.hash.includes('figma-autologin')) {
+          sessionStorage.setItem(
+            'eventop_auth',
+            JSON.stringify({
+              email: 'admin@eventop.com',
+              salon: 'Quinta Los Olivos',
+              salonId: 'salon-olivos',
+              salons: [
+                { id: 'salon-olivos', name: 'Quinta Los Olivos', location: 'Vicente López', accent: '#6A24E3' },
+                { id: 'salon-palermo', name: 'Salón Palermo Norte', location: 'Palermo', accent: '#EA580C' },
+                { id: 'salon-pilar', name: 'Espacio Pilar Garden', location: 'Pilar', accent: '#0F766E' },
+              ],
+              role: 'admin',
+              name: 'Administrador',
+            }),
+          )
+        }
+      })()
+    </script>
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  </body>
+</html>
